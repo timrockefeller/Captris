@@ -2,15 +2,15 @@ using System.Collections;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(WorldGenerator))]
-class WorldGeneratorEditor:Editor
+[CustomEditor(typeof(WorldManager))]
+class WorldManagerEditor:Editor
 {
     public override void OnInspectorGUI() {
 		DrawDefaultInspector();
 
-		WorldGenerator worldGenerator = (WorldGenerator)target;
+		WorldManager worldManager = (WorldManager)target;
 		if (GUILayout.Button("Generate")) {
-			worldGenerator.Generate();
+			worldManager.Generate();
 		}
     }
 

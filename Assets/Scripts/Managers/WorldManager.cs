@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldGenerator : MonoBehaviour
+public class WorldManager : MonoBehaviour
 {
-
     public GameObject pGround;
     public int iSeed;
 
     [HideInInspector]
-    public TerrainUnit[,] map;
+    public GameObject[,] map;
     public int size = 32;
-    private System.Random RD;
-
 
     private float _seedX;
     private float _seedZ;
@@ -24,9 +21,9 @@ public class WorldGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        map = new TerrainUnit[this.size, this.size];
+        map = new GameObject[this.size, this.size];
         
-        this.RD = new System.Random(iSeed);
+        RD.SetSeed(iSeed);
 
         this.Generate();
     }
@@ -34,8 +31,8 @@ public class WorldGenerator : MonoBehaviour
     public void Generate()
     {
 
-        _seedX = (float)(this.RD.NextDouble() * 100.0);
-        _seedZ = (float)(this.RD.NextDouble() * 100.0);
+        _seedX = (float)(RD.NextDouble() * 100.0);
+        _seedZ = (float)(RD.NextDouble() * 100.0);
 
         for (int x = 0; x < size; x++)
         {
@@ -49,7 +46,8 @@ public class WorldGenerator : MonoBehaviour
                 
                 GameObject ground = Instantiate(pGround, new Vector3(x + 0.5f, y / 2.0f - 0.5f, z + 0.5f), Quaternion.identity);
                 ground.transform.SetParent(transform);
-                // this.map[x, z] = new TerrainUnit(new Vector3(x, y, z), ground);
+                this.map[x, z] = ground;
+                ground.GetComponent<TerrainUnit>().position = new Vector3(x, y, z);
             }
         }
 

@@ -60,7 +60,7 @@
                 fixed4 col = fixed4(0,0,0,1);
 				
 				col += saturate(step(i.uv.x, _Width) + step(1 - _Width, i.uv.x) + step(i.uv.y, _Width) + step(1 - _Width, i.uv.y)) * _Color;
-                col *= saturate(pow(i.vertex.y/10,2))
+                col *= sin(saturate((i.vertex.y)+_Time.z))
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
