@@ -49,6 +49,7 @@ public class PlayManager : MonoBehaviour
             this.pieceDatas[i] = this.piecePrefabs[i].GetComponent<PieceData>();
         }
         nextPieces = new Queue<int>();
+        nextBag = new Queue<int>();
         playState = PlayState.SPECTING;
 
         worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
@@ -130,7 +131,7 @@ public class PlayManager : MonoBehaviour
                 }
             }
         }
-        if (nextPieces.Count < 7)
+        if (nextPieces.Count < piecePrefabs.Length)
         {
             FillNextPiece();
         }
@@ -141,13 +142,29 @@ public class PlayManager : MonoBehaviour
         if (nextBag.Count <= piecePrefabs.Length)
         {
             //fill a LENGTH long blocks
-            
+            int[] cps = new int[piecePrefabs.Length];
+            for (int i = piecePrefabs.Length - 1; i >= 0; i--)
+            {
+                cps[i] = i;
+            }
+            for (int i = piecePrefabs.Length - 1; i >= 0; i--)
+            {
+                int rndnum = (int)(RD.NextDouble() * i);
+                int tmp = cps[i];
+                cps[i] = cps[rndnum];
+                cps[rndnum] = cps[i];
+            }
+            for (int i = 0; i <piecePrefabs.Length; i++)
+            {
+                nextBag.Enqueue(cps[i]);
+            }
         }
 
     }
     void FillNextPiece()
     {
-        this.nextPieces.Enqueue((int)(RD.NextDouble() * piecePrefabs.GetLength(0)));
+        FillNextBag();
+        this.nextPieces.Enqueue(nextBag.Dequeue());
 
         this.selectedPrefab = piecePrefabs[this.nextPieces.Peek()];
         this.selectedData = pieceDatas[this.nextPieces.Peek()];
