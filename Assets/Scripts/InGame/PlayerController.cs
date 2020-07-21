@@ -54,6 +54,9 @@ public class PlayerController : MonoBehaviour
             this.transform.position += new Vector3(0, 0.1f, 0) * Time.deltaTime;
             this.onGround = true;
         }
+        if(other.collider.tag == "Terrain"){
+            //TODO die? 碰到空区域
+        }
 
     }
     void OnCollisionExit(Collision other)

@@ -58,14 +58,25 @@ public class PlayManager : MonoBehaviour
         if (playState == PlayState.ELECTED)
         {
 
-            // show preview
+
+            Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo = new RaycastHit();
+
+            // TODO show preview
+            // if (Physics.Raycast(_ray, out hitInfo))
+            // {
+            //     if (hitInfo.collider.tag == "Terrain")
+            //     {
+            //         Vector3Int t = new Vector3Int((int)hitInfo.transform.position.x, (int)hitInfo.transform.position.y, (int)hitInfo.transform.position.z);
+
+            //     }
+            // }
 
             if (Input.GetMouseButtonDown(0))
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                RaycastHit hitInfo = new RaycastHit();
-                if (Physics.Raycast(ray, out hitInfo))
+
+                if (Physics.Raycast(_ray, out hitInfo))
                 {
                     if (hitInfo.collider.tag == "Terrain")
                     {
@@ -75,23 +86,29 @@ public class PlayManager : MonoBehaviour
                         foreach (Vector3Int occ in this.selectedData.GetOccupy())
                         {
                             TerrainUnit targetTerrain = worldManager.map[t.x + occ.x, t.z + occ.z];
-                            if (targetTerrain.type != UnitType.Empty)
+                            if (targetTerrain.type != UnitType.Empty
+                            || targetTerrain.position.y != worldManager.map[t.x, t.z].position.y)
                             {
                                 canPlace = false;
                                 break;
                             }
                         }
 
-                        // not first piece
-                        // TODO : 检查周边有无已放置 （除第一块）
-                        if (pieceCount != 0)
+                        if (canPlace)
                         {
-
-                        }else{
-                            //generate player
-                            Instantiate(playerPrefab,t+new Vector3(0.5f,5,0.5f),Quaternion.identity);
+                            // not first piece
+                            // TODO : 检查周边有无已放置 （除第一块）
+                            if (pieceCount != 0)
+                            {
+                                // targetTerrain
+                                // canPlace = false;
+                            }
+                            else
+                            {
+                                //generate player
+                                Instantiate(playerPrefab, t + new Vector3(0.5f, 5, 0.5f), Quaternion.identity);
+                            }
                         }
-
 
                         if (canPlace)
                         {
@@ -104,7 +121,6 @@ public class PlayManager : MonoBehaviour
                             pieceCount++;
                             this.nextPieces.Dequeue();
                             this.playState = PlayState.SPECTING;
-
                         }
                     }
                 }
@@ -116,7 +132,10 @@ public class PlayManager : MonoBehaviour
             /// <summary>
             /// 预览方块
             /// </summary>
-            /// <returns></returns>
+
+
+
+
         }
 
         if (nextPieces.Count < 7)
@@ -153,5 +172,20 @@ public class PlayManager : MonoBehaviour
     public void ButtonRotateCounterClockwise()
     {
         this.selectedData.DoRotate(false);
+    }
+    /// <summary>
+    /// 选择类型
+    /// </summary>
+    public void ButtonSetUnitType(string t)
+    {
+        switch (t)
+        {
+            case "Grass": this.selectedType = UnitType.Grass; break;
+            case "Factor": this.selectedType = UnitType.Factor; break;
+            case "Defend": this.selectedType = UnitType.Defend; break;
+            case "House": this.selectedType = UnitType.House; break;
+
+            default: this.selectedType = UnitType.Grass; break;
+        }
     }
 }

@@ -21,12 +21,12 @@ public class TerrainUnit : MonoBehaviour
         {
             case UnitType.Grass:
                 return new Color(0x89 / 256.0f, 0xD1 / 256.0f, 0xA8 / 256.0f);
-            case UnitType.Factor:
-                return new Color(0x89 / 256.0f, 0xD1 / 256.0f, 0xA8 / 256.0f);
-            case UnitType.Defend:
-                return new Color(0x89 / 256.0f, 0xD1 / 256.0f, 0xA8 / 256.0f);
-            case UnitType.House:
-                return new Color(0x89 / 256.0f, 0xD1 / 256.0f, 0xA8 / 256.0f);
+            case UnitType.Factor://F1B96F
+                return new Color(0xF1 / 256.0f, 0xB9 / 256.0f, 0x6F / 256.0f);
+            case UnitType.Defend://718DCF
+                return new Color(0x71 / 256.0f, 0x8D / 256.0f, 0xCF / 256.0f);
+            case UnitType.House://CB92BC
+                return new Color(0xCB / 256.0f, 0x92 / 256.0f, 0xBC / 256.0f);
             default:
                 return Color.black;
         }
