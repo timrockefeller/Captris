@@ -6,16 +6,36 @@ public class UICameraController : MonoBehaviour
 {
     public GameObject nextPieceInstance;
 
+
+    public float nextPieceTargetRotateSpeed = 0.02f;
+    private Quaternion nextPieceTargetRotation;
+    private int nextPieceTargetRotationCount = 0;
     void Start()
     {
 
     }
 
+    public bool DoRotate(bool isClockwise)
+    {
+        if (isClockwise) nextPieceTargetRotationCount = (nextPieceTargetRotationCount + 1) % 4;
+        else nextPieceTargetRotationCount = (nextPieceTargetRotationCount + 3) % 4;
+        nextPieceTargetRotation = Quaternion.Euler(0, -90 * nextPieceTargetRotationCount + nextPieceTargetRotation.y, 0) * Quaternion.identity;
+        return true;
+    }
+    public bool SetInstance(GameObject nextPiecePrefab)
+    {
+        if (nextPieceInstance != null)
+            Destroy(nextPieceInstance);
 
-
+        nextPieceInstance = Instantiate(nextPiecePrefab, transform.Find("PreviewPos").transform);
+        nextPieceTargetRotation = nextPieceInstance.transform.rotation;
+        nextPieceTargetRotationCount = 0;
+        // nextPieceInstance
+        return true;
+    }
 
     void LateUpdate()
     {
-
+        nextPieceInstance.transform.rotation = Quaternion.Slerp(nextPieceInstance.transform.rotation, nextPieceTargetRotation, nextPieceTargetRotateSpeed);
     }
 }

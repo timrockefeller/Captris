@@ -36,7 +36,7 @@ public class PlayManager : MonoBehaviour
 
 
     private WorldManager worldManager;
-
+    private UICameraController uiCameraController;
     private uint pieceCount;
 
     void Start()
@@ -50,15 +50,18 @@ public class PlayManager : MonoBehaviour
         }
         nextPieces = new Queue<int>();
         playState = PlayState.SPECTING;
+
         worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
+        GameObject uicam = GameObject.Find("UICam");
+        uicam.SetActive(false);
+        uicam.SetActive(true);
+        uiCameraController = uicam.GetComponent<UICameraController>();
     }
 
     void Update()
     {
         if (playState == PlayState.ELECTED)
         {
-
-
             Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo = new RaycastHit();
 
@@ -119,6 +122,7 @@ public class PlayManager : MonoBehaviour
                             }
                             // end piece
                             pieceCount++;
+                            this.selectedData.ResetRotate();
                             this.nextPieces.Dequeue();
                             this.playState = PlayState.SPECTING;
                         }
@@ -147,7 +151,7 @@ public class PlayManager : MonoBehaviour
     public void UpdatePreview(){
         // TODO update preview
         // selectedPrefab
-
+        uiCameraController.SetInstance(this.selectedPrefab);
 
     }
 
@@ -164,6 +168,7 @@ public class PlayManager : MonoBehaviour
     public void ButtonRotateClockwise()
     {
         this.selectedData.DoRotate(true);
+        uiCameraController.DoRotate(true);
     }
     /// <summary>
     ///  逆时针旋转
@@ -171,6 +176,7 @@ public class PlayManager : MonoBehaviour
     public void ButtonRotateCounterClockwise()
     {
         this.selectedData.DoRotate(false);
+        uiCameraController.DoRotate(false);
     }
     /// <summary>
     /// 选择类型
