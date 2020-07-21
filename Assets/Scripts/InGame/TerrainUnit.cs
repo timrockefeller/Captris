@@ -17,16 +17,27 @@ public class TerrainUnit : MonoBehaviour
 {
 
     public Vector3 position;
-    public GameObject instance;
-    
-    public UnitType type;
+    private GameObject pieceInstance;
+    public GameObject piecePrefab;
 
+    public GameObject pieceParent;
+    public UnitType type;
+    public bool SetType(UnitType t)
+    {
+        if (this.type != UnitType.Empty || pieceInstance != null)
+        {
+            return false;
+        }
+
+        Debug.Log("Placed");
+        this.type = t;
+        this.pieceInstance = Instantiate(piecePrefab, transform.position+new Vector3(0,0.5f,0), Quaternion.identity);
+        this.pieceInstance.transform.SetParent(this.pieceParent.transform);
+        return true;
+    }
     void Start()
     {
         type = UnitType.Empty;
     }
-    public TerrainUnit(Vector3 position, GameObject instance){
-        this.position = position;
-        this.instance = instance;
-    }
+
 }

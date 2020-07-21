@@ -8,7 +8,7 @@ public class WorldManager : MonoBehaviour
     public int iSeed;
 
     [HideInInspector]
-    public GameObject[,] map;
+    public TerrainUnit[,] map;
     public int size = 32;
 
     private float _seedX;
@@ -21,7 +21,7 @@ public class WorldManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        map = new GameObject[this.size, this.size];
+        map = new TerrainUnit[this.size, this.size];
         
         RD.SetSeed(iSeed);
 
@@ -46,8 +46,8 @@ public class WorldManager : MonoBehaviour
                 
                 GameObject ground = Instantiate(pGround, new Vector3(x + 0.5f, y / 2.0f - 0.5f, z + 0.5f), Quaternion.identity);
                 ground.transform.SetParent(transform);
-                this.map[x, z] = ground;
-                ground.GetComponent<TerrainUnit>().position = new Vector3(x, y, z);
+                this.map[x, z] = ground.GetComponent<TerrainUnit>();
+                this.map[x, z].position = new Vector3(x, y, z);
             }
         }
 
@@ -66,7 +66,7 @@ public class WorldManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
 }
