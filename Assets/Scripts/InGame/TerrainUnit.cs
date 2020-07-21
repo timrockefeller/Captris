@@ -19,14 +19,14 @@ public class TerrainUnit : MonoBehaviour
     {
         switch (t)
         {
-            case UnitType.Grass:
-                return new Color(0x89 / 256.0f, 0xD1 / 256.0f, 0xA8 / 256.0f);
-            case UnitType.Factor://F1B96F
-                return new Color(0xF1 / 256.0f, 0xB9 / 256.0f, 0x6F / 256.0f);
-            case UnitType.Defend://718DCF
-                return new Color(0x71 / 256.0f, 0x8D / 256.0f, 0xCF / 256.0f);
-            case UnitType.House://CB92BC
-                return new Color(0xCB / 256.0f, 0x92 / 256.0f, 0xBC / 256.0f);
+            case UnitType.Grass://124, 168, 44
+                return new Color(124 / 255.0f, 168 / 255.0f, 44 / 255.0f);
+            case UnitType.Factor://222, 162, 30
+                return new Color(222 / 255.0f, 162 / 255.0f, 30 / 255.0f);
+            case UnitType.Defend://44, 118, 179
+                return new Color(44 / 255.0f, 118 / 255.0f, 179 / 255.0f);
+            case UnitType.House://175, 86, 130
+                return new Color(175 / 255.0f, 86 / 255.0f, 130 / 255.0f);
             default:
                 return Color.black;
         }
