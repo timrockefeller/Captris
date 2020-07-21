@@ -3,13 +3,14 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "black" {}
-        _Color("Color", color) = (1,1,1,1)
+        _BackColor("Background Color", color) = (1,1,1,1)
+        _Color("Line Color", color) = (1,1,1,1)
 		_Width("Width", range(0,0.5)) = 0.1
         _Cutoff("Alpha Cutoff", Range(0, 1)) = 0.1
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" }
+        Tags { "RenderType"="Opaque" "Queue"="Transparent" }
         LOD 100
 
         Pass
@@ -23,6 +24,8 @@
 
             #include "UnityCG.cginc"
 
+            // #pragma surface surf Lambert alphatest:_Cutoff
+            
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -39,10 +42,11 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             fixed4 _Color;
+            fixed4 _BackColor;
             fixed _Width;
 
             
-            // AlphaTest GEqual[_Cutoff]
+            
             v2f vert (appdata v)
             {
                 v2f o;
@@ -57,16 +61,25 @@
                 // sample the texture
                 // fixed4 col = tex2D(_MainTex, i.uv);
                 
-                fixed4 col = fixed4(0,0,0,1);
-				
-				col += saturate(step(i.uv.x, _Width) + step(1 - _Width, i.uv.x) + step(i.uv.y, _Width) + step(1 - _Width, i.uv.y)) * _Color;
-                col *= sin(saturate((i.vertex.y)+_Time.z))
+                fixed4 col = _BackColor;
+				fixed4 mask = _Color;
+                mask *= sin(saturate((i.vertex.y)+_Time.z))*0.5;
+				col += saturate(step(i.uv.x, _Width) + step(1 - _Width, i.uv.x) + step(i.uv.y, _Width) + step(1 - _Width, i.uv.y)) * mask;
+                
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }
+
+            
             ENDCG
         }
-
+        Pass{
+            Name "Cutout"
+            AlphaTest Greater 0.6
+            SetTexture[_Cutout]{
+    
+            }
+        }
     }
 }

@@ -1,15 +1,68 @@
-﻿Shader "Unlit/Pure"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/Pure"
 {
     Properties
     {
-        // _MainTex ("Texture", 2D) = "white" {}
         _Color("Color", color) = (1,1,1,1)
+
+        _RimColor("Rim Color", Color) = (1,1,1,1)
+        _RimRang("Rim Range",range(0,1)) = 0.1
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        
+        
+        
 
+
+        Pass
+        {
+            Cull Front
+
+            Tags { "Queue" = "Geometry-1" }
+
+            CGPROGRAM
+
+            #include "UnityCG.cginc"
+
+            struct v2f
+            {
+                float4 vertex:POSITION;
+            };
+
+            float4 _RimColor;
+            float _RimRang;
+
+            v2f vert(appdata_base  v)
+            {
+                v2f o;
+                fixed4 vertex = v.vertex;
+                vertex.xyz+=v.normal.xyz*_RimRang;
+                
+                o.vertex = UnityObjectToClipPos(vertex);    
+
+                return o;
+            }
+
+            fixed4 frag (v2f IN):COLOR
+            {    
+                return _RimColor;
+            }
+
+            #pragma vertex vert
+            #pragma fragment frag
+
+            ENDCG
+        }
+        
+        
+        
+
+
+        
         Pass
         {
             CGPROGRAM
@@ -49,6 +102,7 @@
                 // sample the texture
                 // fixed4 col = tex2D(_MainTex, i.uv);
                 fixed4 col = _Color;
+
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
