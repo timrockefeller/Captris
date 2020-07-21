@@ -126,18 +126,6 @@ public class PlayManager : MonoBehaviour
                 }
             }
         }
-        if (playState == PlayState.SPECTING)
-        {
-
-            /// <summary>
-            /// 预览方块
-            /// </summary>
-
-
-
-
-        }
-
         if (nextPieces.Count < 7)
         {
             FillNextPiece();
@@ -148,8 +136,19 @@ public class PlayManager : MonoBehaviour
     void FillNextPiece()
     {
         this.nextPieces.Enqueue((int)(RD.NextDouble() * piecePrefabs.GetLength(0)));
+
         this.selectedPrefab = piecePrefabs[this.nextPieces.Peek()];
         this.selectedData = pieceDatas[this.nextPieces.Peek()];
+        
+        UpdatePreview();
+        
+    }
+
+    public void UpdatePreview(){
+        // update preview
+        // selectedPrefab
+
+
     }
 
     /// <summary>
