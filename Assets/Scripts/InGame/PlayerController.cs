@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Vector3 speed;
-    public float speedy;
+    public float speedY;
     public float maxSpeed;
     public float acc;
     public float drag;
@@ -27,19 +27,19 @@ public class PlayerController : MonoBehaviour
         speed += acc * Vector3.Normalize(force) * Time.deltaTime;
         if (!onGround)
         {
-            speedy += -1 * acc * Time.deltaTime;
-            speedy = Mathf.Clamp(speedy, -maxSpeed, 2 * maxSpeed);
+            speedY += -1 * acc * Time.deltaTime;
+            speedY = Mathf.Clamp(speedY, -maxSpeed, 2 * maxSpeed);
         }
         else
         {
-            speedy = 0;
+            speedY = 0;
             if (Input.GetButton("Jump"))
             {
-                speedy = 4;
+                speedY = 4;
             }
         }
         speed = Vector3.ClampMagnitude(speed, maxSpeed);
-        transform.position += (speed + new Vector3(0, speedy, 0)) * Time.deltaTime;
+        transform.position += (speed + new Vector3(0, speedY, 0)) * Time.deltaTime;
         if (force.magnitude <= 0)
             speed = Vector3.ClampMagnitude(speed, Mathf.Clamp(speed.magnitude - drag * Time.deltaTime, 0, speed.magnitude));
 
