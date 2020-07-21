@@ -10,7 +10,7 @@ public enum PlayState
 }
 public class PlayManager : MonoBehaviour
 {
-
+    [HideInInspector]
     public Queue<int> nextPieces;
 
 
@@ -72,7 +72,7 @@ public class PlayManager : MonoBehaviour
                         bool canPlace = true;
                         Vector3Int t = new Vector3Int((int)hitInfo.transform.position.x, (int)hitInfo.transform.position.y, (int)hitInfo.transform.position.z);
                         // check every block
-                        foreach (Vector3Int occ in this.selectedData.occupy)
+                        foreach (Vector3Int occ in this.selectedData.GetOccupy())
                         {
                             TerrainUnit targetTerrain = worldManager.map[t.x + occ.x, t.z + occ.z];
                             if (targetTerrain.type != UnitType.Empty)
@@ -95,7 +95,7 @@ public class PlayManager : MonoBehaviour
 
                         if (canPlace)
                         {
-                            foreach (Vector3Int occ in this.selectedData.occupy)
+                            foreach (Vector3Int occ in this.selectedData.GetOccupy())
                             {
                                 TerrainUnit targetTerrain = worldManager.map[t.x + occ.x, t.z + occ.z];
                                 targetTerrain.SetType(this.selectedType);
@@ -119,7 +119,6 @@ public class PlayManager : MonoBehaviour
             /// <returns></returns>
         }
 
-
         if (nextPieces.Count < 7)
         {
             FillNextPiece();
@@ -142,14 +141,14 @@ public class PlayManager : MonoBehaviour
         playState = PlayState.ELECTED;
     }
     /// <summary>
-    ///  TODO 顺时针旋转
+    ///  顺时针旋转
     /// </summary>
     public void ButtonRotateClockwise()
     {
         this.selectedData.DoRotate(true);
     }
     /// <summary>
-    ///  TODO 逆时针旋转
+    ///  逆时针旋转
     /// </summary>
     public void ButtonRotateCounterClockwise()
     {

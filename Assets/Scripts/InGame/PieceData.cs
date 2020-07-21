@@ -14,19 +14,29 @@ public class PieceData : MonoBehaviour
 
     public PieceType pieceType;
 
+    private int rotate = 0;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="isClockwise">true为顺时针，false为逆时针</param>
     public void DoRotate(bool isClockwise)
     {
-        foreach (var occ in this.occupy)
+        if (isClockwise) rotate = (rotate + 1) % 4;
+        else rotate = (rotate + 3) % 4;
+    }
+    public void ResetRotate(){
+        rotate = 0;
+    }
+
+    public IEnumerable<Vector3Int> GetOccupy()
+    {
+        for (int i = 0; i < this.occupy.Count; i++)
         {
-            occ.Set((isClockwise ? -1 : 1) * occ.z, 0, (isClockwise ? 1 : -1) * occ.x);
+            if (rotate == 0) yield return this.occupy[i];
+            if (rotate == 1 || rotate == 3) yield return new Vector3Int((rotate == 1 ? -1 : 1) * this.occupy[i].z,
+             0,
+             (rotate == 1 ? 1 : -1) * this.occupy[i].x);
+            if (rotate == 2) yield return new Vector3Int(-this.occupy[i].x, 0, -this.occupy[i].z);
         }
     }
-    
+
     void Start()
     {
         occupy = new List<Vector3Int>();

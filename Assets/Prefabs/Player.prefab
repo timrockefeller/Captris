@@ -190,10 +190,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b68dfcde7d4ab45a46507d3a7e7b30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 0, y: 0, z: 0}
-  maxSpeed: 2
-  acc: 1
-  drag: 1
+  speedy: 0
+  maxSpeed: 3.5
+  acc: 8
+  drag: 8
 --- !u!136 &8723620301082940273
 CapsuleCollider:
   m_ObjectHideFlags: 0

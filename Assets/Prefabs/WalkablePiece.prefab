@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1836715287498129837}
   m_Layer: 0
   m_Name: WalkablePiece
-  m_TagString: Terrain
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,5 +91,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 27.358368, z: 1}
+  m_Center: {x: 0, y: -13.179184, z: 0}

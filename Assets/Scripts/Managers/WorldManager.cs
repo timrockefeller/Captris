@@ -54,19 +54,5 @@ public class WorldManager : MonoBehaviour
 
     }
 
-    public void Draw()
-    {
-
-    }
-    public void Clear()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 }

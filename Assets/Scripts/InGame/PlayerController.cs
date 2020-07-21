@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public Vector3 speed;
+    private Vector3 speed;
+    public float speedy;
     public float maxSpeed;
     public float acc;
     public float drag;
@@ -17,30 +18,40 @@ public class PlayerController : MonoBehaviour
     {
         // controller
         Vector3 force = new Vector3(0, 0, 0);
-        force += new Vector3(1, 0, -1) * Input.GetAxis("Horizontal");
-        force += new Vector3(1, 0, 1) * Input.GetAxis("Vertical");
-        speed += acc * Vector3.Normalize(force);
+        // force += new Vector3(1, 0, -1) * Input.GetAxis("Horizontal");
+        // force += new Vector3(1, 0, 1) * Input.GetAxis("Vertical");
+        if (Input.GetKey(KeyCode.W)) force += new Vector3(1, 0, 1);
+        if (Input.GetKey(KeyCode.S)) force -= new Vector3(1, 0, 1);
+        if (Input.GetKey(KeyCode.A)) force -= new Vector3(1, 0, -1);
+        if (Input.GetKey(KeyCode.D)) force += new Vector3(1, 0, -1);
+        speed += acc * Vector3.Normalize(force) * Time.deltaTime;
         if (!onGround)
         {
-            speed += new Vector3(0, -1, 0) * acc / 2.0f;
-        }else {
-            speed.y = 0;
+            speedy += -1 * acc * Time.deltaTime;
+            speedy = Mathf.Clamp(speedy, -maxSpeed, 2 * maxSpeed);
+        }
+        else
+        {
+            speedy = 0;
+            if (Input.GetButton("Jump"))
+            {
+                speedy = 4;
+            }
         }
         speed = Vector3.ClampMagnitude(speed, maxSpeed);
-        transform.position += speed * Time.deltaTime;
-        speed = Vector3.ClampMagnitude(speed, Mathf.Clamp(speed.magnitude - drag, 0, speed.magnitude));
+        transform.position += (speed + new Vector3(0, speedy, 0)) * Time.deltaTime;
+        if (force.magnitude <= 0)
+            speed = Vector3.ClampMagnitude(speed, Mathf.Clamp(speed.magnitude - drag * Time.deltaTime, 0, speed.magnitude));
 
     }
 
-    /// <summary>
-    /// OnCollisionEnter is called when this collider/rigidbody has begun
-    /// touching another rigidbody/collider.
-    /// </summary>
-    /// <param name="other">The Collision data associated with this collision.</param>
-    void OnCollisionEnter(Collision other)
+
+
+    void OnCollisionStay(Collision other)
     {
         if (other.collider.tag == "Piece")
         {
+            this.transform.position += new Vector3(0, 0.1f, 0) * Time.deltaTime;
             this.onGround = true;
         }
 
