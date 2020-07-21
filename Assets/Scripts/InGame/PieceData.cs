@@ -61,6 +61,18 @@ public class PieceData : MonoBehaviour
                 occupy.Insert(occupy.Count, new Vector3Int(0, 0, 1));
                 occupy.Insert(occupy.Count, new Vector3Int(-1, 0, 0));
                 break;
+            case PieceType.J:
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(1, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, 1));
+                occupy.Insert(occupy.Count, new Vector3Int(2, 0, 0));
+                break;
+            case PieceType.L:
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(1, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, -1));
+                occupy.Insert(occupy.Count, new Vector3Int(2, 0, 0));
+                break;
             default:
                 break;
         }

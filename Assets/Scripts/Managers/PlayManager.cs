@@ -12,7 +12,7 @@ public class PlayManager : MonoBehaviour
 {
     [HideInInspector]
     public Queue<int> nextPieces;
-
+    private Queue<int> nextBag;
 
     public PlayState playState;
 
@@ -136,19 +136,28 @@ public class PlayManager : MonoBehaviour
         }
     }
 
+    void FillNextBag()
+    {
+        if (nextBag.Count <= piecePrefabs.Length)
+        {
+            //fill a LENGTH long blocks
+            
+        }
 
+    }
     void FillNextPiece()
     {
         this.nextPieces.Enqueue((int)(RD.NextDouble() * piecePrefabs.GetLength(0)));
 
         this.selectedPrefab = piecePrefabs[this.nextPieces.Peek()];
         this.selectedData = pieceDatas[this.nextPieces.Peek()];
-        
+
         UpdatePreview();
-        
+
     }
 
-    public void UpdatePreview(){
+    public void UpdatePreview()
+    {
         // TODO update preview
         // selectedPrefab
         uiCameraController.SetInstance(this.selectedPrefab);
