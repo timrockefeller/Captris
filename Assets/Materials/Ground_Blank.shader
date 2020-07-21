@@ -63,7 +63,7 @@
                 
                 fixed4 col = _BackColor;
 				fixed4 mask = _Color;
-                mask *= sin(saturate((i.vertex.y)+_Time.z))*0.5;
+                mask *= pow(saturate(sin( 0.0005 * (0.5*i.vertex.x - i.vertex.y) +  _Time.z / 2)),100) * 0.3 + 0.2;
 				col += saturate(step(i.uv.x, _Width) + step(1 - _Width, i.uv.x) + step(i.uv.y, _Width) + step(1 - _Width, i.uv.y)) * mask;
                 
                 // apply fog
