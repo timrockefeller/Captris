@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
         speed += acc * Vector3.Normalize(force) * Time.deltaTime;
         if (!onGround)
         {
-            speedY += -1 * acc * Time.deltaTime;
+            speedY += -1 * 3 * Time.deltaTime;
             speedY = Mathf.Clamp(speedY, -maxSpeed, 2 * maxSpeed);
         }
         else
