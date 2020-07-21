@@ -152,7 +152,7 @@ public class PlayManager : MonoBehaviour
                 int rndnum = (int)(RD.NextDouble() * i);
                 int tmp = cps[i];
                 cps[i] = cps[rndnum];
-                cps[rndnum] = cps[i];
+                cps[rndnum] = tmp;
             }
             for (int i = 0; i <piecePrefabs.Length; i++)
             {
