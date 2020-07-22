@@ -6,11 +6,11 @@ public class CameraController : MonoBehaviour
 {
     public float cameraSpeed = 0.02f;
     public Vector3 target;
-
+    
     // Start is called before the first frame update
     void Start()
     {
-
+        target = new Vector3(15,0.5f,15);
     }
 
     // Update is called once per frame

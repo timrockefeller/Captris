@@ -1077,13 +1077,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.5209586, y: -0.2593379, z: 0.18643732, w: 0.7915726}
   m_LocalPosition: {x: -106.21633, y: 108.12167, z: -66.67189}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 806334829}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 67.14, y: -33.836002, z: 3.6820002}
 --- !u!1 &806334828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,7 +1580,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228095187}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.024473, y: -7.4243064, z: 5.6983175}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1601,6 +1601,8 @@ MonoBehaviour:
   pGround: {fileID: 1758639344}
   iSeed: 1955
   size: 32
+  playerPrefab: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1,
+    type: 3}
 --- !u!1 &1232233484 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2531307658704691122, guid: 78a1746d94022ec47b0c0e0fa5f50a23,
@@ -2170,8 +2172,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -148, y: -41}
-  m_SizeDelta: {x: 219.81, y: 30}
+  m_AnchoredPosition: {x: -211.4, y: -76.5}
+  m_SizeDelta: {x: 369.83, y: 99.19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1817593593
 MonoBehaviour:
@@ -2205,7 +2207,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Right Click to navigate
+  m_Text: '- Right click to navigate
+
+    - Only can place near your blocks.'
 --- !u!222 &1817593594
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2982,6 +2986,11 @@ PrefabInstance:
       propertyPath: pieceParent
       value: 
       objectReference: {fileID: 651200755}
+    - target: {fileID: 1229564031, guid: dad3d39d87e022a4db39785867c21754, type: 3}
+      propertyPath: MinePrefab
+      value: 
+      objectReference: {fileID: 5626118780950487663, guid: c78d856ba60a2c846a662a5c8fb7be44,
+        type: 3}
     - target: {fileID: 4315965567126696440, guid: dad3d39d87e022a4db39785867c21754,
         type: 3}
       propertyPath: m_IsTrigger

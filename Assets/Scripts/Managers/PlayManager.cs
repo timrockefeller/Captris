@@ -72,11 +72,6 @@ public class PlayManager : MonoBehaviour
             {
                 if (slectingCanPlace)
                 {
-                    if (pieceCount == 0)
-                    {
-                        //generate player
-                        Instantiate(playerPrefab, selectingPosition + new Vector3(0.5f, 5, 0.5f), Quaternion.identity);
-                    }
                     foreach (Vector3Int occ in this.selectedData.GetOccupy())
                     {
                         TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
@@ -162,11 +157,12 @@ public class PlayManager : MonoBehaviour
             }
 
             slectingCanPlace = true;
+
+            // whether on save alttitude 
             foreach (Vector3Int occ in this.selectedData.GetOccupy())
             {
                 TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
-                if (targetTerrain == null || (targetTerrain.type != UnitType.Empty
-                || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y))
+                if (targetTerrain == null || targetTerrain.type!= UnitType.Empty || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y)
                 {
                     slectingCanPlace = false;
                     break;
@@ -175,26 +171,23 @@ public class PlayManager : MonoBehaviour
 
             if (slectingCanPlace)
             {
-                // is first one (TODO :spawn point)
-                if (pieceCount != 0)
+                // is first one 
+                // 检查周边有无已放置
+                // targetTerrain
+                bool hasNeibour = false;
+                foreach (Vector3Int occ in this.selectedData.GetOccupy())
                 {
-                    // 检查周边有无已放置
-                    // targetTerrain
-                    bool hasNeibour = false;
-                    foreach (Vector3Int occ in this.selectedData.GetOccupy())
+                    TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
+                    if (targetTerrain != null && worldManager.HasNeibour(selectingPosition.x + occ.x, selectingPosition.z + occ.z))
                     {
-                        TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
-                        if (targetTerrain && worldManager.HasNeibour(selectingPosition.x + occ.x, selectingPosition.z + occ.z))
-                        {
-                            hasNeibour = true;
-                            break;
-                        }
+                        hasNeibour = true;
+                        break;
                     }
-                    if (!hasNeibour)
-                        slectingCanPlace = false;
                 }
+                if (!hasNeibour)
+                    slectingCanPlace = false;
             }
-
+            // 染色
             for (int i = 0; i < previewInstance.transform.childCount; i++)
             {
                 Material mt = previewInstance.transform.GetChild(i).GetComponent<MeshRenderer>().material;

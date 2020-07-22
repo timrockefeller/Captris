@@ -19,7 +19,9 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     public TerrainUnit[,] map;
     public int size = 32;
-
+    
+    [Header("Generate Prefabs")]
+    public GameObject playerPrefab;
     private float _seedX;
     private float _seedZ;
 
@@ -43,6 +45,7 @@ public class WorldManager : MonoBehaviour
         _seedX = (float)(RD.NextDouble() * 100.0);
         _seedZ = (float)(RD.NextDouble() * 100.0);
 
+        // generate world
         for (int x = 0; x < size; x++)
         {
             for (int z = 0; z < size; z++)
@@ -60,7 +63,20 @@ public class WorldManager : MonoBehaviour
             }
         }
 
+        // generate Mines
+        //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
+        //  Poisson Disk Distribution
+        PoissonDiscSampler sampler = new PoissonDiscSampler(size, size, 10f);
+        foreach (Vector2 sample in sampler.Samples())
+        {
+            // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
+            map[(int)sample.x,(int)sample.y].SetType(UnitType.Mine);
+        }
 
+        // generate spawn point & player
+        map[15,15].SetType(UnitType.Spawn);
+        Debug.Log((int)map[15,15].type);
+        Instantiate(playerPrefab, new Vector3(15.5f, 15, 15.5f), Quaternion.identity);
     }
 
     public bool HasNeibour(int x, int y)
@@ -69,7 +85,7 @@ public class WorldManager : MonoBehaviour
         {
             if (_4direction[i, 0] + x < 0 || _4direction[i, 0] + x >= size
              || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size) continue;
-            if (map[_4direction[i, 0] + x, _4direction[i, 1] + y].type != UnitType.Empty)
+            if (TerrainUnit.IsManualType( map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))
                 return true;
         }
         return false;

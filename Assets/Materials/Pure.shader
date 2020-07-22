@@ -5,7 +5,6 @@ Shader "Unlit/Pure"
     Properties
     {
         _Color("Color", color) = (1,1,1,1)
-
         _RimRang("Rim Range",range(0,1)) = 0.1
 
         _FaceupFilter("Face-up Filter",range(0,1)) = 1
@@ -15,6 +14,7 @@ Shader "Unlit/Pure"
     {
         Tags { "RenderType"="Opaque" "Queue"="Transparent" }
         LOD 100
+
         Pass
         {
             Cull Off
@@ -67,20 +67,20 @@ Shader "Unlit/Pure"
 
             ENDCG
         }
-        
-        
         Pass
         {
-            Tags {"Queue"="Transparent"}
+            Tags {"Queue"="Transparent" }
+            Lighting Off
             blend srcalpha oneminussrcalpha
             CGPROGRAM
+            #pragma multi_compile_fwdbase
             #pragma vertex vert
             #pragma fragment frag
             // make fog work
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-
+            #include "AutoLight.cginc"
             struct appdata
             { 
                 float4 vertex : POSITION;
@@ -107,6 +107,8 @@ Shader "Unlit/Pure"
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.normal = v.normal;
                 UNITY_TRANSFER_FOG(o,o.vertex);
+
+                
                 return o;
             }
 
@@ -119,7 +121,37 @@ Shader "Unlit/Pure"
                 col.a = saturate(saturate(i.normal.y) + (_FaceupFilter )) * _GOpacity;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
+               
                 return col;
+            }
+            ENDCG
+        }
+        Pass
+        {
+            Name "CastShadow"
+            Tags { "LightMode" = "ShadowCaster" }
+   
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_shadowcaster
+            #include "UnityCG.cginc"
+   
+            struct v2f
+            {
+                V2F_SHADOW_CASTER;
+            };
+   
+            v2f vert( appdata_base v )
+            {
+                v2f o;
+                TRANSFER_SHADOW_CASTER(o)
+                return o;
+            }
+   
+            float4 frag( v2f i ) : COLOR
+            {
+                SHADOW_CASTER_FRAGMENT(i)
             }
             ENDCG
         }

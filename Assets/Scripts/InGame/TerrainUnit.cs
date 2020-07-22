@@ -5,16 +5,36 @@ using UnityEngine;
 
 public enum UnitType
 {
-    Empty,
-    Grass,
-    Factor,
-    Defend,
-    House,
+    Empty = 0,
+    // Nanual
+    Grass = 101,
+    Factor = 102,
+    Defend = 103,
+    House = 104,
+    Spawn = 110,
+    // Generated
+    Mine = 201,
+    Tower = 202,
+    Portal = 203
 }
 
 
 public class TerrainUnit : MonoBehaviour
 {
+    /// <summary>
+    /// 是否玩家放置方块（供连续判断）
+    /// </summary>
+    public static bool IsManualType(UnitType t)
+    {
+        int i = (int )t;
+        // if(i !=0 ){
+            // Debug.Log(i);
+        // }
+        if (i > 100 && i < 200)
+            return true;
+        return false;
+    }
+
     public static Color GetColorByType(UnitType t)
     {
         switch (t)
@@ -27,25 +47,38 @@ public class TerrainUnit : MonoBehaviour
                 return new Color(44 / 255.0f, 118 / 255.0f, 179 / 255.0f);
             case UnitType.House://175, 86, 130
                 return new Color(175 / 255.0f, 86 / 255.0f, 130 / 255.0f);
-            default:
+            case UnitType.Spawn://101, 103, 101
+                return new Color(101 / 255.0f, 103 / 255.0f, 101 / 255.0f);
+            case UnitType.Empty:
                 return Color.red;
+            case UnitType.Mine:// KIKYO 986D9C
+                return new Color(0x98 / 255.0f, 0x6D / 255.0f, 0x9c / 255.0f);
+            default:
+                return Color.white;
         }
     }
     public Vector3Int position;
     private GameObject pieceInstance;
     public GameObject piecePrefab;
-    
+
     public GameObject pieceParent;
     public UnitType type;
-    
-    // references
+
+    [Header("References")]
+    public GameObject MinePrefab;
+
+
+    /// <summary>
+    /// 若有额外元件则添加至此
+    /// </summary>
+    private GameObject subInstance;
 
     private PlayManager playManager;
     public bool SetType(UnitType t)
     {
-        if (this.type != UnitType.Empty || pieceInstance != null)
+        if (this.type != UnitType.Empty && pieceInstance != null || t == UnitType.Empty)
         {
-            return false;
+            Destroy(pieceInstance);
         }
         // Debug.Log("Placed");
         this.type = t;
@@ -53,16 +86,28 @@ public class TerrainUnit : MonoBehaviour
         this.pieceInstance.transform.SetParent(this.pieceParent.transform);
         this.pieceInstance.GetComponent<MeshRenderer>().material.SetColor("_Color", TerrainUnit.GetColorByType(this.type));
 
+        // default placements
+        switch (t)
+        {
+            case UnitType.Mine:
+                subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
+                break;
+            default:
+                break;
+        }
+
+
         return true;
 
     }
     void Start()
     {
-        type = UnitType.Empty;
+        // if(!type) type = UnitType.Empty;
         this.playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
     }
 
-    private void OnMouseEnter() {
+    private void OnMouseEnter()
+    {
         playManager.UpdateSlectingPosition(this);
     }
 }
