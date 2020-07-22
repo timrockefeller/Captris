@@ -8,6 +8,9 @@ public class UICameraController : MonoBehaviour
 
 
     public float nextPieceTargetRotateSpeed = 0.02f;
+
+    [Header("Referrences")]
+    public GameObject previewPos;
     private Quaternion nextPieceTargetRotation;
     private int nextPieceTargetRotationCount = 0;
     void Start()
@@ -27,7 +30,7 @@ public class UICameraController : MonoBehaviour
         if (nextPieceInstance != null)
             Destroy(nextPieceInstance);
 
-        nextPieceInstance = Instantiate(nextPiecePrefab, transform.Find("PreviewPos").transform);
+        nextPieceInstance = Instantiate(nextPiecePrefab, previewPos.transform);
         nextPieceTargetRotation = nextPieceInstance.transform.rotation;
         nextPieceTargetRotationCount = 0;
         // nextPieceInstance

@@ -67,12 +67,19 @@ public class WorldManager : MonoBehaviour
     {
         for (int i = 0; i < _4direction.Length / 2; i++)
         {
-            if (_4direction[i, 0] + x < 0 && _4direction[i, 0] + x >= size
-             && _4direction[i, 1] + y < 0 && _4direction[i, 1] + y >= size) continue;
+            if (_4direction[i, 0] + x < 0 || _4direction[i, 0] + x >= size
+             || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size) continue;
             if (map[_4direction[i, 0] + x, _4direction[i, 1] + y].type != UnitType.Empty)
                 return true;
         }
         return false;
+    }
+
+    public TerrainUnit GetUnit(int x, int y)
+    {
+        if (x < 0 || x >= size
+            || y < 0 || y >= size) return null;
+        return map[x, y];
     }
 
 }

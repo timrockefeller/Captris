@@ -715,6 +715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextPieceInstance: {fileID: 0}
   nextPieceTargetRotateSpeed: 0.05
+  previewPos: {fileID: 1188451298}
 --- !u!1 &521626119
 GameObject:
   m_ObjectHideFlags: 0

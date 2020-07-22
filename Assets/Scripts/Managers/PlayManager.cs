@@ -79,8 +79,8 @@ public class PlayManager : MonoBehaviour
                     }
                     foreach (Vector3Int occ in this.selectedData.GetOccupy())
                     {
-                        TerrainUnit targetTerrain = worldManager.map[selectingPosition.x + occ.x, selectingPosition.z + occ.z];
-                        targetTerrain.SetType(this.selectedType);
+                        TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
+                        if (targetTerrain != null) targetTerrain.SetType(this.selectedType);
                     }
                     // end piece
                     pieceCount++;
@@ -157,16 +157,16 @@ public class PlayManager : MonoBehaviour
 
             if (previewInstance)
             { // update transform
-                previewInstance.transform.position = new Vector3(selectingPosition.x + 0.5f, selectingPosition.y / 2.0f + 0.2f, selectingPosition.z + 0.5f);// TODO +offsets
+                previewInstance.transform.position = new Vector3(selectingPosition.x + 0.5f, selectingPosition.y / 2.0f + 0.2f, selectingPosition.z + 0.5f);//  +offsets
                 previewInstance.transform.rotation = Quaternion.Euler(0, -90 * selectedData.rotate, 0) * Quaternion.identity;
             }
 
             slectingCanPlace = true;
             foreach (Vector3Int occ in this.selectedData.GetOccupy())
             {
-                TerrainUnit targetTerrain = worldManager.map[selectingPosition.x + occ.x, selectingPosition.z + occ.z];
-                if (targetTerrain.type != UnitType.Empty
-                || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y)
+                TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
+                if (targetTerrain == null || (targetTerrain.type != UnitType.Empty
+                || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y))
                 {
                     slectingCanPlace = false;
                     break;
@@ -183,8 +183,8 @@ public class PlayManager : MonoBehaviour
                     bool hasNeibour = false;
                     foreach (Vector3Int occ in this.selectedData.GetOccupy())
                     {
-                        TerrainUnit targetTerrain = worldManager.map[selectingPosition.x + occ.x, selectingPosition.z + occ.z];
-                        if (worldManager.HasNeibour(selectingPosition.x + occ.x, selectingPosition.z + occ.z))
+                        TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
+                        if (targetTerrain && worldManager.HasNeibour(selectingPosition.x + occ.x, selectingPosition.z + occ.z))
                         {
                             hasNeibour = true;
                             break;
@@ -225,7 +225,7 @@ public class PlayManager : MonoBehaviour
         playState = PlayState.ELECTED;
 
         if (previewInstance) Destroy(previewInstance);
-        previewInstance = Instantiate(this.selectedPrefab, selectingPosition, Quaternion.identity);// TODO +offsets
+        previewInstance = Instantiate(this.selectedPrefab, selectingPosition, Quaternion.identity);
 
     }
     /// <summary>
