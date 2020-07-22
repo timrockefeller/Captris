@@ -2,8 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class WorldManager : MonoBehaviour
 {
+
+    private static int[,] _4direction = new int[,] {
+        { 1, 0 },
+        { -1, 0 },
+        { 0, -1 },
+        { 0, 1 }
+    };
+
     public GameObject pGround;
     public int iSeed;
 
@@ -22,7 +31,7 @@ public class WorldManager : MonoBehaviour
     void Awake()
     {
         map = new TerrainUnit[this.size, this.size];
-        
+
         RD.SetSeed(iSeed);
 
         this.Generate();
@@ -43,7 +52,7 @@ public class WorldManager : MonoBehaviour
                 float noise = Mathf.PerlinNoise(xSample, zSample);
 
                 int y = (int)Mathf.Floor(_maxHeight * noise);
-                
+
                 GameObject ground = Instantiate(pGround, new Vector3(x + 0.5f, y / 2.0f - 0.5f, z + 0.5f), Quaternion.identity);
                 ground.transform.SetParent(transform);
                 this.map[x, z] = ground.GetComponent<TerrainUnit>();
@@ -54,5 +63,16 @@ public class WorldManager : MonoBehaviour
 
     }
 
+    public bool HasNeibour(int x, int y)
+    {
+        for (int i = 0; i < _4direction.Length / 2; i++)
+        {
+            if (_4direction[i, 0] + x < 0 && _4direction[i, 0] + x >= size
+             && _4direction[i, 1] + y < 0 && _4direction[i, 1] + y >= size) continue;
+            if (map[_4direction[i, 0] + x, _4direction[i, 1] + y].type != UnitType.Empty)
+                return true;
+        }
+        return false;
+    }
 
 }

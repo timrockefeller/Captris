@@ -21,7 +21,8 @@ public class PieceData : MonoBehaviour
         if (isClockwise) rotate = (rotate + 1) % 4;
         else rotate = (rotate + 3) % 4;
     }
-    public void ResetRotate(){
+    public void ResetRotate()
+    {
         rotate = 0;
     }
 
@@ -72,6 +73,18 @@ public class PieceData : MonoBehaviour
                 occupy.Insert(occupy.Count, new Vector3Int(1, 0, 0));
                 occupy.Insert(occupy.Count, new Vector3Int(0, 0, -1));
                 occupy.Insert(occupy.Count, new Vector3Int(2, 0, 0));
+                break;
+            case PieceType.Z:
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(1, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, -1));
+                occupy.Insert(occupy.Count, new Vector3Int(1, 0, 1));
+                break;
+            case PieceType.S:
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(1, 0, 0));
+                occupy.Insert(occupy.Count, new Vector3Int(0, 0, -1));
+                occupy.Insert(occupy.Count, new Vector3Int(-1, 0, -1));
                 break;
             default:
                 break;

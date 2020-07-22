@@ -105,7 +105,18 @@ public class PlayManager : MonoBehaviour
                             if (pieceCount != 0)
                             {
                                 // targetTerrain
-                                // canPlace = false;
+                                bool hasNeibour = false;
+                                foreach (Vector3Int occ in this.selectedData.GetOccupy())
+                                {
+                                    TerrainUnit targetTerrain = worldManager.map[t.x + occ.x, t.z + occ.z];
+                                    if (worldManager.HasNeibour(t.x + occ.x, t.z + occ.z))
+                                    {
+                                        hasNeibour = true;
+                                        break;
+                                    }
+                                }
+                                if (!hasNeibour)
+                                    canPlace = false;
                             }
                             else
                             {
@@ -154,7 +165,7 @@ public class PlayManager : MonoBehaviour
                 cps[i] = cps[rndnum];
                 cps[rndnum] = tmp;
             }
-            for (int i = 0; i <piecePrefabs.Length; i++)
+            for (int i = 0; i < piecePrefabs.Length; i++)
             {
                 nextBag.Enqueue(cps[i]);
             }
@@ -175,7 +186,7 @@ public class PlayManager : MonoBehaviour
 
     public void UpdatePreview()
     {
-        // TODO update preview
+        // update preview
         // selectedPrefab
         uiCameraController.SetInstance(this.selectedPrefab);
 
