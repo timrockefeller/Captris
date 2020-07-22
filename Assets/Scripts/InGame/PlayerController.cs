@@ -20,10 +20,10 @@ public class PlayerController : MonoBehaviour
         Vector3 force = new Vector3(0, 0, 0);
         // force += new Vector3(1, 0, -1) * Input.GetAxis("Horizontal");
         // force += new Vector3(1, 0, 1) * Input.GetAxis("Vertical");
-        if (Input.GetKey(KeyCode.W)) force += new Vector3(1, 0, 1);
-        if (Input.GetKey(KeyCode.S)) force -= new Vector3(1, 0, 1);
-        if (Input.GetKey(KeyCode.A)) force -= new Vector3(1, 0, -1);
-        if (Input.GetKey(KeyCode.D)) force += new Vector3(1, 0, -1);
+        if (Input.GetKey(KeyCode.W)) force += new Vector3(1, 0, 0);
+        if (Input.GetKey(KeyCode.S)) force -= new Vector3(1, 0, 0);
+        if (Input.GetKey(KeyCode.A)) force -= new Vector3(0, 0, -1);
+        if (Input.GetKey(KeyCode.D)) force += new Vector3(0, 0, -1);
         speed += acc * Vector3.Normalize(force) * Time.deltaTime;
         if (!onGround)
         {
