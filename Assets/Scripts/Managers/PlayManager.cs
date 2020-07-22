@@ -34,10 +34,15 @@ public class PlayManager : MonoBehaviour
     [Header("Prefabs")]
     public GameObject playerPrefab;
 
+    public GameObject previewInstance { get; private set; }
 
     private WorldManager worldManager;
     private UICameraController uiCameraController;
-    private uint pieceCount;
+    public uint pieceCount { get; private set; }
+
+
+    private Vector3Int selectingPosition;
+    private bool slectingCanPlace = false;
 
     void Start()
     {
@@ -63,85 +68,32 @@ public class PlayManager : MonoBehaviour
     {
         if (playState == PlayState.ELECTED)
         {
-            Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hitInfo = new RaycastHit();
-
-            // TODO show preview
-            // if (Physics.Raycast(_ray, out hitInfo))
-            // {
-            //     if (hitInfo.collider.tag == "Terrain")
-            //     {
-            //         Vector3Int t = new Vector3Int((int)hitInfo.transform.position.x, (int)hitInfo.transform.position.y, (int)hitInfo.transform.position.z);
-
-            //     }
-            // }
-
             if (Input.GetMouseButtonDown(0))
             {
-
-
-                if (Physics.Raycast(_ray, out hitInfo))
+                if (slectingCanPlace)
                 {
-                    if (hitInfo.collider.tag == "Terrain")
+                    if (pieceCount == 0)
                     {
-                        bool canPlace = true;
-                        Vector3Int t = new Vector3Int((int)hitInfo.transform.position.x, (int)hitInfo.transform.position.y, (int)hitInfo.transform.position.z);
-                        // check every block
-                        foreach (Vector3Int occ in this.selectedData.GetOccupy())
-                        {
-                            TerrainUnit targetTerrain = worldManager.map[t.x + occ.x, t.z + occ.z];
-                            if (targetTerrain.type != UnitType.Empty
-                            || targetTerrain.position.y != worldManager.map[t.x, t.z].position.y)
-                            {
-                                canPlace = false;
-                                break;
-                            }
-                        }
-
-                        if (canPlace)
-                        {
-                            // not first piece
-                            // TODO : 检查周边有无已放置 （除第一块）
-                            if (pieceCount != 0)
-                            {
-                                // targetTerrain
-                                bool hasNeibour = false;
-                                foreach (Vector3Int occ in this.selectedData.GetOccupy())
-                                {
-                                    TerrainUnit targetTerrain = worldManager.map[t.x + occ.x, t.z + occ.z];
-                                    if (worldManager.HasNeibour(t.x + occ.x, t.z + occ.z))
-                                    {
-                                        hasNeibour = true;
-                                        break;
-                                    }
-                                }
-                                if (!hasNeibour)
-                                    canPlace = false;
-                            }
-                            else
-                            {
-                                //generate player
-                                Instantiate(playerPrefab, t + new Vector3(0.5f, 5, 0.5f), Quaternion.identity);
-                            }
-                        }
-
-                        if (canPlace)
-                        {
-                            foreach (Vector3Int occ in this.selectedData.GetOccupy())
-                            {
-                                TerrainUnit targetTerrain = worldManager.map[t.x + occ.x, t.z + occ.z];
-                                targetTerrain.SetType(this.selectedType);
-                            }
-                            // end piece
-                            pieceCount++;
-                            this.selectedData.ResetRotate();
-                            this.nextPieces.Dequeue();
-                            this.playState = PlayState.SPECTING;
-                        }
+                        //generate player
+                        Instantiate(playerPrefab, selectingPosition + new Vector3(0.5f, 5, 0.5f), Quaternion.identity);
                     }
+                    foreach (Vector3Int occ in this.selectedData.GetOccupy())
+                    {
+                        TerrainUnit targetTerrain = worldManager.map[selectingPosition.x + occ.x, selectingPosition.z + occ.z];
+                        targetTerrain.SetType(this.selectedType);
+                    }
+                    // end piece
+                    pieceCount++;
+                    this.selectedData.ResetRotate();
+                    this.nextPieces.Dequeue();
+                    this.playState = PlayState.SPECTING;
+                    // hide preview
+                    if (previewInstance) Destroy(previewInstance);
                 }
             }
+            // show preview
         }
+
         if (nextPieces.Count < piecePrefabs.Length)
         {
             FillNextPiece();
@@ -192,12 +144,89 @@ public class PlayManager : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// 更新预览方块的位置，并计算可否放置
+    /// </summary>
+    /// <param name="unit"></param>
+    public void UpdateSlectingPosition(TerrainUnit unit)
+    {
+        if (playState == PlayState.ELECTED)
+        {
+            selectingPosition = unit.position;
+
+            if (previewInstance)
+            { // update transform
+                previewInstance.transform.position = new Vector3(selectingPosition.x + 0.5f, selectingPosition.y / 2.0f + 0.2f, selectingPosition.z + 0.5f);// TODO +offsets
+                previewInstance.transform.rotation = Quaternion.Euler(0, -90 * selectedData.rotate, 0) * Quaternion.identity;
+            }
+
+            slectingCanPlace = true;
+            foreach (Vector3Int occ in this.selectedData.GetOccupy())
+            {
+                TerrainUnit targetTerrain = worldManager.map[selectingPosition.x + occ.x, selectingPosition.z + occ.z];
+                if (targetTerrain.type != UnitType.Empty
+                || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y)
+                {
+                    slectingCanPlace = false;
+                    break;
+                }
+            }
+
+            if (slectingCanPlace)
+            {
+                // is first one (TODO :spawn point)
+                if (pieceCount != 0)
+                {
+                    // 检查周边有无已放置
+                    // targetTerrain
+                    bool hasNeibour = false;
+                    foreach (Vector3Int occ in this.selectedData.GetOccupy())
+                    {
+                        TerrainUnit targetTerrain = worldManager.map[selectingPosition.x + occ.x, selectingPosition.z + occ.z];
+                        if (worldManager.HasNeibour(selectingPosition.x + occ.x, selectingPosition.z + occ.z))
+                        {
+                            hasNeibour = true;
+                            break;
+                        }
+                    }
+                    if (!hasNeibour)
+                        slectingCanPlace = false;
+                }
+            }
+
+            for (int i = 0; i < previewInstance.transform.childCount; i++)
+            {
+                Material mt = previewInstance.transform.GetChild(i).GetComponent<MeshRenderer>().material;
+                mt.SetColor(
+                    "_Color",
+                    TerrainUnit.GetColorByType(
+                        (this.slectingCanPlace) ? this.selectedType : UnitType.Empty
+                    )
+                );
+                mt.SetFloat(
+                    "_GOpacity",
+                    0.5f
+                );
+                mt.SetFloat(
+                    "_RimRang",
+                    0
+                );
+            }
+        }
+    }
+
+
     /// <summary>
     /// 进入放置状态
     /// </summary>
     public void ButtonSelected()
     {
         playState = PlayState.ELECTED;
+
+        if (previewInstance) Destroy(previewInstance);
+        previewInstance = Instantiate(this.selectedPrefab, selectingPosition, Quaternion.identity);// TODO +offsets
+
     }
     /// <summary>
     ///  顺时针旋转
@@ -229,5 +258,6 @@ public class PlayManager : MonoBehaviour
 
             default: this.selectedType = UnitType.Grass; break;
         }
+        ButtonSelected();
     }
 }

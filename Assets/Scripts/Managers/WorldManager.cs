@@ -56,7 +56,7 @@ public class WorldManager : MonoBehaviour
                 GameObject ground = Instantiate(pGround, new Vector3(x + 0.5f, y / 2.0f - 0.5f, z + 0.5f), Quaternion.identity);
                 ground.transform.SetParent(transform);
                 this.map[x, z] = ground.GetComponent<TerrainUnit>();
-                this.map[x, z].position = new Vector3(x, y, z);
+                this.map[x, z].position = new Vector3Int(x, y, z);
             }
         }
 

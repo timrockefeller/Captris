@@ -6,55 +6,64 @@ Shader "Unlit/Pure"
     {
         _Color("Color", color) = (1,1,1,1)
 
-        _RimColor("Rim Color", Color) = (1,1,1,1)
         _RimRang("Rim Range",range(0,1)) = 0.1
 
         _FaceupFilter("Face-up Filter",range(0,1)) = 1
+        _GOpacity("Global Opacity" , range(0,1)) = 1
     }
     SubShader
     {
         Tags { "RenderType"="Opaque" "Queue"="Transparent" }
         LOD 100
-        
-        
-        
-
         Pass
         {
             Cull Off
 
-            Tags { "Queue" = "Geometry-1" }
-
+            Tags { "Queue" = "Transparent" }
+            blend srcalpha oneminussrcalpha
             CGPROGRAM
-
-            #include "UnityCG.cginc"
-
-            struct v2f
-            {
-                float4 vertex:POSITION;
-            };
-
-            float4 _Color;
-            float4 _RimColor;
-            float _RimRang;
-            v2f vert(appdata_base  v)
-            {
-                v2f o;
-                fixed4 vertex = v.vertex;
-                vertex.xyz += v.normal.xyz * _RimRang;
-                
-                o.vertex = UnityObjectToClipPos(vertex);    
-                // o.vertex.y = saturate(o.vertex.y);
-                return o;
-            }
-
-            fixed4 frag (v2f IN):COLOR
-            {    
-                return _Color;
-            }
 
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_fog
+            #include "UnityCG.cginc"
+
+            struct appdata
+            { 
+                float4 vertex : POSITION;
+                float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
+            };
+
+            struct v2f
+            {
+                UNITY_FOG_COORDS(1)
+                float4 vertex:POSITION;
+                float3 normal : NORMAL;
+            };
+
+            float4 _Color;
+            float _RimRang;
+            fixed _GOpacity;
+            v2f vert(appdata  v)
+            {
+                v2f o;
+                fixed4 vertex = v.vertex;
+                vertex.xz += v.normal.xz * _RimRang;
+                vertex.y = vertex.y/1.1;
+                o.vertex = UnityObjectToClipPos(vertex);
+                o.normal = v.normal;
+                UNITY_TRANSFER_FOG(o,o.vertex);
+                return o;
+            }
+
+            fixed4 frag (v2f i): SV_Target
+            {   
+                fixed4 col = _Color;
+                col.a = _GOpacity * saturate(abs(i.normal.x)+abs(i.normal.z));
+                UNITY_APPLY_FOG(i.fogCoord, col);
+                return col;
+            }
 
             ENDCG
         }
@@ -90,6 +99,7 @@ Shader "Unlit/Pure"
            
             fixed4 _Color;
             fixed _FaceupFilter;
+            fixed _GOpacity;
             v2f vert (appdata v)
             {
                 v2f o;
@@ -106,7 +116,7 @@ Shader "Unlit/Pure"
                 fixed4 col = _Color;
                 
                 // cut up-face
-                col.a = saturate(saturate(i.normal.y) + (_FaceupFilter ));
+                col.a = saturate(saturate(i.normal.y) + (_FaceupFilter )) * _GOpacity;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

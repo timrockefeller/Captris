@@ -28,15 +28,19 @@ public class TerrainUnit : MonoBehaviour
             case UnitType.House://175, 86, 130
                 return new Color(175 / 255.0f, 86 / 255.0f, 130 / 255.0f);
             default:
-                return Color.black;
+                return Color.red;
         }
     }
-    public Vector3 position;
+    public Vector3Int position;
     private GameObject pieceInstance;
     public GameObject piecePrefab;
-
+    
     public GameObject pieceParent;
     public UnitType type;
+    
+    // references
+
+    private PlayManager playManager;
     public bool SetType(UnitType t)
     {
         if (this.type != UnitType.Empty || pieceInstance != null)
@@ -55,6 +59,10 @@ public class TerrainUnit : MonoBehaviour
     void Start()
     {
         type = UnitType.Empty;
+        this.playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
     }
 
+    private void OnMouseEnter() {
+        playManager.UpdateSlectingPosition(this);
+    }
 }

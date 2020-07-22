@@ -13,8 +13,8 @@ public class PieceData : MonoBehaviour
     public List<Vector3Int> occupy;
 
     public PieceType pieceType;
-
-    private int rotate = 0;
+    [HideInInspector]
+    public int rotate { get; private set; } = 0;
 
     public void DoRotate(bool isClockwise)
     {
