@@ -191,9 +191,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedY: 0
-  maxSpeed: 3.5
+  maxSpeed: 2
   acc: 50
   drag: 20
+  mistCost: 0.2
 --- !u!136 &8723620301082940273
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -19,10 +19,9 @@ Shader "Unlit/Pure"
         
         
 
-
         Pass
         {
-            Cull Front
+            Cull Off
 
             Tags { "Queue" = "Geometry-1" }
 
@@ -35,7 +34,7 @@ Shader "Unlit/Pure"
                 float4 vertex:POSITION;
             };
 
-float4 _Color;
+            float4 _Color;
             float4 _RimColor;
             float _RimRang;
             v2f vert(appdata_base  v)
