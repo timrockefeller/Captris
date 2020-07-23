@@ -29,7 +29,9 @@ public class TiltShift : MonoBehaviour
 
     [Range(0.01f, 2f)]
     public float DistortionScale = 1f;
-
+    
+    [Range(0.01f, 2f)]
+    public float Saturation = 1f;
     public Shader Shader;
 
     protected Material m_Material;
@@ -58,7 +60,7 @@ public class TiltShift : MonoBehaviour
         //     enabled = false;
         //     return;
         // }
-        
+
         // Disable the image effect if the shader can't run on the users graphics card
         if (!Shader || !Shader.isSupported)
         {
@@ -89,6 +91,7 @@ public class TiltShift : MonoBehaviour
         Material.SetVector("_Gradient", new Vector3(Offset, Area, Spread));
         Material.SetVector("_Distortion", new Vector2(CubicDistortion, DistortionScale));
         Material.SetVector("_Params", new Vector4(Samples, Radius, 1f / source.width, 1f / source.height));
+        Material.SetFloat("_Saturation", Saturation);
         Graphics.Blit(source, destination, Material, Preview ? 0 : 1);
     }
 }

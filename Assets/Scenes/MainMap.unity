@@ -625,6 +625,7 @@ MonoBehaviour:
   cameraSpeed: 4
   followSpeed: 0.02
   target: {x: 0, y: 0, z: 0}
+  enableMotionControl: 0
 --- !u!1 &298995873
 GameObject:
   m_ObjectHideFlags: 0
@@ -2003,13 +2004,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Preview: 0
   Offset: 0
-  Area: 1.05
-  Spread: 1.94
-  Samples: 35
+  Area: 0.76
+  Spread: 1.95
+  Samples: 32
   Radius: 1.706
   UseDistortion: 1
   CubicDistortion: 3.92
   DistortionScale: 0.809
+  Saturation: 2
   Shader: {fileID: 4800000, guid: b5f0b2f847b6de646aba1eb036e9dc16, type: 3}
 --- !u!1 &1095736159
 GameObject:

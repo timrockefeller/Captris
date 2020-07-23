@@ -14,6 +14,7 @@ public class TiltShiftEditor : Editor
     SerializedProperty m_CubicDistortion;
     SerializedProperty m_DistortionScale;
     SerializedProperty m_Shader;
+    SerializedProperty m_Saturation;
     void OnEnable()
     {
         m_Preview = serializedObject.FindProperty("Preview");
@@ -26,6 +27,7 @@ public class TiltShiftEditor : Editor
         m_CubicDistortion = serializedObject.FindProperty("CubicDistortion");
         m_DistortionScale = serializedObject.FindProperty("DistortionScale");
         m_Shader = serializedObject.FindProperty("Shader");
+        m_Saturation = serializedObject.FindProperty("Saturation");
     }
 
     public override void OnInspectorGUI()
@@ -39,6 +41,7 @@ public class TiltShiftEditor : Editor
         EditorGUILayout.PropertyField(m_Samples);
         EditorGUILayout.PropertyField(m_Radius);
         EditorGUILayout.PropertyField(m_UseDistortion);
+        EditorGUILayout.PropertyField(m_Saturation);
         EditorGUILayout.PropertyField(m_Shader);
         if (m_UseDistortion.boolValue)
         {

@@ -19,6 +19,7 @@ Shader "Hidden/TiltShift"
 		half4 _GoldenRot;
 		half4 _Distortion;
 		half4 _Params;
+        half _Saturation;
 
 		#define Offset _Gradient.x
 		#define Area _Gradient.y
@@ -56,7 +57,8 @@ Shader "Hidden/TiltShift"
 			half4 divisor = 0.0;
 
 			half r = 1.0;
-			half2 angle = half2(0.0, Radius * saturate(gradient(i.uv)));
+            half r_gradient = saturate(gradient(i.uv));
+			half2 angle = half2(0.0, Radius * r_gradient);
 
 			for (int j = 0; j < Samples; j++)
 			{
@@ -66,8 +68,10 @@ Shader "Hidden/TiltShift"
 				accumulator += bokeh * bokeh;
 				divisor += bokeh;
 			}
-
-			return accumulator / divisor;
+			half4 col =  accumulator / divisor;
+            half gray = 0.2125 * col.r + 0.7154 * col.g + 0.0721 * col.b;
+            col.xyz = lerp(  half3(gray,gray,gray)   ,  col.xyz   , lerp(1.0, _Saturation, r_gradient));
+            return col;
 		}
 
 	ENDCG
