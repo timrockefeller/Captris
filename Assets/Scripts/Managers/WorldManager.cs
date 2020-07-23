@@ -100,6 +100,7 @@ public class WorldManager : MonoBehaviour
 
     public List<Vector3> GetRoundSameType(int x, int y)
     {
+        // TODO
         var rst =  new List<Vector3>();
         var queue = new Queue<Vector2>();
         bool [,]visited = new bool[size,size];

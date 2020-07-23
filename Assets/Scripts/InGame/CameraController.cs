@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float cameraSpeed = 0.02f;
+    public float cameraSpeed = 4f;
+    public float followSpeed = 0.02f;
     public Vector3 target;
     
     // Start is called before the first frame update
@@ -16,7 +17,11 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // Debug.Log(Input.mousePosition);
+        // if(Input.mousePosition.y > Screen.height*0.9f) target+=new Vector3(1,0,1)*Time.deltaTime*cameraSpeed;
+        // if(Input.mousePosition.y < Screen.height*0.1f) target-=new Vector3(1,0,1)*Time.deltaTime*cameraSpeed;
+        // if(Input.mousePosition.x > Screen.width*0.9f) target+=new Vector3(1,0,-1)*Time.deltaTime*cameraSpeed;
+        // if(Input.mousePosition.x < Screen.width*0.1f) target-=new Vector3(1,0,-1)*Time.deltaTime*cameraSpeed;
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -32,6 +37,6 @@ public class CameraController : MonoBehaviour
                 }
             }
         }
-        this.transform.position = Vector3.Lerp(this.transform.position, target, cameraSpeed);
+        this.transform.position = Vector3.Lerp(this.transform.position, target, followSpeed);
     }
 }
