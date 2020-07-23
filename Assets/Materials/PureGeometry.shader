@@ -36,6 +36,7 @@ Shader "Unlit/PureWalkable"
                 uniform half4 _MainTex_ST;
                 // fixed _Width;
                 struct V2f {
+                    half3 normal : NORMAL;
                     half4 pos : SV_POSITION;
                     half2 uv : TEXCOORD0;
                     SHADOW_COORDS(1)
@@ -46,7 +47,7 @@ Shader "Unlit/PureWalkable"
                     V2f o;
                     o.pos = UnityObjectToClipPos(v.vertex);
                     o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
-
+                    o.normal = v.normal;
                     TRANSFER_SHADOW(o);
 
                     return o;
@@ -55,7 +56,11 @@ Shader "Unlit/PureWalkable"
                 half4 Frag(V2f i) : SV_Target
                 {
                     half4 tex = tex2D(_MainTex, i.uv) * _Color;
-                    // fixed mask =  1-saturate(step(i.uv.x, _Width) + step(1 - _Width, i.uv.x) + step(i.uv.y, _Width) + step(1 - _Width, i.uv.y));
+                    
+                    // TODO 优化if
+                    // if(i.normal.y<0) discard;
+
+
 				
                     return tex * (step(0.7,SHADOW_ATTENUATION(i))*0.5+0.5);
                 }
