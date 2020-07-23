@@ -52,6 +52,7 @@ public class PlayManager : MonoBehaviour
     public GameObject previewInstance { get; private set; }
 
     private WorldManager worldManager;
+    private HUDManager hudManager;
     private UICameraController uiCameraController;
     public uint pieceCount { get; private set; }
 
@@ -76,6 +77,7 @@ public class PlayManager : MonoBehaviour
         playState = PlayState.SPECTING;
 
         worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
+        hudManager = GameObject.Find("HUDManager").GetComponent<HUDManager>();
         GameObject uicam = GameObject.Find("UICam");
         uicam.SetActive(false);
         uicam.SetActive(true);
@@ -113,7 +115,7 @@ public class PlayManager : MonoBehaviour
 
     IEnumerator SpawnPiece()
     {
-
+        hudManager.Placed(this.selectedType);
         foreach (Vector3Int occ in this.selectedData.GetOccupy())
         {
             TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
