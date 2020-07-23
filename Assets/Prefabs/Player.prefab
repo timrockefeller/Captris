@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedY: 0
-  maxSpeed: 2
+  maxSpeed: 2.9
   acc: 50
   drag: 20
   mistCost: 0.2

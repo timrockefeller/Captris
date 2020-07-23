@@ -6,7 +6,7 @@ public class RandomMountain : MonoBehaviour
 
     void Start()
     {
-        RD.SetSeed(123);
+        RD.SetSeed((int)(Random.value*10000));
         Vector3[] newVertices = new Vector3[64];
         Vector2[] newUV = new Vector2[64];
 

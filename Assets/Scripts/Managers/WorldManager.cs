@@ -19,7 +19,7 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     public TerrainUnit[,] map;
     public int size = 32;
-    
+
     [Header("Generate Prefabs")]
     public GameObject playerPrefab;
     private float _seedX;
@@ -63,19 +63,18 @@ public class WorldManager : MonoBehaviour
             }
         }
 
-        // generate Mines
+        /// generate Mines
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
         //  Poisson Disk Distribution
         PoissonDiscSampler sampler = new PoissonDiscSampler(size, size, 10f);
         foreach (Vector2 sample in sampler.Samples())
         {
             // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
-            map[(int)sample.x,(int)sample.y].SetType(UnitType.Mine);
+            map[(int)sample.x, (int)sample.y].SetType(UnitType.Mine);
         }
 
         // generate spawn point & player
-        map[15,15].SetType(UnitType.Spawn);
-        Debug.Log((int)map[15,15].type);
+        map[15, 15].SetType(UnitType.Spawn);
         Instantiate(playerPrefab, new Vector3(15.5f, 15, 15.5f), Quaternion.identity);
     }
 
@@ -85,7 +84,7 @@ public class WorldManager : MonoBehaviour
         {
             if (_4direction[i, 0] + x < 0 || _4direction[i, 0] + x >= size
              || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size) continue;
-            if (TerrainUnit.IsManualType( map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))
+            if (TerrainUnit.IsManualType(map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))
                 return true;
         }
         return false;
@@ -96,6 +95,15 @@ public class WorldManager : MonoBehaviour
         if (x < 0 || x >= size
             || y < 0 || y >= size) return null;
         return map[x, y];
+    }
+
+
+    public List<Vector3> GetRoundSameType(int x, int y)
+    {
+        var rst =  new List<Vector3>();
+        var queue = new Queue<Vector2>();
+        bool [,]visited = new bool[size,size];
+        return rst;
     }
 
 }

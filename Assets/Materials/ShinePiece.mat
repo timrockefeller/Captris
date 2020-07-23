@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PureMine
-  m_Shader: {fileID: 4800000, guid: 64d8c04410c6b664eba9f4104fa0584f, type: 3}
+  m_Name: ShinePiece
+  m_Shader: {fileID: 4800000, guid: f3c852cf482fdf94a94f43338f852e30, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -60,7 +60,6 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _GOpacity: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -72,8 +71,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _Width: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.5239965, g: 0.372864, b: 0.5377358, a: 1}
+    - _Color: {r: 0.29739234, g: 0.38679248, b: 0.3630338, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
