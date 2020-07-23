@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            // rigidbodyComponent.velocity -= new Vector3(0, rigidbodyComponent.velocity.y, 0);
             speedY = 0;
             if (Input.GetButton("Jump"))
             {

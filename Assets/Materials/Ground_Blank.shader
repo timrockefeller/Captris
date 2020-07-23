@@ -30,6 +30,7 @@
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct v2f
@@ -37,6 +38,7 @@
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
+                float3 normal : NORMAL;
             };
 
             sampler2D _MainTex;
@@ -52,6 +54,7 @@
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.normal = v.normal;
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -63,9 +66,14 @@
                 
                 fixed4 col = _BackColor;
 				fixed4 mask = _Color;
-                mask *= pow(saturate(sin( 0.0005 * (0.5*i.vertex.x - i.vertex.y) +  _Time.z / 2)),100) * 0.3 + 0.2;
+                mask *= pow(saturate(sin( 0.0005 * (0.5*i.vertex.x - i.vertex.y) +  _Time.z / 2)),100) * 0.3+0.2;
+                
+                
 				col += saturate(step(i.uv.x, _Width) + step(1 - _Width, i.uv.x) + step(i.uv.y, _Width) + step(1 - _Width, i.uv.y)) * mask;
                 
+                fixed normalcut = step (abs(i.normal.y),0)*0.03;
+                col += _Color * normalcut;
+
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;

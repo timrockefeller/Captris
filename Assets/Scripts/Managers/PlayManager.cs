@@ -72,15 +72,8 @@ public class PlayManager : MonoBehaviour
             {
                 if (slectingCanPlace)
                 {
-                    foreach (Vector3Int occ in this.selectedData.GetOccupy())
-                    {
-                        TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
-                        if (targetTerrain != null) targetTerrain.SetType(this.selectedType);
-                    }
-                    // end piece
-                    pieceCount++;
-                    this.selectedData.ResetRotate();
-                    this.nextPieces.Dequeue();
+                    StartCoroutine("SpawnPiece");
+                    
                     this.playState = PlayState.SPECTING;
                     // hide preview
                     if (previewInstance) Destroy(previewInstance);
@@ -89,12 +82,36 @@ public class PlayManager : MonoBehaviour
             // show preview
         }
 
+        if (playState == PlayState.SPECTING)
+        {
+
+        }
+
         if (nextPieces.Count < piecePrefabs.Length)
         {
             FillNextPiece();
         }
     }
 
+    IEnumerator SpawnPiece()
+    {
+
+        foreach (Vector3Int occ in this.selectedData.GetOccupy())
+        {
+            TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
+            if (targetTerrain != null) targetTerrain.SetType(this.selectedType); else continue;
+            yield return new WaitForSeconds(0.1f);
+        }
+        // end piece
+        pieceCount++;
+        this.selectedData.ResetRotate();
+        this.nextPieces.Dequeue();
+    }
+
+    /// <summary>
+    /// 7-Bag Algorithm
+    /// https://tetris.fandom.com/wiki/Random_Generator
+    /// </summary>
     void FillNextBag()
     {
         if (nextBag.Count <= piecePrefabs.Length)
@@ -119,6 +136,10 @@ public class PlayManager : MonoBehaviour
         }
 
     }
+
+    /// <summary>
+    /// 补充队列
+    /// </summary>
     void FillNextPiece()
     {
         FillNextBag();
@@ -141,7 +162,7 @@ public class PlayManager : MonoBehaviour
 
 
     /// <summary>
-    /// 更新预览方块的位置，并计算可否放置
+    /// 更新预览方块的位置，并计算可否放置(this.slectingCanPlace)
     /// </summary>
     /// <param name="unit"></param>
     public void UpdateSlectingPosition(TerrainUnit unit)
@@ -162,7 +183,7 @@ public class PlayManager : MonoBehaviour
             foreach (Vector3Int occ in this.selectedData.GetOccupy())
             {
                 TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
-                if (targetTerrain == null || targetTerrain.type!= UnitType.Empty || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y)
+                if (targetTerrain == null || targetTerrain.type != UnitType.Empty || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y)
                 {
                     slectingCanPlace = false;
                     break;
