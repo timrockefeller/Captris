@@ -3,13 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// 玩家状态
+/// </summary>
 public enum PlayState
 {
     SPECTING,
     ELECTED,
 }
+
+/// <summary>
+/// 游戏进程
+/// </summary>
+public enum ProcessState
+{
+    DAYTIME,
+    NIGHT
+}
+
 public class PlayManager : MonoBehaviour
 {
+
+    // Placing
     [HideInInspector]
     public Queue<int> nextPieces;
     private Queue<int> nextBag;
@@ -24,7 +39,7 @@ public class PlayManager : MonoBehaviour
     private PieceData[] pieceDatas;
 
 
-
+    // Previews
 
     [Header("Select Preview")]
     public GameObject selectedPrefab;
@@ -43,6 +58,9 @@ public class PlayManager : MonoBehaviour
 
     private Vector3Int selectingPosition;
     private bool slectingCanPlace = false;
+
+    // Game Process
+    public ProcessState processState { get; private set; }
 
     void Start()
     {
@@ -73,7 +91,7 @@ public class PlayManager : MonoBehaviour
                 if (slectingCanPlace)
                 {
                     StartCoroutine("SpawnPiece");
-                    
+
                     this.playState = PlayState.SPECTING;
                     // hide preview
                     if (previewInstance) Destroy(previewInstance);
@@ -265,10 +283,11 @@ public class PlayManager : MonoBehaviour
     {
         switch (t)
         {
+            
+            case "Road": this.selectedType = UnitType.Road; break;
             case "Grass": this.selectedType = UnitType.Grass; break;
             case "Factor": this.selectedType = UnitType.Factor; break;
             case "Defend": this.selectedType = UnitType.Defend; break;
-            case "House": this.selectedType = UnitType.House; break;
 
             default: this.selectedType = UnitType.Grass; break;
         }

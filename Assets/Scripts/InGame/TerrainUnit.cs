@@ -7,10 +7,10 @@ public enum UnitType
 {
     Empty = 0,
     // Nanual
+    Road = 100,
     Grass = 101,
     Factor = 102,
     Defend = 103,
-    House = 104,
     Spawn = 110,
     // Generated
     Mine = 201,
@@ -26,11 +26,11 @@ public class TerrainUnit : MonoBehaviour
     /// </summary>
     public static bool IsManualType(UnitType t)
     {
-        int i = (int )t;
+        int i = (int)t;
         // if(i !=0 ){
-            // Debug.Log(i);
+        // Debug.Log(i);
         // }
-        if (i > 100 && i < 200)
+        if (i >= 100 && i < 200)
             return true;
         return false;
     }
@@ -39,18 +39,21 @@ public class TerrainUnit : MonoBehaviour
     {
         switch (t)
         {
+            case UnitType.Empty:
+                return Color.red;
+
+            case UnitType.Road://130, 100, 89
+                return new Color(130 / 255.0f, 100 / 255.0f, 89 / 255.0f);
             case UnitType.Grass://124, 168, 44
                 return new Color(124 / 255.0f, 168 / 255.0f, 44 / 255.0f);
             case UnitType.Factor://222, 162, 30
                 return new Color(222 / 255.0f, 162 / 255.0f, 30 / 255.0f);
             case UnitType.Defend://44, 118, 179
                 return new Color(44 / 255.0f, 118 / 255.0f, 179 / 255.0f);
-            case UnitType.House://175, 86, 130
-                return new Color(175 / 255.0f, 86 / 255.0f, 130 / 255.0f);
             case UnitType.Spawn://101, 103, 101
                 return new Color(101 / 255.0f, 103 / 255.0f, 101 / 255.0f);
-            case UnitType.Empty:
-                return Color.red;
+
+
             case UnitType.Mine:// KIKYO 986D9C
                 return new Color(0x98 / 255.0f, 0x6D / 255.0f, 0x9c / 255.0f);
             default:
@@ -105,6 +108,14 @@ public class TerrainUnit : MonoBehaviour
         // if(!type) type = UnitType.Empty;
         this.playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
     }
+
+    void LateUpdate()
+    {
+
+
+    }
+
+
 
     private void OnMouseEnter()
     {
