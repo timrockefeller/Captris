@@ -166,8 +166,6 @@ public class TerrainUnit : MonoBehaviour
             default:
                 break;
         }
-
-
         return true;
 
     }

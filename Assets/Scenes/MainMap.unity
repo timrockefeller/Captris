@@ -7276,11 +7276,11 @@ MonoBehaviour:
     resourceNeeded: 000000000000000000000000
   resourceConfig:
   - type: 0
-    initialNumber: 10
+    initialNumber: 5119
   - type: 1
-    initialNumber: 5
+    initialNumber: 2061
   - type: 2
-    initialNumber: 5
+    initialNumber: 3249
 --- !u!1 &1349087909
 GameObject:
   m_ObjectHideFlags: 0
