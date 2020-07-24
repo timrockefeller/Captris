@@ -90,12 +90,32 @@ public class TerrainUnit : MonoBehaviour
     public float localPeriod;// total time
     public UnitBuffType localBuff = UnitBuffType.NONE;
     private Image progressFiller;
+    private Image progressBackground;
+
+    private bool _canProducing = false;
+    public bool canProducing
+    {
+        get
+        {
+            return _canProducing;
+        }
+        set
+        {
+            if (isProducer)
+            {
+                if (progressFiller) progressFiller.fillAmount = value ? 1 : 0;
+                if (progressBackground) progressBackground.fillAmount = value ? 1 : 0;
+                _canProducing = value;
+            }
+        }
+    }
+
 
     //////////////////////
     /// Use for prefabs
     [Header("References Prefabs")]
     public GameObject MinePrefab;
-
+    private GameObject subPrefab;
 
     /// (runtime)若有额外元件则添加至此
     private GameObject subInstance;
@@ -110,26 +130,39 @@ public class TerrainUnit : MonoBehaviour
             if (subInstance != null)
                 Destroy(subInstance);
         }
+        if (t == UnitType.Empty) return false;
 
         this.type = t;
         this.pieceInstance = Instantiate(piecePrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         this.pieceInstance.transform.SetParent(this.pieceParent.transform);
         this.pieceInstance.GetComponent<MeshRenderer>().material.SetColor("_Color", TerrainUnit.GetColorByType(this.type));
 
-        this.progressFiller = this.pieceInstance.transform.Find("Canvas").Find("Filler").GetComponent<Image>();
 
+        this.progressFiller = this.pieceInstance.transform.Find("Canvas").Find("Filler").GetComponent<Image>();
+        this.progressBackground = this.pieceInstance.transform.Find("Canvas").Find("Back").GetComponent<Image>();
         // produce handle
         this.isProducer = unitConfig.IsProducer(this.type);
-        if (this.isProducer) this.localPeriod = unitConfig.GetProducePeriod(this.type);
-
-        // default placements
+        if (this.isProducer)
+        {
+            this.localPeriod = unitConfig.GetProducePeriod(this.type);
+            this.subPrefab = unitConfig.GetProducePrefab(this.type);
+            this.canProducing = true;
+        }
+        else
+        {
+            this.canProducing = false;
+        }
+        // default Prefab
         switch (t)
         {
             case UnitType.Mine:
+                subPrefab = MinePrefab;
+                // static Instance
                 subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
                 // TODO: Random Generate Factor Range
                 localBuff = UnitBuffType.INCREASE_FACTORY;// spread it!
                 break;
+
             default:
                 break;
         }
@@ -147,20 +180,23 @@ public class TerrainUnit : MonoBehaviour
 
     private void Update()
     {
-        if (isProducer)
+        if (isProducer && canProducing)
         {
             progressFiller.fillAmount = localProgress / localPeriod;
+
         }
     }
 
     private void FixedUpdate()
     {
-        if (isProducer)
+        if (isProducer && canProducing)
         {
             if (localProgress > localPeriod)
             {
                 // Instantiate produce prefab
-
+                Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                localProgress -= localPeriod;
+                canProducing = false;
             }
             else
             {

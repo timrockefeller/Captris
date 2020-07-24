@@ -22,6 +22,7 @@ public class WorldManager : MonoBehaviour
 
     [Header("Generate Prefabs")]
     public GameObject playerPrefab;
+    public GameObject playerInstance;
     private float _seedX;
     private float _seedZ;
 
@@ -75,7 +76,7 @@ public class WorldManager : MonoBehaviour
 
         // generate spawn point & player
         map[15, 15].SetType(UnitType.Spawn);
-        Instantiate(playerPrefab, new Vector3(15.5f, 15, 15.5f), Quaternion.identity);
+        playerInstance = Instantiate(playerPrefab, new Vector3(15.5f, 15, 15.5f), Quaternion.identity);
     }
 
     public bool HasNeibour(int x, int y)

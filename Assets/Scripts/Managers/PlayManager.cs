@@ -26,14 +26,14 @@ public enum ProcessState
 /// </summary>
 public enum ResourceType
 {
-    GOLD,
-    FOOD,
-    METAL
+    GOLD = 0,
+    FOOD = 1,
+    METAL = 2
 }
 
 public class PlayManager : MonoBehaviour
 {
-
+    ////////////////////////
     // Placing
     [HideInInspector]
     public Queue<int> nextPieces;
@@ -48,7 +48,7 @@ public class PlayManager : MonoBehaviour
 
     private PieceData[] pieceDatas;
 
-
+    ////////////////////////
     // Previews
 
     [Header("Select Preview")]
@@ -63,6 +63,7 @@ public class PlayManager : MonoBehaviour
 
     private WorldManager worldManager;
     private HUDManager hudManager;
+    private TerrainUnitConfig unitConfig;
     private UICameraController uiCameraController;
     public uint pieceCount { get; private set; }
 
@@ -70,29 +71,55 @@ public class PlayManager : MonoBehaviour
     private Vector3Int selectingPosition;
     private bool slectingCanPlace = false;
 
+    ////////////////////////
     // Game Process
+
+    /// <summary>
+    /// 玩家持有的资源
+    /// </summary>
+    /// <value></value>
+    public Dictionary<ResourceType, int> playerResources;
+
     public ProcessState processState { get; private set; }
 
     void Start()
     {
-        pieceCount = 0;
-        selectedType = UnitType.Grass;
+        worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
+        hudManager = GameObject.Find("HUDManager").GetComponent<HUDManager>();
+        unitConfig = GameObject.Find("UnitConfig").GetComponent<TerrainUnitConfig>();
+
+        // init 
         this.pieceDatas = new PieceData[this.piecePrefabs.Length];
         for (var i = 0; i < this.piecePrefabs.Length; i++)
         {
             this.pieceDatas[i] = this.piecePrefabs[i].GetComponent<PieceData>();
         }
         nextPieces = new Queue<int>();
+
+        this.playerResources = new Dictionary<ResourceType, int>();
+        for (var i = 0; i < this.unitConfig.resourceConfig.Length; i++)
+        {
+            this.playerResources[unitConfig.resourceConfig[i].type] = unitConfig.resourceConfig[i].initialNumber;
+        }
+
+
+
+        // defines
         nextBag = new Queue<int>();
+        pieceCount = 0;
+        selectedType = UnitType.Grass;
         playState = PlayState.SPECTING;
 
-        worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
-        hudManager = GameObject.Find("HUDManager").GetComponent<HUDManager>();
+
         GameObject uicam = GameObject.Find("UICam");
         uicam.SetActive(false);
         uicam.SetActive(true);
         uiCameraController = uicam.GetComponent<UICameraController>();
+
+        hudManager.UpdateResource(playerResources);
     }
+
+
 
     void Update()
     {
@@ -260,6 +287,18 @@ public class PlayManager : MonoBehaviour
         }
     }
 
+    //获得资源（立即）
+    public void GainResource(ResourceType type)
+    {
+        // TODO resource list
+        if (!this.playerResources.ContainsKey(type))
+            this.playerResources.Add(type, 0);
+        this.playerResources[type]++;
+        worldManager.GetUnit((int)worldManager.playerInstance.transform.position.x, (int)worldManager.playerInstance.transform.position.z).canProducing = true;
+        hudManager.UpdateResource(playerResources);
+        // throw new System.NotImplementedException();
+    }
+
 
     /// <summary>
     /// 进入放置状态
@@ -295,7 +334,7 @@ public class PlayManager : MonoBehaviour
     {
         switch (t)
         {
-            
+
             case "Road": this.selectedType = UnitType.Road; break;
             case "Grass": this.selectedType = UnitType.Grass; break;
             case "Factor": this.selectedType = UnitType.Factor; break;

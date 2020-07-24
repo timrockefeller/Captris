@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class HUDManager : MonoBehaviour
@@ -34,6 +35,15 @@ public class HUDManager : MonoBehaviour
 
     public S_UnitType[] units;
 
+    [Serializable]
+    public struct S_ResourceType
+    {
+        public ResourceType type;
+        public GameObject text;
+        [HideInInspector]
+        public Text textCMP;
+    }
+    public S_ResourceType[] resources;
 
     /// <summary>
     /// 是否正在冷却中
@@ -72,6 +82,7 @@ public class HUDManager : MonoBehaviour
         }
         return false;
     }
+
     private bool SetEnable(int idx, bool e)
     {
         bool rsl = units[idx].enabled != e;
@@ -95,6 +106,10 @@ public class HUDManager : MonoBehaviour
             units[i].cooldownFillareaCMP = units[i].cooldownFillarea.GetComponent<Image>();
             units[i].cooldownFillarea.SetActive(false);
         }
+        for (var i = 0; i < resources.Length; i++)
+        {
+            resources[i].textCMP = resources[i].text.GetComponent<Text>();
+        }
     }
 
     private void FixedUpdate()
@@ -105,7 +120,8 @@ public class HUDManager : MonoBehaviour
             {
                 units[i].cooldownCurrent -= Time.fixedDeltaTime;
                 units[i].cooldownFillareaCMP.fillAmount = units[i].cooldownCurrent / units[i].cooldownTotal;
-                if(!IsCoolingdown(i)){
+                if (!IsCoolingdown(i))
+                {
                     units[i].cooldownFillarea.SetActive(false);
                 }
             }
@@ -122,6 +138,14 @@ public class HUDManager : MonoBehaviour
                 units[i].cooldownCurrent = units[i].cooldownTotal;
                 return;
             }
+        }
+    }
+
+    public void UpdateResource(Dictionary<ResourceType, int> res)
+    {
+        for (int i = 0; i < resources.Length; i++)
+        {
+            resources[i].textCMP.text = "" + (int)(res[resources[i].type]);
         }
     }
 
