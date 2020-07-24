@@ -59,9 +59,6 @@ Shader "Unlit/PureWalkable"
                     
                     // TODO 优化if
                     // if(i.normal.y<0) discard;
-
-
-				
                     return tex * (step(0.7,SHADOW_ATTENUATION(i))*0.5+0.5);
                 }
             ENDCG

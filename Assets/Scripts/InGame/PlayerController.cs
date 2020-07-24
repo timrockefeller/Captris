@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour
     private bool onGround = false;
     private bool onMist = false;
     private Rigidbody rigidbodyComponent;
+    private CameraController cameraController;
     void Start()
     {
         rigidbodyComponent = gameObject.GetComponent<Rigidbody>();
+        cameraController = GameObject.Find("CamPos").GetComponent<CameraController>();
     }
     void FixedUpdate()
     {
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) force -= new Vector3(1, 0, 0);
         if (Input.GetKey(KeyCode.A)) force -= new Vector3(0, 0, -1);
         if (Input.GetKey(KeyCode.D)) force += new Vector3(0, 0, -1);
+        if (speed.magnitude > 0) cameraController.SetTarget(transform.position);
         speed += acc * Vector3.Normalize(force) * Time.deltaTime * (onMist ? mistCost : 1);
         if (!onGround)
         {

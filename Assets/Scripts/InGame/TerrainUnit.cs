@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public enum UnitType
 {
@@ -18,21 +19,34 @@ public enum UnitType
     Portal = 203
 }
 
+public enum UnitBuffType
+{
+    NONE = 0,
+    INCREASE_FACTORY = 100,
+
+}
 
 public class TerrainUnit : MonoBehaviour
 {
+
+
     /// <summary>
     /// 是否玩家放置方块（供连续判断）
     /// </summary>
     public static bool IsManualType(UnitType t)
     {
         int i = (int)t;
-        // if(i !=0 ){
-        // Debug.Log(i);
-        // }
         if (i >= 100 && i < 200)
             return true;
         return false;
+    }
+
+    /// <summary>
+    /// 是否为生产方块（供渲染进度条）
+    /// </summary>
+    public static bool IsProduceType(UnitType t)
+    {
+        return t == UnitType.Grass || t == UnitType.Factor;
     }
 
     public static Color GetColorByType(UnitType t)
@@ -67,33 +81,54 @@ public class TerrainUnit : MonoBehaviour
     public GameObject pieceParent;
     public UnitType type;
 
-    [Header("References")]
+
+    //////////////////////
+    /// production module
+    [Header("Ingame Production")]
+    private bool isProducer = false;
+    public float localProgress;// current time
+    public float localPeriod;// total time
+    public UnitBuffType localBuff = UnitBuffType.NONE;
+    private Image progressFiller;
+
+    //////////////////////
+    /// Use for prefabs
+    [Header("References Prefabs")]
     public GameObject MinePrefab;
 
 
-    /// <summary>
-    /// 若有额外元件则添加至此
-    /// </summary>
+    /// (runtime)若有额外元件则添加至此
     private GameObject subInstance;
 
     private PlayManager playManager;
+    private TerrainUnitConfig unitConfig;
     public bool SetType(UnitType t)
     {
         if (this.type != UnitType.Empty && pieceInstance != null || t == UnitType.Empty)
         {
             Destroy(pieceInstance);
+            if (subInstance != null)
+                Destroy(subInstance);
         }
-        // Debug.Log("Placed");
+
         this.type = t;
         this.pieceInstance = Instantiate(piecePrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         this.pieceInstance.transform.SetParent(this.pieceParent.transform);
         this.pieceInstance.GetComponent<MeshRenderer>().material.SetColor("_Color", TerrainUnit.GetColorByType(this.type));
+
+        this.progressFiller = this.pieceInstance.transform.Find("Canvas").Find("Filler").GetComponent<Image>();
+
+        // produce handle
+        this.isProducer = unitConfig.IsProducer(this.type);
+        if (this.isProducer) this.localPeriod = unitConfig.GetProducePeriod(this.type);
 
         // default placements
         switch (t)
         {
             case UnitType.Mine:
                 subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
+                // TODO: Random Generate Factor Range
+                localBuff = UnitBuffType.INCREASE_FACTORY;// spread it!
                 break;
             default:
                 break;
@@ -103,18 +138,36 @@ public class TerrainUnit : MonoBehaviour
         return true;
 
     }
-    void Start()
+    void Awake()
     {
         // if(!type) type = UnitType.Empty;
         this.playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+        this.unitConfig = GameObject.Find("UnitConfig").GetComponent<TerrainUnitConfig>();
     }
 
-    void LateUpdate()
+    private void Update()
     {
-
-
+        if (isProducer)
+        {
+            progressFiller.fillAmount = localProgress / localPeriod;
+        }
     }
 
+    private void FixedUpdate()
+    {
+        if (isProducer)
+        {
+            if (localProgress > localPeriod)
+            {
+                // Instantiate produce prefab
+
+            }
+            else
+            {
+                localProgress += Time.fixedDeltaTime;
+            }
+        }
+    }
 
 
     private void OnMouseEnter()

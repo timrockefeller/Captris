@@ -21,6 +21,16 @@ public enum ProcessState
     NIGHT
 }
 
+/// <summary>
+/// 资源种类
+/// </summary>
+public enum ResourceType
+{
+    GOLD,
+    FOOD,
+    METAL
+}
+
 public class PlayManager : MonoBehaviour
 {
 

@@ -31,15 +31,16 @@ public class CameraController : MonoBehaviour
 
             RaycastHit hitInfo = new RaycastHit();
             if (Physics.Raycast(ray, out hitInfo))
-            {
                 //获取碰撞点的位置
                 if (hitInfo.collider.tag == "Terrain" || hitInfo.collider.tag == "Piece")
-                {
-                    target = hitInfo.point;
-                    target.y = 0.5f;
-                }
-            }
+                    SetTarget(hitInfo.point);
+
         }
         this.transform.position = Vector3.Lerp(this.transform.position, target, followSpeed);
+    }
+    public void SetTarget(Vector3 t)
+    {
+        target = t;
+        target.y = 0.5f;
     }
 }
