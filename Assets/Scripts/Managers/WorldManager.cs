@@ -67,7 +67,7 @@ public class WorldManager : MonoBehaviour
         /// generate Mines
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
         //  Poisson Disk Distribution
-        PoissonDiscSampler sampler = new PoissonDiscSampler(size, size, 10f);
+        PoissonDiscSampler sampler = new PoissonDiscSampler(size, size, 15f);
         foreach (Vector2 sample in sampler.Samples())
         {
             // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);

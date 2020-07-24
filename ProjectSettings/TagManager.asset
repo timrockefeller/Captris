@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Terrain
   - Piece
+  - Wall
   layers:
   - Default
   - TransparentFX
