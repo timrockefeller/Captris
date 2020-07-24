@@ -152,6 +152,11 @@ public class PlayManager : MonoBehaviour
 
     IEnumerator SpawnPiece()
     {
+        //update resource
+        for (int i = 0; i < unitConfig.GetConfig(this.selectedType).resourceNeeded.Length; i++)
+            this.playerResources[(ResourceType)i] -= unitConfig.GetConfig(this.selectedType).resourceNeeded[i];
+        hudManager.UpdateResource(playerResources);
+
         hudManager.Placed(this.selectedType);
         foreach (Vector3Int occ in this.selectedData.GetOccupy())
         {

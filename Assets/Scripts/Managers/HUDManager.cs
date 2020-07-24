@@ -20,7 +20,6 @@ public class HUDManager : MonoBehaviour
         public GameObject cooldownFillarea;
         public GameObject cooldownButton;
 
-
         /// Runtime
 
         [HideInInspector]
@@ -44,6 +43,13 @@ public class HUDManager : MonoBehaviour
         public Text textCMP;
     }
     public S_ResourceType[] resources;
+    private Dictionary<ResourceType, int> _res;
+    private TerrainUnitConfig unitConfig;
+
+    private void Awake()
+    {
+        unitConfig = GameObject.Find("UnitConfig").GetComponent<TerrainUnitConfig>();
+    }
 
     /// <summary>
     /// 是否正在冷却中
@@ -127,6 +133,25 @@ public class HUDManager : MonoBehaviour
             }
         }
     }
+
+    private void LateUpdate()
+    {
+        // update button
+        for (int i = 0; i < units.Length; i++)
+        {
+            bool enable = true;
+            for (int j = 0; j < unitConfig.GetConfig(units[i].type).resourceNeeded.Length; j++)
+            {
+                if (unitConfig.GetConfig(units[i].type).resourceNeeded[j] > _res[(ResourceType)j])
+                {
+                    enable = false; break;
+                }
+            }
+            SetEnable(i, enable);
+        }
+    }
+
+
     public void Placed(UnitType t)
     {
 
@@ -143,6 +168,8 @@ public class HUDManager : MonoBehaviour
 
     public void UpdateResource(Dictionary<ResourceType, int> res)
     {
+
+        _res = res;
         for (int i = 0; i < resources.Length; i++)
         {
             resources[i].textCMP.text = "" + (int)(res[resources[i].type]);

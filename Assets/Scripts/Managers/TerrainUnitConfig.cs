@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class TerrainUnitConfig : MonoBehaviour
@@ -8,6 +9,7 @@ public class TerrainUnitConfig : MonoBehaviour
     {
         public UnitType type;
         public bool isProducer;
+        public bool isManual;
         public float producePeriod;
         public GameObject producePrefab;
         public int[] resourceNeeded;
@@ -52,6 +54,7 @@ public class TerrainUnitConfig : MonoBehaviour
     {
         return GetConfig(t).producePrefab;
     }
+
 
     /// <summary>
     /// accelerate same type reading

@@ -7220,54 +7220,63 @@ MonoBehaviour:
   unitConfig:
   - type: 0
     isProducer: 0
+    isManual: 0
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 
+    resourceNeeded: 000000000000000000000000
   - type: 100
     isProducer: 0
+    isManual: 0
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 
+    resourceNeeded: 010000000100000000000000
   - type: 101
     isProducer: 1
+    isManual: 0
     producePeriod: 10
     producePrefab: {fileID: 1018035448555046588, guid: 05e99228463d87d4fadf1799d3e11ae5,
       type: 3}
-    resourceNeeded: 
+    resourceNeeded: 040000000400000000000000
   - type: 102
     isProducer: 1
+    isManual: 0
     producePeriod: 30
     producePrefab: {fileID: 1018035448555046588, guid: 05e99228463d87d4fadf1799d3e11ae5,
       type: 3}
-    resourceNeeded: 
+    resourceNeeded: 020000000800000000000000
   - type: 103
     isProducer: 0
+    isManual: 0
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 
+    resourceNeeded: 030000000400000006000000
   - type: 110
     isProducer: 0
+    isManual: 0
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 
+    resourceNeeded: 000000000000000000000000
   - type: 201
     isProducer: 0
+    isManual: 0
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 
+    resourceNeeded: 000000000000000000000000
   - type: 202
     isProducer: 0
+    isManual: 0
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 
+    resourceNeeded: 000000000000000000000000
   - type: 203
     isProducer: 0
+    isManual: 0
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 
+    resourceNeeded: 000000000000000000000000
   resourceConfig:
   - type: 0
-    initialNumber: 5
+    initialNumber: 10
   - type: 1
     initialNumber: 5
   - type: 2
