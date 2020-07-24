@@ -53,22 +53,16 @@ public class TiltShift : MonoBehaviour
 
     void Start()
     {
-        // Disable if we don't support image effects
-        // if (!SystemInfo.supportsImageEffects)
-        // {
-        //     Debug.LogWarning("Image effects aren't supported on this device");
-        //     enabled = false;
-        //     return;
-        // }
 
-        // Disable the image effect if the shader can't run on the users graphics card
+        // 看看你显卡行不行
         if (!Shader || !Shader.isSupported)
         {
             Debug.LogWarning("The shader is null or unsupported on this device");
             enabled = false;
         }
 
-        // Precompute rotations
+        // 黄金角度
+        // (3 * -sqrt(5.0)) * PI  r
         float c = Mathf.Cos(2.39996323f);
         float s = Mathf.Sin(2.39996323f);
         m_GoldenRot.Set(c, s, -s, c);
