@@ -96,12 +96,9 @@ public class WorldManager : MonoBehaviour
             // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
             map[(int)sample.x, (int)sample.y].SetType(UnitType.Mine);
         }
-
-        map[10, 2].SetType(UnitType.Spawn);
         // generate spawn point & player
         map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
         playerInstance = Instantiate(playerPrefab, new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
-        // Forward(6);
     }
 
     public bool HasNeibour(int x, int y)
