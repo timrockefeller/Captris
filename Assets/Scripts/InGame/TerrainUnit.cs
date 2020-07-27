@@ -12,10 +12,10 @@ public enum UnitType
     Grass = 101,
     Factor = 102,
     Defend = 103,
-    STORAGE = 104,
+    Storage = 104,
 
-    ARROW = 105, // tower 1
-    ABSORB = 106, // tower 2
+    Arrow = 105, // tower 1
+    Absorb = 106, // tower 2
 
     Spawn = 110,
     // Generated
@@ -69,9 +69,11 @@ public class TerrainUnit : MonoBehaviour
                 return new Color(222 / 255.0f, 162 / 255.0f, 30 / 255.0f);
             case UnitType.Defend://44, 118, 179
                 return new Color(44 / 255.0f, 118 / 255.0f, 179 / 255.0f);
+            case UnitType.Storage://195, 77, 134
+                return new Color(195 / 255.0f, 77 / 255.0f, 134 / 255.0f);
+
             case UnitType.Spawn://101, 103, 101
                 return new Color(101 / 255.0f, 103 / 255.0f, 101 / 255.0f);
-
 
             case UnitType.Mine:// KIKYO 986D9C
                 return new Color(0x98 / 255.0f, 0x6D / 255.0f, 0x9c / 255.0f);
@@ -160,6 +162,9 @@ public class TerrainUnit : MonoBehaviour
         else
         {
             this.canProducing = false;
+            this.subPrefab = unitConfig.GetProducePrefab(this.type);// for static prefabs
+            if(subPrefab!=null)
+                this.subInstance = Instantiate( subPrefab,transform.position + new Vector3(0, 0.5f, 0),Quaternion.identity);
         }
         // default Prefab
         switch (t)

@@ -384,12 +384,11 @@ public class PlayManager : MonoBehaviour
     {
         switch (t)
         {
-
             case "Road": this.selectedType = UnitType.Road; break;
             case "Grass": this.selectedType = UnitType.Grass; break;
             case "Factor": this.selectedType = UnitType.Factor; break;
             case "Defend": this.selectedType = UnitType.Defend; break;
-
+            case "Storage": this.selectedType = UnitType.Storage;break;
             default: this.selectedType = UnitType.Grass; break;
         }
         ButtonSelected();
