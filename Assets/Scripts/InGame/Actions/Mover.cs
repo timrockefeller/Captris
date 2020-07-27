@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class Mover : MonoBehaviour
         this.subTarget = transform.position;
     }
 
-    public void MoveTo(Vector3 pos){
+    public void MoveTo(Vector3 pos,Action callback = null){
         this.target= pos;
         isFinished = false;
     }

@@ -78,7 +78,6 @@ public class TerrainUnit : MonoBehaviour
     private GameObject pieceInstance;
     public GameObject piecePrefab;
 
-    public GameObject pieceParent;
     public UnitType type;
 
 
@@ -130,11 +129,16 @@ public class TerrainUnit : MonoBehaviour
             if (subInstance != null)
                 Destroy(subInstance);
         }
-        if (t == UnitType.Empty) return false;
-
+        
         this.type = t;
+        if (t == UnitType.Empty) {
+            // reset
+            _canProducing = false;
+            isProducer = false;
+            return false;}
+
         this.pieceInstance = Instantiate(piecePrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-        this.pieceInstance.transform.SetParent(this.pieceParent.transform);
+        this.pieceInstance.transform.SetParent(this.transform);
         this.pieceInstance.GetComponent<MeshRenderer>().material.SetColor("_Color", TerrainUnit.GetColorByType(this.type));
 
 
@@ -192,7 +196,8 @@ public class TerrainUnit : MonoBehaviour
             if (localProgress > localPeriod)
             {
                 // Instantiate produce prefab
-                Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                subInstance = Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                subInstance.transform.SetParent(transform);
                 localProgress -= localPeriod;
                 canProducing = false;
             }
@@ -203,15 +208,22 @@ public class TerrainUnit : MonoBehaviour
         }
     }
 
+    void Disable()
+    {
 
+    }
     public void OnLeaveMap()
     {
+        GetComponent<DropFall>().Fall(Disable);
+
         this.SetType(UnitType.Empty);
         if (subInstance) Destroy(subInstance);
         if (pieceInstance) Destroy(pieceInstance);
+        
         gameObject.SetActive(false);
         // StartCoroutine("FallinDown")    :P
     }
+
 
     public void OnEnterMap(Vector3Int position)
     {

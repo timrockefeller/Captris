@@ -15,7 +15,7 @@ public enum PlayState
 /// <summary>
 /// 游戏进程
 /// </summary>
-public enum ProcessState
+public enum ProgressState
 {
     DAYTIME,
     NIGHT
@@ -38,7 +38,8 @@ public class PlayManager : MonoBehaviour
     [HideInInspector]
     public Queue<int> nextPieces;
     private Queue<int> nextBag;
-
+    
+    [HideInInspector]
     public PlayState playState;
 
     /// <summary>
@@ -72,15 +73,15 @@ public class PlayManager : MonoBehaviour
     private bool slectingCanPlace = false;
 
     ////////////////////////
-    // Game Process
-
+    // Game Progress
+    [Header("Game Progress")]
     /// <summary>
     /// 玩家持有的资源
     /// </summary>
     /// <value></value>
     public Dictionary<ResourceType, int> playerResources;
 
-    public ProcessState processState { get; private set; }
+    public ProgressState progressState { get; private set; }
 
     void Start()
     {

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 用于出现时期
+/// </summary>
 public class Downfall : MonoBehaviour
 {
 
@@ -10,7 +13,9 @@ public class Downfall : MonoBehaviour
     private void Start()
     {
         this.SolidPosition = this.transform.position;
-        this.transform.position += new Vector3(0, 1, 0);
+
+        if (transform.rotation == Quaternion.identity)
+            this.transform.position += new Vector3(0, 1, 0);
     }
     private void Update()
     {

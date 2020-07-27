@@ -50,6 +50,9 @@ public class WorldManager : MonoBehaviour
         StartCoroutine("LongtimeForward");
     }
 
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.N)) Forward();
+    }
     IEnumerator LongtimeForward()
     {
         while (true)
@@ -96,8 +99,8 @@ public class WorldManager : MonoBehaviour
 
         map[10, 2].SetType(UnitType.Spawn);
         // generate spawn point & player
-        map[0, size.y / 2].SetType(UnitType.Spawn);
-        playerInstance = Instantiate(playerPrefab, new Vector3(0 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
+        map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
+        playerInstance = Instantiate(playerPrefab, new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
         // Forward(6);
     }
 
