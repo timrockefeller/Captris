@@ -11,6 +11,8 @@ public class UICameraController : MonoBehaviour
 
     [Header("Referrences")]
     public GameObject previewPos;
+    public GameObject previewPos1;
+    public GameObject previewPos2;
     private Quaternion nextPieceTargetRotation;
     private int nextPieceTargetRotationCount = 0;
     void Start()

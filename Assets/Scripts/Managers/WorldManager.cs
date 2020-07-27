@@ -26,6 +26,13 @@ public class WorldManager : MonoBehaviour
     private float _seedX;
     private float _seedZ;
 
+
+    [Header("Forward Progress")]
+    public float forwardSpeed = 10;
+    public int forwardStep = 1;
+    public GameObject poolPosInstane;
+
+
     // [SerializeField]
     private float _relief = 15f;
     private int _maxHeight = 5;
@@ -47,8 +54,9 @@ public class WorldManager : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.5f);
-            Forward();
+            yield return new WaitForSeconds(forwardSpeed);
+            Forward(forwardStep);
+            poolPosInstane.GetComponent<Mover>().MoveTo(new Vector3(poolCur, 0, 0));
         }
     }
 
@@ -95,7 +103,7 @@ public class WorldManager : MonoBehaviour
 
     public bool HasNeibour(int x, int y)
     {
-        x += poolCur;
+        // x += poolCur;
         x %= size.x;
         for (int i = 0; i < _4direction.Length / 2; i++)
         {
@@ -109,7 +117,7 @@ public class WorldManager : MonoBehaviour
 
     public TerrainUnit GetUnit(int x, int y)
     {
-        x += poolCur;
+        // x += poolCur;
         x %= size.x;
         if (x < 0 || x >= size.x
             || y < 0 || y >= size.y) return null;

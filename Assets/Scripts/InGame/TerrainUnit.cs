@@ -178,7 +178,7 @@ public class TerrainUnit : MonoBehaviour
 
     private void Update()
     {
-        if (isProducer && canProducing)
+        if (progressFiller && isProducer && canProducing)
         {
             progressFiller.fillAmount = localProgress / localPeriod;
 
@@ -204,14 +204,17 @@ public class TerrainUnit : MonoBehaviour
     }
 
 
-    public void OnLeaveMap(){
-        if(pieceInstance)Destroy(pieceInstance);
-        if(subInstance)Destroy(subInstance);
+    public void OnLeaveMap()
+    {
+        this.SetType(UnitType.Empty);
+        if (subInstance) Destroy(subInstance);
+        if (pieceInstance) Destroy(pieceInstance);
         gameObject.SetActive(false);
         // StartCoroutine("FallinDown")    :P
     }
-    
-    public void OnEnterMap(Vector3Int position){
+
+    public void OnEnterMap(Vector3Int position)
+    {
         gameObject.SetActive(true);
         this.position = position;
         this.transform.position = GameUtils.PositionToTranform(position);
