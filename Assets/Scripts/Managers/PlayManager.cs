@@ -161,7 +161,7 @@ public class PlayManager : MonoBehaviour
         // 更新进度
 
         float percent = curTime;
-        if (progressState == ProgressState.DAYTIME)
+        if (pieceCount >0 && progressState == ProgressState.DAYTIME)
         {
 
             if (curTime < dayTime)

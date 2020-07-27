@@ -8719,7 +8719,7 @@ MonoBehaviour:
   selectedType: 0
   playerPrefab: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1,
     type: 3}
-  dayTime: 4
+  dayTime: 60
   nightTime: 30
 --- !u!4 &1790250591
 Transform:

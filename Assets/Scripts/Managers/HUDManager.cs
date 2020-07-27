@@ -208,7 +208,7 @@ public class HUDManager : MonoBehaviour
         }
     }
     IEnumerator HideHintBox(){
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(5.0f);
         showHintBox = false;
         StopCoroutine("HideHintBox");
     }
