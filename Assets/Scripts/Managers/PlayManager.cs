@@ -75,7 +75,7 @@ public class PlayManager : MonoBehaviour
 
     ////////////////////////
     // Game Progress
-    [Header("Game Progress")]
+
     /// <summary>
     /// 玩家持有的资源
     /// </summary>
@@ -83,7 +83,7 @@ public class PlayManager : MonoBehaviour
     public Dictionary<ResourceType, int> playerResources;
 
     public ProgressState progressState { get; private set; }
-
+    [Header("Game Progress")]
     public float dayTime;
     public float nightTime;
     private float curTime;
@@ -142,7 +142,11 @@ public class PlayManager : MonoBehaviour
                     if (previewInstance) Destroy(previewInstance);
                 }
             }
-            // show preview
+            if (Input.GetMouseButtonDown(1))
+            {
+                this.playState = PlayState.SPECTING;
+                if (previewInstance) Destroy(previewInstance);
+            }
         }
 
         if (playState == PlayState.SPECTING)
@@ -154,17 +158,30 @@ public class PlayManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // 更新进度
+
+        float percent = curTime;
         if (progressState == ProgressState.DAYTIME)
         {
+
             if (curTime < dayTime)
                 curTime += Time.fixedDeltaTime;
-        }
-        if (progressState == ProgressState.NIGHT)
-        {
-            if (curTime < nightTime)
-                curTime += Time.fixedDeltaTime;
+            percent /= dayTime;
+            hudManager.UpdateTimeBoard(percent);
         }
 
+        if (progressState == ProgressState.NIGHT)
+        {
+
+            // TODO spawn monsters
+
+        }
+        //UI update
+        if (percent > 1)
+        {
+            progressState = ProgressState.NIGHT;
+        }
+        // 补充包
         if (nextPieces.Count < piecePrefabs.Length)
         {
             FillNextPiece();
@@ -249,7 +266,6 @@ public class PlayManager : MonoBehaviour
         uiCameraController.SetInstance(this.selectedPrefab);
 
     }
-
 
     /// <summary>
     /// 通过鼠标事件更新预览方块的位置，并计算可否放置(this.slectingCanPlace)

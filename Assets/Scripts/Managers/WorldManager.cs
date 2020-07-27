@@ -156,14 +156,6 @@ public class WorldManager : MonoBehaviour
             }
         }
         this.poolCur += step;
-
-
-
-
-        // for(int x = 0;x<size.x;x++)
-        // for(int y = 0;y<size.y;y++){
-        //     map[x,y].position+=new Vector3Int(step,0,0);
-        // }
     }
 
 }

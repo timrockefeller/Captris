@@ -12,6 +12,11 @@ public enum UnitType
     Grass = 101,
     Factor = 102,
     Defend = 103,
+    STORAGE = 104,
+
+    ARROW = 105, // tower 1
+    ABSORB = 106, // tower 2
+
     Spawn = 110,
     // Generated
     Mine = 201,

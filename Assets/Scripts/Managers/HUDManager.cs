@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,8 +32,12 @@ public class HUDManager : MonoBehaviour
         [HideInInspector]
         public Button cooldownButtonCMP;
     }
-
+    [Header("")]
     public S_UnitType[] units;
+
+    /// <summary>
+    /// 资源显示
+    /// </summary>
 
     [Serializable]
     public struct S_ResourceType
@@ -42,9 +47,20 @@ public class HUDManager : MonoBehaviour
         [HideInInspector]
         public Text textCMP;
     }
+    [Header("资源显示")]
     public S_ResourceType[] resources;
     private Dictionary<ResourceType, int> _res;
     private TerrainUnitConfig unitConfig;
+
+    [Header("时间轴")]
+    public GameObject timeBoard;
+    private Image timeBoardCMP;
+
+
+    [Header("Hint Box")]
+    public GameObject hintBox;
+    private Image hintBoxCMP;
+    public bool showHintBox = false;
 
     private void Awake()
     {
@@ -116,8 +132,13 @@ public class HUDManager : MonoBehaviour
         {
             resources[i].textCMP = resources[i].text.GetComponent<Text>();
         }
+        timeBoardCMP = timeBoard.GetComponent<Image>();
+        hintBoxCMP = hintBox.GetComponent<Image>();
     }
-
+    private void Update()
+    {
+        hintBoxCMP.fillAmount = Mathf.Lerp(hintBoxCMP.fillAmount, showHintBox ? 1 : 0, 0.04f);
+    }
     private void FixedUpdate()
     {
         for (var i = 0; i < units.Length; i++)
@@ -176,4 +197,19 @@ public class HUDManager : MonoBehaviour
         }
     }
 
+    public void UpdateTimeBoard(float percent)
+    {
+        timeBoardCMP.fillAmount = Mathf.Clamp01(percent);
+        if (percent >= 0.99f)
+        {
+            // show hint
+            showHintBox = true;
+            StartCoroutine("HideHintBox");
+        }
+    }
+    IEnumerator HideHintBox(){
+        yield return new WaitForSeconds(2.0f);
+        showHintBox = false;
+        StopCoroutine("HideHintBox");
+    }
 }

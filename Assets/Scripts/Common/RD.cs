@@ -6,8 +6,11 @@ public static class RD
     private static int seed;
     public static double NextDouble()
     {
-        return _RD.NextDouble();
+        if (_RD != null)
+            return _RD.NextDouble();
+        return new System.Random().NextDouble();
     }
+
     public static float NextFloat()
     {
         return (float)_RD.NextDouble();
