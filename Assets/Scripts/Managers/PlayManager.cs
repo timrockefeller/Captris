@@ -245,7 +245,7 @@ public class PlayManager : MonoBehaviour
             foreach (Vector3Int occ in this.selectedData.GetOccupy())
             {
                 TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
-                if (targetTerrain == null || targetTerrain.type != UnitType.Empty || targetTerrain.position.y != worldManager.map[selectingPosition.x, selectingPosition.z].position.y)
+                if (targetTerrain == null || targetTerrain.type != UnitType.Empty || targetTerrain.position.y != worldManager.GetUnit(selectingPosition.x, selectingPosition.z).position.y)
                 {
                     slectingCanPlace = false;
                     break;

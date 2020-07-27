@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         rigidbodyComponent = gameObject.GetComponent<Rigidbody>();
         cameraController = GameObject.Find("CamPos").GetComponent<CameraController>();
+        cameraController.SetTarget(transform.position);
     }
     void FixedUpdate()
     {

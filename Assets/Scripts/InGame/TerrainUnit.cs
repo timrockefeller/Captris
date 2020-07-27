@@ -204,6 +204,20 @@ public class TerrainUnit : MonoBehaviour
     }
 
 
+    public void OnLeaveMap(){
+        if(pieceInstance)Destroy(pieceInstance);
+        if(subInstance)Destroy(subInstance);
+        gameObject.SetActive(false);
+        // StartCoroutine("FallinDown")    :P
+    }
+    
+    public void OnEnterMap(Vector3Int position){
+        gameObject.SetActive(true);
+        this.position = position;
+        this.transform.position = GameUtils.PositionToTranform(position);
+    }
+
+
     private void OnMouseEnter()
     {
         playManager.UpdateSlectingPosition(this);
