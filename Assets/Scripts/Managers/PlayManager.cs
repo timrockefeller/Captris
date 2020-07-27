@@ -10,6 +10,7 @@ public enum PlayState
 {
     SPECTING,
     ELECTED,
+    DELETING // TODO
 }
 
 /// <summary>
@@ -38,7 +39,7 @@ public class PlayManager : MonoBehaviour
     [HideInInspector]
     public Queue<int> nextPieces;
     private Queue<int> nextBag;
-    
+
     [HideInInspector]
     public PlayState playState;
 
@@ -82,6 +83,10 @@ public class PlayManager : MonoBehaviour
     public Dictionary<ResourceType, int> playerResources;
 
     public ProgressState progressState { get; private set; }
+
+    public float dayTime;
+    public float nightTime;
+    private float curTime;
 
     void Start()
     {
@@ -145,12 +150,31 @@ public class PlayManager : MonoBehaviour
 
         }
 
+    }
+
+    private void FixedUpdate()
+    {
+        if (progressState == ProgressState.DAYTIME)
+        {
+            if (curTime < dayTime)
+                curTime += Time.fixedDeltaTime;
+        }
+        if (progressState == ProgressState.NIGHT)
+        {
+            if (curTime < nightTime)
+                curTime += Time.fixedDeltaTime;
+        }
+
         if (nextPieces.Count < piecePrefabs.Length)
         {
             FillNextPiece();
         }
     }
 
+    /// <summary>
+    /// 生成单片walkable方块
+    /// </summary>
+    /// <returns></returns>
     IEnumerator SpawnPiece()
     {
         //update resource
@@ -215,6 +239,9 @@ public class PlayManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// HUD:更新方块预览
+    /// </summary>
     public void UpdatePreview()
     {
         // update preview
@@ -225,7 +252,7 @@ public class PlayManager : MonoBehaviour
 
 
     /// <summary>
-    /// 更新预览方块的位置，并计算可否放置(this.slectingCanPlace)
+    /// 通过鼠标事件更新预览方块的位置，并计算可否放置(this.slectingCanPlace)
     /// </summary>
     /// <param name="unit"></param>
     public void UpdateSlectingPosition(TerrainUnit unit)
@@ -293,7 +320,9 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    //获得资源（立即）
+    /// <summary>
+    /// 获得资源（立即）
+    /// </summary>
     public void GainResource(ResourceType type)
     {
         // TODO resource list
@@ -305,18 +334,16 @@ public class PlayManager : MonoBehaviour
         // throw new System.NotImplementedException();
     }
 
-
     /// <summary>
     /// 进入放置状态
     /// </summary>
     public void ButtonSelected()
     {
         playState = PlayState.ELECTED;
-
         if (previewInstance) Destroy(previewInstance);
         previewInstance = Instantiate(this.selectedPrefab, selectingPosition, Quaternion.identity);
-
     }
+
     /// <summary>
     ///  顺时针旋转
     /// </summary>
@@ -328,6 +355,7 @@ public class PlayManager : MonoBehaviour
     /// <summary>
     ///  逆时针旋转
     /// </summary>
+    /// 
     public void ButtonRotateCounterClockwise()
     {
         this.selectedData.DoRotate(false);
