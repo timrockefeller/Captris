@@ -15,9 +15,10 @@ public class UICameraController : MonoBehaviour
     public GameObject previewPos2;
     private Quaternion nextPieceTargetRotation;
     private int nextPieceTargetRotationCount = 0;
+    Camera cam;
     void Start()
     {
-
+        cam = GetComponent<Camera>();
     }
 
     public bool DoRotate(bool isClockwise)
@@ -41,6 +42,8 @@ public class UICameraController : MonoBehaviour
 
     void LateUpdate()
     {
+
         nextPieceInstance.transform.rotation = Quaternion.Slerp(nextPieceInstance.transform.rotation, nextPieceTargetRotation, nextPieceTargetRotateSpeed);
+         nextPieceInstance.transform.position = cam.ScreenToWorldPoint(new Vector3(100,200, cam.nearClipPlane))+ transform.forward;
     }
 }
