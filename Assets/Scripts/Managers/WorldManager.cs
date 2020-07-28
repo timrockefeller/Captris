@@ -50,8 +50,9 @@ public class WorldManager : MonoBehaviour
         StartCoroutine("LongtimeForward");
     }
 
-    private void Update() {
-        if(Input.GetKeyDown(KeyCode.N)) Forward();
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.N)) Forward();
     }
     IEnumerator LongtimeForward()
     {
@@ -74,18 +75,32 @@ public class WorldManager : MonoBehaviour
         {
             for (int z = 0; z < size.y; z++)
             {
-                float xSample = (x + _seedX) / _relief;
-                float zSample = (z + _seedZ) / _relief;
-                float noise = Mathf.PerlinNoise(xSample, zSample);
+                float xSample = (2 * (int)(x / 2.0f) + _seedX) / _relief;
+                float zSample = (2 * (int)(z / 2.0f) + _seedZ) / _relief;
+                float noise = Mathf.PerlinNoise(xSample, zSample) * 1.5f - 0.5f;
+                noise = Mathf.Pow(noise, 2);
 
-                int y = (int)Mathf.Floor(_maxHeight * noise);
 
-                GameObject ground = Instantiate(pGround, new Vector3(x + 0.5f, y / 2.0f - 0.5f, z + 0.5f), Quaternion.identity);
+                int y = (int)Mathf.Clamp(Mathf.Floor(_maxHeight * noise), 0, 1000);
+
+                GameObject ground = Instantiate(pGround, GameUtils.PositionToTranform(new Vector3Int(x, y, z)), Quaternion.identity);
                 ground.transform.SetParent(transform);
                 this.map[x, z] = ground.GetComponent<TerrainUnit>();
                 this.map[x, z].position = new Vector3Int(x, y, z);
+                this.map[x, z].worldManager = this;
             }
         }
+
+
+        /// Generate Static Terrains
+        int collapseNum = (int)(RD.NextDouble() * 0 + 1);
+        // 1. collapse
+        while (collapseNum-- > 0)
+        {
+            StaticTerrain.NextModule();
+        }
+
+
 
         /// generate Mines
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
@@ -110,7 +125,8 @@ public class WorldManager : MonoBehaviour
             if ((_4direction[i, 0] + x) % size.x < 0 || (_4direction[i, 0] + x) % size.x >= size.x
              || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size.y) continue;
             if (TerrainUnit.IsManualType(map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))
-                return true;
+                if (1 >= Mathf.Abs(map[_4direction[i, 0] + x, _4direction[i, 1] + y].position.y - map[x, y].position.y))
+                    return true;
         }
         return false;
     }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 
 /// <summary>
 /// 玩家状态
@@ -161,7 +161,7 @@ public class PlayManager : MonoBehaviour
         // 更新进度
 
         float percent = curTime;
-        if (pieceCount >0 && progressState == ProgressState.DAYTIME)
+        if (pieceCount > 0 && progressState == ProgressState.DAYTIME)
         {
 
             if (curTime < dayTime)
@@ -194,6 +194,9 @@ public class PlayManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator SpawnPiece()
     {
+
+        pieceCount++;
+        this.nextPieces.Dequeue();
         //update resource
         for (int i = 0; i < unitConfig.GetConfig(this.selectedType).resourceNeeded.Length; i++)
             this.playerResources[(ResourceType)i] -= unitConfig.GetConfig(this.selectedType).resourceNeeded[i];
@@ -207,9 +210,7 @@ public class PlayManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         // end piece
-        pieceCount++;
         this.selectedData.ResetRotate();
-        this.nextPieces.Dequeue();
     }
 
     /// <summary>
@@ -263,7 +264,11 @@ public class PlayManager : MonoBehaviour
     {
         // update preview
         // selectedPrefab
-        uiCameraController.SetInstance(this.selectedPrefab);
+        uiCameraController.SetInstance(
+            this.selectedPrefab,
+            nextPieces.Count > 2 ? piecePrefabs[nextPieces.ElementAt(1)] : null,
+            nextPieces.Count > 2 ? piecePrefabs[nextPieces.ElementAt(2)] : null
+        );
 
     }
 
@@ -388,7 +393,7 @@ public class PlayManager : MonoBehaviour
             case "Grass": this.selectedType = UnitType.Grass; break;
             case "Factor": this.selectedType = UnitType.Factor; break;
             case "Defend": this.selectedType = UnitType.Defend; break;
-            case "Storage": this.selectedType = UnitType.Storage;break;
+            case "Storage": this.selectedType = UnitType.Storage; break;
             default: this.selectedType = UnitType.Grass; break;
         }
         ButtonSelected();

@@ -199,7 +199,7 @@ public class HUDManager : MonoBehaviour
 
     public void UpdateTimeBoard(float percent)
     {
-        timeBoardCMP.fillAmount = Mathf.Clamp01(percent);
+        timeBoardCMP.fillAmount = 1-Mathf.Clamp01(percent);
         if (percent >= 0.99f)
         {
             // show hint

@@ -15,4 +15,8 @@ public class EnterGameManager : MonoBehaviour
         SceneManager.LoadScene("MainMap");
     }
 
+    public void EnterRandom(){
+        RD.SetSeed(new System.Random().Next());
+        SceneManager.LoadScene("MainMap");
+    }
 }

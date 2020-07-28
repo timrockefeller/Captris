@@ -127,6 +127,8 @@ public class TerrainUnit : MonoBehaviour
     private GameObject subInstance;
 
     private PlayManager playManager;
+    [HideInInspector]
+    public WorldManager worldManager;
     private TerrainUnitConfig unitConfig;
     public bool SetType(UnitType t)
     {
@@ -136,13 +138,15 @@ public class TerrainUnit : MonoBehaviour
             if (subInstance != null)
                 Destroy(subInstance);
         }
-        
+
         this.type = t;
-        if (t == UnitType.Empty) {
+        if (t == UnitType.Empty)
+        {
             // reset
             _canProducing = false;
             isProducer = false;
-            return false;}
+            return false;
+        }
 
         this.pieceInstance = Instantiate(piecePrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         this.pieceInstance.transform.SetParent(this.transform);
@@ -163,8 +167,8 @@ public class TerrainUnit : MonoBehaviour
         {
             this.canProducing = false;
             this.subPrefab = unitConfig.GetProducePrefab(this.type);// for static prefabs
-            if(subPrefab!=null)
-                this.subInstance = Instantiate( subPrefab,transform.position + new Vector3(0, 0.5f, 0),Quaternion.identity);
+            if (subPrefab != null)
+                this.subInstance = Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
         }
         // default Prefab
         switch (t)
@@ -176,13 +180,28 @@ public class TerrainUnit : MonoBehaviour
                 // TODO: Random Generate Factor Range
                 localBuff = UnitBuffType.INCREASE_FACTORY;// spread it!
                 break;
-
             default:
                 break;
         }
         return true;
 
     }
+
+    /// <summary>
+    /// Special Terrain
+    /// </summary>
+    public void InitStaticType()
+    {
+
+    }
+
+    public void SetBuff(UnitBuffType buffType)
+    {
+
+        this.localBuff = buffType;
+        
+    }
+
     void Awake()
     {
         // if(!type) type = UnitType.Empty;
@@ -218,18 +237,14 @@ public class TerrainUnit : MonoBehaviour
         }
     }
 
-    void Disable()
-    {
-
-    }
     public void OnLeaveMap()
     {
-        GetComponent<DropFall>().Fall(Disable);
+        GetComponent<DropFall>().Fall();
 
         this.SetType(UnitType.Empty);
         if (subInstance) Destroy(subInstance);
         if (pieceInstance) Destroy(pieceInstance);
-        
+
         gameObject.SetActive(false);
         // StartCoroutine("FallinDown")    :P
     }

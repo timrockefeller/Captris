@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UICameraController : MonoBehaviour
 {
-    public GameObject nextPieceInstance;
+    public GameObject[] nextPieceInstance;
 
 
     public float nextPieceTargetRotateSpeed = 0.02f;
@@ -19,6 +19,7 @@ public class UICameraController : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
+        nextPieceInstance = new GameObject[3];
     }
 
     public bool DoRotate(bool isClockwise)
@@ -28,14 +29,29 @@ public class UICameraController : MonoBehaviour
         nextPieceTargetRotation = Quaternion.Euler(0, -90 * nextPieceTargetRotationCount + nextPieceTargetRotation.y, 0) * Quaternion.identity;
         return true;
     }
-    public bool SetInstance(GameObject nextPiecePrefab)
+    public bool SetInstance(GameObject nextPiecePrefab1, GameObject nextPiecePrefab2 = null, GameObject nextPiecePrefab3 = null)
     {
-        if (nextPieceInstance != null)
-            Destroy(nextPieceInstance);
-
-        nextPieceInstance = Instantiate(nextPiecePrefab, previewPos.transform);
-        nextPieceTargetRotation = nextPieceInstance.transform.rotation;
+        if (nextPieceInstance[0] != null)
+            Destroy(nextPieceInstance[0]);
+        nextPieceInstance[0] = Instantiate(nextPiecePrefab1, previewPos.transform);
+        nextPieceTargetRotation = nextPieceInstance[0].transform.rotation;
         nextPieceTargetRotationCount = 0;
+        if (nextPiecePrefab2 != null)
+        {
+            if (nextPieceInstance[1] != null)
+            {
+                Destroy(nextPieceInstance[1]);
+            }
+            nextPieceInstance[1] = Instantiate(nextPiecePrefab2, previewPos1.transform);
+        }
+        if (nextPiecePrefab3 != null)
+        {
+            if (nextPieceInstance[2] != null)
+            {
+                Destroy(nextPieceInstance[2]);
+            }
+            nextPieceInstance[2] = Instantiate(nextPiecePrefab3, previewPos2.transform);
+        }
         // nextPieceInstance
         return true;
     }
@@ -43,7 +59,10 @@ public class UICameraController : MonoBehaviour
     void LateUpdate()
     {
 
-        nextPieceInstance.transform.rotation = Quaternion.Slerp(nextPieceInstance.transform.rotation, nextPieceTargetRotation, nextPieceTargetRotateSpeed);
-         nextPieceInstance.transform.position = cam.ScreenToWorldPoint(new Vector3(100,200, cam.nearClipPlane))+ transform.forward;
+        if (nextPieceInstance[0] != null)
+            nextPieceInstance[0].transform.rotation = Quaternion.Slerp(nextPieceInstance[0].transform.rotation, nextPieceTargetRotation, nextPieceTargetRotateSpeed);
+        previewPos.transform.position = cam.ScreenToWorldPoint(new Vector3(100, 200, cam.nearClipPlane)) + transform.forward;
+        previewPos1.transform.position = cam.ScreenToWorldPoint(new Vector3(180, 180, cam.nearClipPlane)) + transform.forward;
+        previewPos2.transform.position = cam.ScreenToWorldPoint(new Vector3(210, 180, cam.nearClipPlane)) + transform.forward;
     }
 }
