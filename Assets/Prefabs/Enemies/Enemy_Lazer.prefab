@@ -162,6 +162,5 @@ MonoBehaviour:
   player: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1, type: 3}
   maxSpeed: 0.7
   maxAcc: 0.2
-  maxTorque: 0.2
-  size: 0
-  speed: 0
+  maxTorque: 1
+  bulletPrefab: {fileID: 0}

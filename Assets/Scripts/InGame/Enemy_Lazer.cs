@@ -7,10 +7,13 @@ public class Enemy_Lazer : MonoBehaviour
 
     public GameObject player;
 
-    [Header("Motivate Properties")]
+    [Header("Motivate")]
     public float maxSpeed;
     public float maxAcc;
     public float maxTorque;
+
+    [Header("Attack")]
+    public float attackCD;
 
     /// <summary>
     /// Random Generated
@@ -18,14 +21,23 @@ public class Enemy_Lazer : MonoBehaviour
     private float size;
 
     private float speed;
-
+    private float torque;
     public GameObject bulletPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
         player = null;
-        size = RD.NextFloat()*0.25f+0.8f;
+        size = RD.NextFloat() * 0.25f + 0.8f;
+    }
+
+    float DistanceToPlayer()
+    {
+        if (player != null)
+        {
+            return (player.transform.position - transform.position).magnitude;
+        }
+        return Mathf.Infinity;
     }
 
     // Update is called once per frame
@@ -37,6 +49,7 @@ public class Enemy_Lazer : MonoBehaviour
             if (player == null) { return; }
         }
 
+        // movement
 
         transform.position += transform.forward * speed * Time.fixedDeltaTime;
         if (Vector3.Dot(transform.forward, player.transform.position - transform.position) > 0)
@@ -50,14 +63,25 @@ public class Enemy_Lazer : MonoBehaviour
             speed -= maxAcc * Time.fixedDeltaTime;
         }
         speed = Mathf.Clamp(speed, size * maxSpeed / 2, maxSpeed * size);
-
+        torque = maxTorque * (1 - speed / maxSpeed);
         Quaternion TargetRotation = Quaternion.LookRotation(player.transform.position - transform.position + Vector3.up * 2, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation, Time.deltaTime * maxTorque * size);
+        transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation, Time.deltaTime * torque * size);
 
 
         // attack
 
+
     }
+
+
+    private void DoAttack()
+    {
+
+    }
+
+
+
+
     public void SetSize(float size)
     {
         this.size = size;
