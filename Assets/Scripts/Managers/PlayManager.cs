@@ -87,6 +87,12 @@ public class PlayManager : MonoBehaviour
     public float dayTime;
     public float nightTime;
     private float curTime;
+    public int dayCount = 0;
+
+    [Header("Enemy")]
+    public GameObject enemyPrefab;
+    public float enemySpawnDistance = 10;
+    GameObject[] enemies;
 
     void Start()
     {
@@ -167,7 +173,24 @@ public class PlayManager : MonoBehaviour
             if (curTime < dayTime)
                 curTime += Time.fixedDeltaTime;
             percent /= dayTime;
+
             hudManager.UpdateTimeBoard(percent);
+            if (percent > 1)
+            {
+                progressState = ProgressState.NIGHT;
+                // do spawn monster
+                int enemyCount = (int)(RD.NextDouble() * dayTime + 2);
+                enemies = new GameObject[enemyCount];
+                while (enemyCount-- > 0)
+                {
+                    // random position
+                    float thita = (RD.NextFloat() * 2 * Mathf.PI);
+                    Vector3 spawnpoint = new Vector3(enemySpawnDistance * Mathf.Sin(thita), 3, enemySpawnDistance * Mathf.Cos(thita));
+                    enemies[enemyCount] = Instantiate(enemyPrefab, worldManager.playerInstance.transform.position + spawnpoint, Quaternion.identity);
+                }
+                curTime = 0;
+                hudManager.UpdateTimeBoard(1);
+            }
         }
 
         if (progressState == ProgressState.NIGHT)
@@ -177,10 +200,7 @@ public class PlayManager : MonoBehaviour
 
         }
         //UI update
-        if (percent > 1)
-        {
-            progressState = ProgressState.NIGHT;
-        }
+
         // 补充包
         if (nextPieces.Count < piecePrefabs.Length)
         {
