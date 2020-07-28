@@ -89,8 +89,8 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.78681326
       - serializedVersion: 3
-        time: 0.019471373
-        value: 0.15077788
+        time: 0.038968295
+        value: 0.13896757
         inSlope: -0.26997316
         outSlope: -0.26997316
         tangentMode: 0
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1, type: 3}
   maxSpeed: 0.7
-  maxAcc: 0.5
+  maxAcc: 0.2
   maxTorque: 0.2
   size: 0
   speed: 0

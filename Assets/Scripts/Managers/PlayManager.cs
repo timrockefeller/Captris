@@ -81,7 +81,7 @@ public class PlayManager : MonoBehaviour
     /// </summary>
     /// <value></value>
     public Dictionary<ResourceType, int> playerResources;
-
+    public Dictionary<ResourceType, int> playerMaxResources;
     public ProgressState progressState { get; private set; }
     [Header("Game Progress")]
     public float dayTime;
