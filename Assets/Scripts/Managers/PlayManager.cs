@@ -89,10 +89,15 @@ public class PlayManager : MonoBehaviour
     private float curTime;
     public int dayCount = 0;
 
+    public float goldRefillTime = 10f;
+    private float curGoldRefillTime = 0;
+
     [Header("Enemy")]
     public GameObject enemyPrefab;
     public float enemySpawnDistance = 15;
     GameObject[] enemies;
+
+
 
     void Start()
     {
@@ -210,6 +215,17 @@ public class PlayManager : MonoBehaviour
         if (nextPieces.Count < piecePrefabs.Length)
         {
             FillNextPiece();
+        }
+
+        // 恒时补充资源
+        if (goldRefillTime > curGoldRefillTime)
+        {
+            curGoldRefillTime += Time.fixedDeltaTime;
+        }
+        else
+        {
+            curGoldRefillTime -= goldRefillTime;
+            GainResource(ResourceType.GOLD);
         }
     }
 

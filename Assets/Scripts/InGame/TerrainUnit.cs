@@ -199,7 +199,7 @@ public class TerrainUnit : MonoBehaviour
     {
 
         this.localBuff = buffType;
-        
+
     }
 
     void Awake()
@@ -233,6 +233,25 @@ public class TerrainUnit : MonoBehaviour
             else
             {
                 localProgress += Time.fixedDeltaTime;
+                BuffConsult();
+            }
+        }
+        BuffConsult();
+    }
+    /// <summary>
+    /// Buff影响
+    /// </summary>
+    private void BuffConsult()
+    {
+        if (isProducer && canProducing)
+        {
+            switch (type)
+            {
+                case UnitType.Grass:
+                    // 越高速度越快
+                    localProgress += Time.fixedDeltaTime * this.position.y / worldManager.GetMaxHight();
+                    break;
+                default: break;
             }
         }
     }

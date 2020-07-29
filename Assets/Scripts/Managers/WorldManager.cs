@@ -131,6 +131,11 @@ public class WorldManager : MonoBehaviour
         return false;
     }
 
+    public int GetMaxHight()
+    {
+        return _maxHeight;
+    }
+
     public TerrainUnit GetUnit(int x, int y)
     {
         // x += poolCur;
