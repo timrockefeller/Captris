@@ -103,7 +103,7 @@ public class Enemy_Lazer : MonoBehaviour
     private void DoAttack()
     {
 
-        GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.LookRotation(HorizonVectorToPlayer(),Vector3.up));
+        GameObject bullet = Instantiate(bulletPrefab, this.transform.position, Quaternion.LookRotation(HorizonVectorToPlayer(), Vector3.up));
         bullet.transform.SetParent(null);
     }
 

@@ -91,7 +91,7 @@ public class PlayManager : MonoBehaviour
 
     [Header("Enemy")]
     public GameObject enemyPrefab;
-    public float enemySpawnDistance = 10;
+    public float enemySpawnDistance = 15;
     GameObject[] enemies;
 
     void Start()
@@ -178,18 +178,23 @@ public class PlayManager : MonoBehaviour
             if (percent > 1)
             {
                 progressState = ProgressState.NIGHT;
-                // do spawn monster
-                int enemyCount = (int)(RD.NextDouble() * dayTime + 2);
+                /// do spawn monster
+                // 数量由天数决定 
+                // TODO 考虑非线性
+                int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * dayCount + 1);
                 enemies = new GameObject[enemyCount];
                 while (enemyCount-- > 0)
                 {
                     // random position
                     float thita = (RD.NextFloat() * 2 * Mathf.PI);
+                    // 1-1.5倍距离生成
+                    float actualSpawnDistance = enemySpawnDistance * (1 + RD.NextFloat() * 0.5f);
                     Vector3 spawnpoint = new Vector3(enemySpawnDistance * Mathf.Sin(thita), 3, enemySpawnDistance * Mathf.Cos(thita));
                     enemies[enemyCount] = Instantiate(enemyPrefab, worldManager.playerInstance.transform.position + spawnpoint, Quaternion.identity);
                 }
                 curTime = 0;
                 hudManager.UpdateTimeBoard(1);
+                dayCount++;
             }
         }
 

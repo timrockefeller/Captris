@@ -9,6 +9,7 @@ public class BulletMotivation : MonoBehaviour
     public float gravity;
 
     public float lifeTime;
+
     private float curTime = 0;
     // Update is called once per frame
     void Start()

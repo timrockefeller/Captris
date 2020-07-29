@@ -215,8 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb8be94e0336c5438db2520dd259472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  gravity: 3
+  speed: 0.5
+  gravity: 0.2
   lifeTime: 4
 --- !u!114 &-4163348598795526630
 MonoBehaviour:
@@ -230,6 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca17b6efa40ac148ace1272b67a06e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 6864168023683811513, guid: bd3e77b8e68bfe8419aaed3deb2d0409,
+    type: 3}
 --- !u!54 &-3297404947562831923
 Rigidbody:
   m_ObjectHideFlags: 0
