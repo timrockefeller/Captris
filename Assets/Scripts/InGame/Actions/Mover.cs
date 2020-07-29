@@ -20,12 +20,12 @@ public class Mover : MonoBehaviour
         this.target= pos;
         isFinished = false;
     }
-    private void Update()
+    private void FixedUpdate()
     {
         if (!isFinished)
         {
             this.subTarget = Vector3.Lerp(this.subTarget,this.target,0.005f);
-            this.transform.position = Vector3.Lerp(this.transform.position, this.subTarget, 0.01f);
+            this.transform.position = Vector3.Lerp(this.transform.position, this.subTarget,Time.fixedDeltaTime * 2f);
             if ((this.transform.position - this.target).magnitude < 0.01f)
             {
                 this.transform.position = target;

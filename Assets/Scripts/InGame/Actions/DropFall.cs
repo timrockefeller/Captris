@@ -23,12 +23,12 @@ public class DropFall : MonoBehaviour
 
     }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (isFalling)
         {
-            instance.transform.position += new Vector3(0, -speed * Time.deltaTime, 0);
-            speed += acc * Time.deltaTime;
+            instance.transform.position += new Vector3(0, -speed * Time.fixedDeltaTime, 0);
+            speed += acc * Time.fixedDeltaTime;
             if (instance.transform.position.y < threshold)
             {
                 if (tmpCallback != null) tmpCallback();

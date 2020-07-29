@@ -16,15 +16,14 @@ public class BulletMotivation : MonoBehaviour
     {
         curTime = 0;
     }
-    void Update()
-    {
-        transform.position += transform.forward * speed * Time.deltaTime;
-        Quaternion TargetRotation = Quaternion.LookRotation(Vector3.down, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation, Time.deltaTime * gravity);
-
-    }
+    
     void FixedUpdate()
     {
+
+        transform.position += transform.forward * speed * Time.fixedDeltaTime;
+        Quaternion TargetRotation = Quaternion.LookRotation(Vector3.down, Vector3.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation, Time.fixedDeltaTime * gravity);
+
         curTime += Time.fixedDeltaTime;
         if (curTime > lifeTime)
         {

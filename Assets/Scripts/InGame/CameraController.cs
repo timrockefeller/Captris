@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     public float cameraSpeed = 4f;
-    public float followSpeed = 0.02f;
+    public float followSpeed = 2f;
     public Vector3 target;
     public bool enableMotionControl = false;
     // Start is called before the first frame update
@@ -14,18 +14,9 @@ public class CameraController : MonoBehaviour
         // target = new Vector3(15, 0.5f, 15);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        // Debug.Log(Input.mousePosition);
-        if (enableMotionControl)
-        {
-            if (Input.mousePosition.y > Screen.height * 0.9f) target += new Vector3(1, 0, 1) * Time.deltaTime * cameraSpeed;
-            if (Input.mousePosition.y < Screen.height * 0.1f) target -= new Vector3(1, 0, 1) * Time.deltaTime * cameraSpeed;
-            if (Input.mousePosition.x > Screen.width * 0.9f) target += new Vector3(1, 0, -1) * Time.deltaTime * cameraSpeed;
-            if (Input.mousePosition.x < Screen.width * 0.1f) target -= new Vector3(1, 0, -1) * Time.deltaTime * cameraSpeed;
-        }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButton(1))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -36,7 +27,21 @@ public class CameraController : MonoBehaviour
                     SetTarget(hitInfo.point);
 
         }
-        this.transform.position = Vector3.Lerp(this.transform.position, target, followSpeed);
+        
+        this.transform.position = Vector3.Lerp(this.transform.position, target, Time.deltaTime * followSpeed);
+    }
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        // Debug.Log(Input.mousePosition);
+        if (enableMotionControl)
+        {
+            if (Input.mousePosition.y > Screen.height * 0.9f) target += new Vector3(1, 0, 1) * Time.fixedDeltaTime * cameraSpeed;
+            if (Input.mousePosition.y < Screen.height * 0.1f) target -= new Vector3(1, 0, 1) * Time.fixedDeltaTime * cameraSpeed;
+            if (Input.mousePosition.x > Screen.width * 0.9f) target += new Vector3(1, 0, -1) * Time.fixedDeltaTime * cameraSpeed;
+            if (Input.mousePosition.x < Screen.width * 0.1f) target -= new Vector3(1, 0, -1) * Time.fixedDeltaTime * cameraSpeed;
+        }
+
     }
     public void SetTarget(Vector3 t)
     {

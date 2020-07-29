@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraSpeed: 4
-  followSpeed: 0.02
+  followSpeed: 4
   target: {x: 0, y: 0, z: 0}
   enableMotionControl: 0
 --- !u!1 &211345560
@@ -9781,6 +9781,7 @@ MonoBehaviour:
   dayTime: 60
   nightTime: 30
   dayCount: 0
+  goldRefillTime: 10
   enemyPrefab: {fileID: 2979463236156745087, guid: 4e493f03275e92547aa15bc5733a4735,
     type: 3}
   enemySpawnDistance: 10

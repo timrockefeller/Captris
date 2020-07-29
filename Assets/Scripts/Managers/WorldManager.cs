@@ -75,9 +75,12 @@ public class WorldManager : MonoBehaviour
         {
             for (int z = 0; z < size.y; z++)
             {
-                float xSample = (2 * (int)(x / 2.0f) + _seedX) / _relief;
-                float zSample = (2 * (int)(z / 2.0f) + _seedZ) / _relief;
-                float noise = Mathf.PerlinNoise(xSample, zSample) * 1.5f - 0.5f;
+                // float xSample = (2 * (int)(x / 2.0f) + _seedX) / _relief;
+                // float zSample = (2 * (int)(z / 2.0f) + _seedZ) / _relief;
+                
+                float xSample = (x + _seedX) / _relief;
+                float zSample = (z + _seedZ) / _relief;
+                float noise = Mathf.PerlinNoise(xSample, zSample) * 1.2f - 0.2f;
                 noise = Mathf.Pow(noise, 2);
 
 

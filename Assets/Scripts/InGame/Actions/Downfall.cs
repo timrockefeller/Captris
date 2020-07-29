@@ -9,6 +9,7 @@ public class Downfall : MonoBehaviour
 {
 
     private Vector3 SolidPosition;
+    public float fallspeed = 4f;
     private bool isFinished = false;
     private void Start()
     {
@@ -20,8 +21,13 @@ public class Downfall : MonoBehaviour
     private void Update()
     {
         if (!isFinished)
+            this.transform.position = Vector3.Lerp(this.transform.position, this.SolidPosition, Time.deltaTime * fallspeed);
+    }
+    private void FixedUpdate()
+    {
+        if (!isFinished)
         {
-            this.transform.position = Vector3.Lerp(this.transform.position, this.SolidPosition, 0.03f);
+            this.transform.position = Vector3.Lerp(this.transform.position, this.SolidPosition, Time.fixedDeltaTime * fallspeed);
             if (Mathf.Abs(this.transform.position.y - this.SolidPosition.y) < 0.01)
             {
                 this.transform.position = SolidPosition;
