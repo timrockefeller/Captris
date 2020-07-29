@@ -34,7 +34,7 @@ public class WorldManager : MonoBehaviour
 
 
     // [SerializeField]
-    private float _relief = 15f;
+    private float _relief = 14f;
     private int _maxHeight = 5;
     private int poolCur = 0;
 
@@ -80,7 +80,7 @@ public class WorldManager : MonoBehaviour
                 
                 float xSample = (x + _seedX) / _relief;
                 float zSample = (z + _seedZ) / _relief;
-                float noise = Mathf.PerlinNoise(xSample, zSample) * 1.2f - 0.2f;
+                float noise = Mathf.PerlinNoise(xSample, zSample) * 1.1f - 0.1f;
                 noise = Mathf.Pow(noise, 2);
 
 
@@ -123,7 +123,7 @@ public class WorldManager : MonoBehaviour
     {
         // x += poolCur;
         x %= size.x;
-        for (int i = 0; i < _4direction.Length / 2; i++)
+        for (int i = 0; i < 4; i++)
         {
             if ((_4direction[i, 0] + x) % size.x < 0 || (_4direction[i, 0] + x) % size.x >= size.x
              || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size.y) continue;
