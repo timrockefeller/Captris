@@ -178,7 +178,11 @@ public class TerrainUnit : MonoBehaviour
                 // static Instance
                 subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
                 // TODO: Random Generate Factor Range
-                localBuff = UnitBuffType.INCREASE_FACTORY;// spread it!
+                foreach (var item in worldManager.SpreadBFS(this.position,
+                (me, him) => (me.position - him.position).magnitude < 3))
+                {
+                    worldManager.GetUnit(item).localBuff = UnitBuffType.INCREASE_FACTORY;
+                }
                 break;
             default:
                 break;
@@ -250,6 +254,10 @@ public class TerrainUnit : MonoBehaviour
                 case UnitType.Grass:
                     // 越高速度越快
                     localProgress += Time.fixedDeltaTime * this.position.y / worldManager.GetMaxHight();
+                    break;
+                case UnitType.Factor:
+                    if (localBuff == UnitBuffType.INCREASE_FACTORY)
+                        localProgress += 4 * Time.fixedDeltaTime;
                     break;
                 default: break;
             }

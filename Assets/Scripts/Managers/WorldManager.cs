@@ -105,19 +105,12 @@ public class WorldManager : MonoBehaviour
         }
 
         /// test bfs
-        int c = 0;
         foreach (var item in SpreadBFS(map[15, 15].position,
-            (a, b) => ((a.position - b.position).magnitude < 3)
+            (a, b) => ((a.position - b.position).magnitude < 2)
         ))
         {
-            c++;
-            Debug.Log(c + ": " + item.ToString());
             GetUnit(item).SetType(UnitType.Spawn);
         }
-
-        // Debug.Log(SpreadBFS(map[15, 15].position,
-        //     (a, b) => ((a.position - b.position).magnitude < 3)
-        // ).Count);
 
         /// generate Mines
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
@@ -235,4 +228,5 @@ public class WorldManager : MonoBehaviour
         }
         return pass;
     }
+
 }
