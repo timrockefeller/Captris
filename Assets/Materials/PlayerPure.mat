@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PlayerPure
-  m_Shader: {fileID: 4800000, guid: 9fdbd1a7524c559448addd0a971f142e, type: 3}
+  m_Shader: {fileID: 4800000, guid: 64d8c04410c6b664eba9f4104fa0584f, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

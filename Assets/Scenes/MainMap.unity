@@ -8050,20 +8050,20 @@ MonoBehaviour:
     producePeriod: 20
     producePrefab: {fileID: 1018035448555046588, guid: 05e99228463d87d4fadf1799d3e11ae5,
       type: 3}
-    resourceNeeded: 040000000400000000000000
+    resourceNeeded: 030000000300000000000000
   - type: 102
     isProducer: 1
     isManual: 1
     producePeriod: 40
     producePrefab: {fileID: 1018035448555046588, guid: 3d258ae0b60e87c43894cd419d664413,
       type: 3}
-    resourceNeeded: 020000000800000000000000
+    resourceNeeded: 030000000600000000000000
   - type: 103
     isProducer: 0
     isManual: 1
     producePeriod: 0
     producePrefab: {fileID: 0}
-    resourceNeeded: 030000000400000006000000
+    resourceNeeded: 030000000300000006000000
   - type: 110
     isProducer: 0
     isManual: 1
