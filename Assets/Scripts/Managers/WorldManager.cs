@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -77,7 +78,7 @@ public class WorldManager : MonoBehaviour
             {
                 // float xSample = (2 * (int)(x / 2.0f) + _seedX) / _relief;
                 // float zSample = (2 * (int)(z / 2.0f) + _seedZ) / _relief;
-                
+
                 float xSample = (x + _seedX) / _relief;
                 float zSample = (z + _seedZ) / _relief;
                 float noise = Mathf.PerlinNoise(xSample, zSample) * 1.1f - 0.1f;
@@ -100,10 +101,23 @@ public class WorldManager : MonoBehaviour
         // 1. collapse
         while (collapseNum-- > 0)
         {
-            StaticTerrain.NextModule();
+
         }
 
+        /// test bfs
+        int c = 0;
+        foreach (var item in SpreadBFS(map[15, 15].position,
+            (a, b) => ((a.position - b.position).magnitude < 3)
+        ))
+        {
+            c++;
+            Debug.Log(c + ": " + item.ToString());
+            GetUnit(item).SetType(UnitType.Spawn);
+        }
 
+        // Debug.Log(SpreadBFS(map[15, 15].position,
+        //     (a, b) => ((a.position - b.position).magnitude < 3)
+        // ).Count);
 
         /// generate Mines
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
@@ -115,7 +129,7 @@ public class WorldManager : MonoBehaviour
             map[(int)sample.x, (int)sample.y].SetType(UnitType.Mine);
         }
         // generate spawn point & player
-        map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
+        // map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
         playerInstance = Instantiate(playerPrefab, new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
     }
 
@@ -133,6 +147,16 @@ public class WorldManager : MonoBehaviour
         }
         return false;
     }
+    IEnumerable<TerrainUnit> GetNeibours(int x, int y)
+    {
+        x %= size.x;
+        for (int i = 0; i < 4; i++)
+        {
+            if ((_4direction[i, 0] + x) % size.x < 0 || (_4direction[i, 0] + x) % size.x >= size.x
+             || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size.y) continue;
+            yield return map[_4direction[i, 0] + x, _4direction[i, 1] + y];
+        }
+    }
 
     public int GetMaxHight()
     {
@@ -147,7 +171,10 @@ public class WorldManager : MonoBehaviour
             || y < 0 || y >= size.y) return null;
         return map[x, y];
     }
-
+    public TerrainUnit GetUnit(Vector3Int v)
+    {
+        return GetUnit(v.x, v.z);
+    }
 
     public List<Vector3> GetRoundSameType(int x, int y)
     {
@@ -179,4 +206,33 @@ public class WorldManager : MonoBehaviour
         this.poolCur += step;
     }
 
+    /// <summary>
+    /// 根据条件函数深度优先搜索符合的位置
+    /// </summary>
+    /// <param name="v">初始点</param>
+    /// <param name="condition">条件</param>
+    /// <param name="pass">中间件</param>
+    /// <returns></returns>
+    public List<Vector3Int> SpreadBFS(Vector3Int v, Func<TerrainUnit, TerrainUnit, bool> condition, List<Vector3Int> pass = null)
+    {
+        if (pass == null) pass = new List<Vector3Int>();
+        var waitingQueue = new Queue<Vector3Int>();
+        var visited = new bool[size.x, size.y];
+        waitingQueue.Enqueue(v);
+        while (waitingQueue.Count > 0)
+        {
+            Vector3Int t = waitingQueue.Dequeue();
+            visited[t.x, t.z] = true;
+            if (condition(GetUnit(v.x, v.z), GetUnit(t.x, t.z)))
+            {
+                pass.Add(t);
+                foreach (TerrainUnit i in GetNeibours(t.x, t.z))
+                {
+                    if (!visited[i.position.x, i.position.z])
+                        waitingQueue.Enqueue(i.position);
+                }
+            }
+        }
+        return pass;
+    }
 }
