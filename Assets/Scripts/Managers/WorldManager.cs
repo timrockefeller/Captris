@@ -157,8 +157,12 @@ public class WorldManager : MonoBehaviour
         x %= size.x;
         for (int i = 0; i < 4; i++)
         {
-            if ((_4direction[i, 0] + x) % size.x < 0 || (_4direction[i, 0] + x) % size.x >= size.x
-             || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size.y) continue;
+            if (((_4direction[i, 0] + x) % size.x < 0)
+             || ((_4direction[i, 0] + x) % size.x >= size.x)
+             || (_4direction[i, 1] + y < 0)
+             || (_4direction[i, 1] + y >= size.y)
+             )
+                continue;
             yield return map[_4direction[i, 0] + x, _4direction[i, 1] + y];
         }
     }
@@ -222,18 +226,18 @@ public class WorldManager : MonoBehaviour
     {
         if (pass == null) pass = new List<Vector3Int>();
         var waitingQueue = new Queue<Vector3Int>();
-        var visited = new bool[size.x, size.y];
+        var visited = new bool[size.x + 2, size.y + 2];
         waitingQueue.Enqueue(v);
         while (waitingQueue.Count > 0)
         {
             Vector3Int t = waitingQueue.Dequeue();
-            visited[t.x, t.z] = true;
+            visited[t.x + 1, t.z + 1] = true;
             if (condition(GetUnit(v.x, v.z), GetUnit(t.x, t.z)))
             {
                 pass.Add(t);
                 foreach (TerrainUnit i in GetNeibours(t.x, t.z))
                 {
-                    if (!visited[i.position.x, i.position.z])
+                    if (!visited[i.position.x + 1, i.position.z + 1])
                         waitingQueue.Enqueue(i.position);
                 }
             }
