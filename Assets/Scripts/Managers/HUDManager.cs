@@ -62,6 +62,8 @@ public class HUDManager : MonoBehaviour
     private Image hintBoxCMP;
     public bool showHintBox = false;
 
+    private PlayManager playManager;
+
     private void Awake()
     {
         unitConfig = GameObject.Find("UnitConfig").GetComponent<TerrainUnitConfig>();
@@ -109,7 +111,7 @@ public class HUDManager : MonoBehaviour
     {
         bool rsl = units[idx].enabled != e;
         units[idx].enabled = e;
-        // TODO show or hide HUD
+        // show or hide HUD
         if (rsl)
         {
             if (units[idx].cooldownButtonCMP != null)
@@ -122,6 +124,10 @@ public class HUDManager : MonoBehaviour
 
     private void Start()
     {
+        /// Managers
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+
+        /// Components
         for (var i = 0; i < units.Length; i++)
         {
             units[i].cooldownButtonCMP = units[i].cooldownButton.GetComponent<Button>();
@@ -187,13 +193,13 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    public void UpdateResource(Dictionary<ResourceType, int> res)
+    public void UpdateResource(Dictionary<ResourceType, int> res,Dictionary<ResourceType, int> maxRes)
     {
 
         _res = res;
         for (int i = 0; i < resources.Length; i++)
         {
-            resources[i].textCMP.text = "" + (int)(res[resources[i].type]);
+            resources[i].textCMP.text = "" + (int)(res[resources[i].type]) + "/" + (int)(maxRes[resources[i].type]);
         }
     }
 

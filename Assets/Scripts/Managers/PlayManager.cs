@@ -114,9 +114,11 @@ public class PlayManager : MonoBehaviour
         nextPieces = new Queue<int>();
 
         this.playerResources = new Dictionary<ResourceType, int>();
+        this.playerMaxResources = new Dictionary<ResourceType, int>();
         for (var i = 0; i < this.unitConfig.resourceConfig.Length; i++)
         {
             this.playerResources[unitConfig.resourceConfig[i].type] = unitConfig.resourceConfig[i].initialNumber;
+            this.playerMaxResources[unitConfig.resourceConfig[i].type] = unitConfig.resourceConfig[i].maxNumber;
         }
 
 
@@ -133,7 +135,7 @@ public class PlayManager : MonoBehaviour
         uicam.SetActive(true);
         uiCameraController = uicam.GetComponent<UICameraController>();
 
-        hudManager.UpdateResource(playerResources);
+        hudManager.UpdateResource(playerResources, playerMaxResources);
     }
 
 
@@ -241,7 +243,7 @@ public class PlayManager : MonoBehaviour
         //update resource
         for (int i = 0; i < unitConfig.GetConfig(this.selectedType).resourceNeeded.Length; i++)
             this.playerResources[(ResourceType)i] -= unitConfig.GetConfig(this.selectedType).resourceNeeded[i];
-        hudManager.UpdateResource(playerResources);
+        hudManager.UpdateResource(playerResources, playerMaxResources);
 
         hudManager.Placed(this.selectedType);
         foreach (Vector3Int occ in this.selectedData.GetOccupy())
@@ -385,15 +387,22 @@ public class PlayManager : MonoBehaviour
     /// <summary>
     /// 获得资源（立即）
     /// </summary>
-    public void GainResource(ResourceType type)
+    public bool GainResource(ResourceType type)
     {
-        // TODO resource list
         if (!this.playerResources.ContainsKey(type))
             this.playerResources.Add(type, 0);
-        this.playerResources[type]++;
-        worldManager.GetUnit((int)worldManager.playerInstance.transform.position.x, (int)worldManager.playerInstance.transform.position.z).canProducing = true;
-        hudManager.UpdateResource(playerResources);
-        // throw new System.NotImplementedException();
+        // check is full
+        bool changed = false;
+        if (this.playerResources[type] < this.playerMaxResources[type])
+        {
+            this.playerResources[type]++;
+            // FIXME Warning! Do not use player's position to reset unit.
+            worldManager.GetUnit((int)worldManager.playerInstance.transform.position.x, (int)worldManager.playerInstance.transform.position.z).canProducing = true;
+            hudManager.UpdateResource(playerResources, playerMaxResources);
+            changed = true;
+        }
+        
+        return changed;
     }
 
     /// <summary>

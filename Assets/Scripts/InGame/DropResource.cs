@@ -18,8 +18,9 @@ public class DropResource : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            playManager.GainResource(this.type);
-            Destroy(gameObject);
+            if (playManager.GainResource(this.type))
+                Destroy(gameObject);
+
         }
     }
 

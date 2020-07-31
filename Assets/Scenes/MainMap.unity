@@ -8100,11 +8100,14 @@ MonoBehaviour:
     resourceNeeded: 000000000000000000000000
   resourceConfig:
   - type: 0
-    initialNumber: 30
+    initialNumber: 10
+    maxNumber: 10
   - type: 1
     initialNumber: 10
+    maxNumber: 10
   - type: 2
     initialNumber: 10
+    maxNumber: 10
 --- !u!1 &1273173979
 GameObject:
   m_ObjectHideFlags: 0

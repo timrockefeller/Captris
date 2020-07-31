@@ -20,6 +20,7 @@ public class TerrainUnitConfig : MonoBehaviour
     {
         public ResourceType type;
         public int initialNumber;
+        public int maxNumber;
     }
     public ResourceConfig[] resourceConfig;
     public ResourceConfig GetConfig(ResourceType t)
