@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     public float maxSpeed;
     public float acc;
     public float drag;
+
     [Tooltip("站在空区域上被减速(或扣血)")]// TODO  decrease HP
     [Range(0, 1)]
     public float mistCost;
@@ -14,11 +15,18 @@ public class PlayerController : MonoBehaviour
     private bool onMist = false;
     private Rigidbody rigidbodyComponent;
     private CameraController cameraController;
+    private PlayerStatsManager playerStatsManager;
+
+    [Header("Mist Damage")]
+    public float mistHurtingPeriod = 0.5f;
+    public float mistDamage = 10f;
+    private float mistHurtingTime = 0;
     void Start()
     {
         rigidbodyComponent = gameObject.GetComponent<Rigidbody>();
         cameraController = GameObject.Find("CamPos").GetComponent<CameraController>();
         cameraController.SetTarget(transform.position);
+        playerStatsManager = GameObject.Find("PlayerStatsManager").GetComponent<PlayerStatsManager>();
     }
     void FixedUpdate()
     {
@@ -51,8 +59,21 @@ public class PlayerController : MonoBehaviour
         if (force.magnitude <= 0)
             speed = Vector3.ClampMagnitude(speed, Mathf.Clamp(speed.magnitude - drag * Time.deltaTime, 0, speed.magnitude));
 
-    }
 
+        // damage
+        if (onMist)
+        {
+            mistHurtingTime += Time.fixedDeltaTime;
+            if (mistHurtingTime > mistHurtingPeriod)
+            {
+                //do damage 
+                playerStatsManager.TakeDamage(mistDamage);
+                mistHurtingTime -= mistHurtingPeriod;
+            }
+        }else{
+            mistHurtingTime = 0;
+        }
+    }
 
 
     void OnCollisionStay(Collision other)
