@@ -19,6 +19,7 @@ public class WorldManager : MonoBehaviour
 
     [HideInInspector]
     public TerrainUnit[,] map;
+    public static Vector2Int _size { get; private set; }
     public Vector2Int size = new Vector2Int(10, 20);
 
     [Header("Generate Prefabs")]
@@ -42,6 +43,8 @@ public class WorldManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        _size = size;
+
         map = new TerrainUnit[this.size.x, this.size.y];
 
         RD.SetSeed(iSeed);
@@ -71,7 +74,7 @@ public class WorldManager : MonoBehaviour
         _seedX = (float)(RD.NextDouble() * 100.0);
         _seedZ = (float)(RD.NextDouble() * 100.0);
 
-        // generate world
+        ///////////// generate world
         for (int x = 0; x < size.x; x++)
         {
             for (int z = 0; z < size.y; z++)
@@ -96,7 +99,7 @@ public class WorldManager : MonoBehaviour
         }
 
 
-        /// Generate Static Terrains
+        ///////////// Generate Static Terrains
         int collapseNum = (int)(RD.NextDouble() * 0 + 1);
         // 1. collapse
         while (collapseNum-- > 0)
@@ -104,15 +107,15 @@ public class WorldManager : MonoBehaviour
 
         }
 
-        /// test bfs
-        foreach (var item in SpreadBFS(map[15, 15].position,
-            (a, b) => ((a.position - b.position).magnitude < 2)
-        ))
-        {
-            GetUnit(item).SetType(UnitType.Spawn);
-        }
+        ///////////// TEMPLATE bfs
+        // foreach (var item in SpreadBFS(map[15, 15].position,
+        //     (a, b) => ((a.position - b.position).magnitude < 2)
+        // ))
+        // {
+        //     GetUnit(item).SetType(UnitType.Spawn);
+        // }
 
-        /// generate Mines
+        ///////////// generate Mines
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
         //  Poisson Disk Distribution
         PoissonDiscSampler sampler = new PoissonDiscSampler(size.x, size.y, 15f);
@@ -121,9 +124,18 @@ public class WorldManager : MonoBehaviour
             // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
             map[(int)sample.x, (int)sample.y].SetType(UnitType.Mine);
         }
-        // generate spawn point & player
-        // map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
+
+        ///////////// generate spawn point & player
+        map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
         playerInstance = Instantiate(playerPrefab, new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
+
+        /////////////
+        ///  BuffEffect be = GameObject.Find("TestBuff").GetComponent<BuffEffect>();
+        // //buff test
+        // be.AttachMesh(BuffEffectManager.GetLineByVectors(SpreadBFS(map[15, 15].position,
+        //     (a, b) => ((a.position - b.position).magnitude < 2)
+        // )));
+
     }
 
     public bool HasNeibour(int x, int y)
@@ -228,5 +240,4 @@ public class WorldManager : MonoBehaviour
         }
         return pass;
     }
-
 }

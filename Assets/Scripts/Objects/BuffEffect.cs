@@ -1,57 +1,72 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(MeshFilter))]
 public class BuffEffect : MonoBehaviour
 {
-
     void Start()
     {
 
     }
-
-    public void AttachMesh(List<Vector3Int> lines)
+    List<Vector3Int> _lines;
+    public void AttachMesh(List<Vector3Int> lines, float height = 1F)
     {
-        RD.SetSeed((int)(Random.value * 10000));
-        Vector3[] newVertices = new Vector3[64];
-        Vector2[] newUV = new Vector2[64];
 
-        int[] newTriangles = new int[7 * 7 * 2 * 3];
-        float _seedX = (float)(RD.NextDouble() * 100.0);
-        float _seedZ = (float)(RD.NextDouble() * 100.0);
-        float _relief = 1;
-        for (int i = 0; i < 8; i++)
+
+#if UNITY_EDITOR
+        _lines = lines;
+#endif
+
+        Vector3[] newVertices = new Vector3[lines.Count * 2];
+        Vector2[] newUV = new Vector2[lines.Count * 2];
+        int[] newTriangles = new int[lines.Count * 3];
+        for (int i = 0; i < lines.Count / 2; i++)
         {
-            for (int j = 0; j < 8; j++)
-            {
-                float distance = (new Vector2(i, j) - new Vector2(3.5f, 3.5f)).magnitude;
-                float attenuation = 1 - Mathf.Clamp01(distance / 3.5f);
+            newVertices[4 * i] = GameUtils.PositionToPoint(lines[2 * i]);
+            newVertices[4 * i + 1] = GameUtils.PositionToPoint(lines[2 * i + 1]);
+            newVertices[4 * i + 2] = GameUtils.PositionToPoint(lines[2 * i] + Vector3.up * height);
+            newVertices[4 * i + 3] = GameUtils.PositionToPoint(lines[2 * i + 1] + Vector3.up * height);
 
-                float xSample = (i + _seedX) / _relief;
-                float zSample = (j + _seedZ) / _relief;
-                float noise = Mathf.PerlinNoise(xSample, zSample);
-                newVertices[i * 8 + j] = new Vector3(0.25f + (i / 14.0f), noise * attenuation, 0.25f + (j / 14.0f));
-                newUV[i * 8 + j] = new Vector2(i / 7.0f, j / 7.0f);
-                if (i < 7 && j < 7)
-                {
-                    newTriangles[(i * 7 + j) * 6 + 0] = i * 8 + j;
-                    newTriangles[(i * 7 + j) * 6 + 1] = i * 8 + j + 1;
-                    newTriangles[(i * 7 + j) * 6 + 2] = i * 8 + j + 8;
-                    newTriangles[(i * 7 + j) * 6 + 3] = i * 8 + j + 1;
-                    newTriangles[(i * 7 + j) * 6 + 4] = i * 8 + j + 9;
-                    newTriangles[(i * 7 + j) * 6 + 5] = i * 8 + j + 8;
-                }
-            }
+            newUV[4 * i] = new Vector2(0, 1);
+            newUV[4 * i + 1] = new Vector2(1, 1);
+            newUV[4 * i + 2] = new Vector2(0, 0);
+            newUV[4 * i + 3] = new Vector2(1, 0);
+
+            newTriangles[6 * i] = 4 * i;
+            newTriangles[6 * i + 1] = 4 * i + 1;
+            newTriangles[6 * i + 2] = 4 * i + 2;
+
+            newTriangles[6 * i + 3] = 4 * i + 3;
+            newTriangles[6 * i + 4] = 4 * i + 2;
+            newTriangles[6 * i + 5] = 4 * i + 1;
         }
+
         Mesh mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
 
         mesh.vertices = newVertices;
         mesh.uv = newUV;
         mesh.triangles = newTriangles;
-
+        mesh.name = "Generated Buff Border";
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
     }
 
+    public void LoadMeshByBlocks(List<Vector3Int> l, Color color)
+    {
 
+        AttachMesh(BuffEffectManager.GetLineByVectors(l));
+        this.GetComponent<MeshRenderer>().material.SetColor("_Color", color);
+    }
+
+    private void Update()
+    {
+#if UNITY_EDITOR
+        for (int i = 0; i < _lines.Count / 2; i++)
+        {
+            Debug.DrawLine(GameUtils.PositionToPoint(_lines[2 * i]), GameUtils.PositionToPoint(_lines[2 * i + 1]), Color.red);
+        }
+
+#endif
+    }
 }

@@ -4,7 +4,8 @@
     {
         _MainTex ("Texture", 2D) = "black" {}
         _BackColor("Background Color", color) = (1,1,1,1)
-        _HighColor("HightColor", color) = (1,0,0,1)
+        _HighColor("Hight Color", color) = (1,0,0,1)
+        _HighAmount("Hight Amount", range(0,1)) = 0.01
         _Color("Line Color", color) = (1,1,1,1)
 		_Width("Width", range(0,0.5)) = 0.1
         _Cutoff("Alpha Cutoff", Range(0, 1)) = 0.1
@@ -41,6 +42,7 @@
                 float4 pos : SV_POSITION;
                 // float4 vertex : POSITION;
                 float3 normal : NORMAL;
+                float4 HightColor : COLOR;
             };
 
             sampler2D _MainTex;
@@ -49,7 +51,7 @@
             fixed4 _BackColor;
             fixed4 _HighColor;
             fixed _Width;
-
+            fixed _HighAmount;
             
             
             v2f vert (appdata v)
@@ -59,6 +61,7 @@
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.normal = v.normal;
+                o.HightColor = saturate(v.vertex.y/5) * _HighColor;
                 UNITY_TRANSFER_FOG(o,o.pos);
                 return o;
             }
@@ -72,10 +75,10 @@
 				fixed4 mask = _Color;
                 mask *= pow(saturate(sin( -0.0005 * (0.5*i.pos.x + i.pos.y) +  _Time.z / 2)),100) * 0.4+0.1;
                 
-                
+                col += i.HightColor * _HighAmount;
 				col += saturate(step(i.uv.x, _Width) + step(1 - _Width, i.uv.x) + step(i.uv.y, _Width) + step(1 - _Width, i.uv.y)) * mask;
                 
-                fixed normalcut = step (abs(i.normal.y),0)*0.03;
+                fixed normalcut = step (abs(i.normal.y),0)*0.04;
                 col += _Color * normalcut;
 
                 // apply fog

@@ -11340,6 +11340,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5626118780950487663, guid: c78d856ba60a2c846a662a5c8fb7be44,
         type: 3}
+    - target: {fileID: 1229564031, guid: dad3d39d87e022a4db39785867c21754, type: 3}
+      propertyPath: buffPrefab
+      value: 
+      objectReference: {fileID: 7854963073140858167, guid: 1dc14575d2f7218429411b13c9a9f8bf,
+        type: 3}
     - target: {fileID: 4315965567126696440, guid: dad3d39d87e022a4db39785867c21754,
         type: 3}
       propertyPath: m_IsTrigger

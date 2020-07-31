@@ -122,6 +122,7 @@ public class TerrainUnit : MonoBehaviour
     [Header("References Prefabs")]
     public GameObject MinePrefab;
     private GameObject subPrefab;
+    public GameObject buffPrefab;
 
     /// (runtime)若有额外元件则添加至此
     private GameObject subInstance;
@@ -178,11 +179,14 @@ public class TerrainUnit : MonoBehaviour
                 // static Instance
                 subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
                 // TODO: Random Generate Factor Range
-                foreach (var item in worldManager.SpreadBFS(this.position,
-                (me, him) => (me.position - him.position).magnitude < 3))
+                var buffRange = worldManager.SpreadBFS(this.position,
+                (me, him) => (me.position - him.position).magnitude < 2.5f);
+                foreach (var item in buffRange)
                 {
                     worldManager.GetUnit(item).localBuff = UnitBuffType.INCREASE_FACTORY;
                 }
+                GameObject buffInstance = Instantiate(buffPrefab, null);
+                buffInstance.GetComponent<BuffEffect>().LoadMeshByBlocks(buffRange, GetColorByType(UnitType.Mine));
                 break;
             default:
                 break;
