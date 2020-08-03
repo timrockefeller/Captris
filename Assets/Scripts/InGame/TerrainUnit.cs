@@ -18,10 +18,16 @@ public enum UnitType
     Absorb = 106, // tower 2
 
     Spawn = 110,
+
+
     // Generated
-    Mine = 201,
-    Tower = 202,
-    Portal = 203
+    Mine = 200,
+    Tower = 201,
+    Portal = 202,
+
+    // Static
+    Void = 300,// 虚空，不渲染该方块
+    Rock = 301
 }
 
 public enum UnitBuffType
@@ -45,7 +51,16 @@ public class TerrainUnit : MonoBehaviour
             return true;
         return false;
     }
-
+    /// <summary>
+    /// 是否为空方块（供连续判断）
+    /// </summary>
+    public static bool IsEmptyType(UnitType t)
+    {
+        int i = (int)t;
+        if (i >= 100 && i < 300)
+            return false;
+        return true;
+    }
     /// <summary>
     /// 是否为生产方块（供渲染进度条）
     /// </summary>
@@ -74,6 +89,12 @@ public class TerrainUnit : MonoBehaviour
 
             case UnitType.Spawn://101, 103, 101
                 return new Color(101 / 255.0f, 103 / 255.0f, 101 / 255.0f);
+
+            case UnitType.Rock://67, 67, 67
+                return new Color(67 / 255.0f, 67 / 255.0f, 67 / 255.0f);
+
+            case UnitType.Tower://199, 62, 58
+                return new Color(199 / 255.0f, 62 / 255.0f, 58 / 255.0f);
 
             case UnitType.Mine:// KIKYO 986D9C
                 return new Color(0x98 / 255.0f, 0x6D / 255.0f, 0x9c / 255.0f);
@@ -140,56 +161,61 @@ public class TerrainUnit : MonoBehaviour
                 Destroy(subInstance);
         }
 
-        this.type = t;
-        if (t == UnitType.Empty)
+        if (!InitStaticType(t))
         {
-            // reset
-            _canProducing = false;
-            isProducer = false;
-            return false;
-        }
-
-        this.pieceInstance = Instantiate(piecePrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-        this.pieceInstance.transform.SetParent(this.transform);
-        this.pieceInstance.GetComponent<MeshRenderer>().material.SetColor("_Color", TerrainUnit.GetColorByType(this.type));
 
 
-        this.progressFiller = this.pieceInstance.transform.Find("Canvas").Find("Filler").GetComponent<Image>();
-        this.progressBackground = this.pieceInstance.transform.Find("Canvas").Find("Back").GetComponent<Image>();
-        // produce handle
-        this.isProducer = unitConfig.IsProducer(this.type);
-        if (this.isProducer)
-        {
-            this.localPeriod = unitConfig.GetProducePeriod(this.type);
-            this.subPrefab = unitConfig.GetProducePrefab(this.type);
-            this.canProducing = true;
-        }
-        else
-        {
-            this.canProducing = false;
-            this.subPrefab = unitConfig.GetProducePrefab(this.type);// for static prefabs
-            if (subPrefab != null)
-                this.subInstance = Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
-        }
-        // default Prefab
-        switch (t)
-        {
-            case UnitType.Mine:
-                subPrefab = MinePrefab;
-                // static Instance
-                subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
-                // TODO: Random Generate Factor Range
-                var buffRange = worldManager.SpreadBFS(this.position,
-                (me, him) => (me.position - him.position).magnitude < 2.5f);
-                foreach (var item in buffRange)
-                {
-                    worldManager.GetUnit(item).localBuff = UnitBuffType.INCREASE_FACTORY;
-                }
-                GameObject buffInstance = Instantiate(buffPrefab, null);
-                buffInstance.GetComponent<BuffEffect>().LoadMeshByBlocks(buffRange, GetColorByType(UnitType.Mine));
-                break;
-            default:
-                break;
+            this.type = t;
+            if (t == UnitType.Empty)
+            {
+                // reset
+                _canProducing = false;
+                isProducer = false;
+                return false;
+            }
+
+            this.pieceInstance = Instantiate(piecePrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            this.pieceInstance.transform.SetParent(this.transform);
+            this.pieceInstance.GetComponent<MeshRenderer>().material.SetColor("_Color", TerrainUnit.GetColorByType(this.type));
+
+
+            this.progressFiller = this.pieceInstance.transform.Find("Canvas").Find("Filler").GetComponent<Image>();
+            this.progressBackground = this.pieceInstance.transform.Find("Canvas").Find("Back").GetComponent<Image>();
+            // produce handle
+            this.isProducer = unitConfig.IsProducer(this.type);
+            if (this.isProducer)
+            {
+                this.localPeriod = unitConfig.GetProducePeriod(this.type);
+                this.subPrefab = unitConfig.GetProducePrefab(this.type);
+                this.canProducing = true;
+            }
+            else
+            {
+                this.canProducing = false;
+                this.subPrefab = unitConfig.GetProducePrefab(this.type);// for static prefabs
+                if (subPrefab != null)
+                    this.subInstance = Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+            }
+            // default Prefab
+            switch (t)
+            {
+                case UnitType.Mine:
+                    subPrefab = MinePrefab;
+                    // static Instance
+                    subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
+                    // TODO: Random Generate Factor Range
+                    var buffRange = worldManager.SpreadBFS(this.position,
+                    (me, him) => (me.position - him.position).magnitude < 2.5f && Math.Abs(me.position.y - him.position.y) <= 1);
+                    foreach (var item in buffRange)
+                    {
+                        worldManager.GetUnit(item).localBuff = UnitBuffType.INCREASE_FACTORY;
+                    }
+                    GameObject buffInstance = Instantiate(buffPrefab, null);
+                    buffInstance.GetComponent<BuffEffect>().LoadMeshByBlocks(buffRange, GetColorByType(UnitType.Mine));
+                    break;
+                default:
+                    break;
+            }
         }
         return true;
 
@@ -198,9 +224,24 @@ public class TerrainUnit : MonoBehaviour
     /// <summary>
     /// Special Terrain
     /// </summary>
-    public void InitStaticType()
+    bool InitStaticType(UnitType _type)
     {
+        if ((int)_type >= 300 && (int)_type < 400)
+        {
+            this.type = _type;
 
+            switch (_type)
+            {
+                case UnitType.Void:
+                    this.GetComponent<MeshFilter>().mesh = null;
+                    break;
+                case UnitType.Rock:
+                    return false;
+                default: break;
+            }
+            return true;
+        }
+        return false;
     }
 
     public void SetBuff(UnitBuffType buffType)

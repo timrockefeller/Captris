@@ -1,3 +1,4 @@
+using UnityEngine;
 // Random Util
 // seed can be set only once
 public static class RD
@@ -20,5 +21,9 @@ public static class RD
         if (_RD != null) return;
         seed = _seed;
         _RD = new System.Random(_seed);
+    }
+    public static Vector2Int NextPosition(int x, int y)
+    {
+        return new Vector2Int((int)(NextDouble() * x), (int)(NextDouble() * y));
     }
 }

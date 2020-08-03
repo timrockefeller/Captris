@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Drawing;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,39 +74,137 @@ public class WorldManager : MonoBehaviour
         poolCur = 0;
         _seedX = (float)(RD.NextDouble() * 100.0);
         _seedZ = (float)(RD.NextDouble() * 100.0);
-
+        int[,] heightMap = new int[size.x, size.y];
         ///////////// generate world
         for (int x = 0; x < size.x; x++)
         {
             for (int z = 0; z < size.y; z++)
             {
-                // float xSample = (2 * (int)(x / 2.0f) + _seedX) / _relief;
-                // float zSample = (2 * (int)(z / 2.0f) + _seedZ) / _relief;
 
                 float xSample = (x + _seedX) / _relief;
                 float zSample = (z + _seedZ) / _relief;
-                float noise = Mathf.PerlinNoise(xSample, zSample) * 1.1f - 0.1f;
+                float noise = Mathf.PerlinNoise(xSample, zSample) * 1.2f - 0.2f;
                 noise = Mathf.Pow(noise, 2);
 
 
-                int y = (int)Mathf.Clamp(Mathf.Floor(_maxHeight * noise), 0, 1000);
+                heightMap[x, z] = (int)Mathf.Clamp(Mathf.Floor(_maxHeight * noise), 0, 1000);
+                // int y = 0;
 
-                GameObject ground = Instantiate(pGround, GameUtils.PositionToTranform(new Vector3Int(x, y, z)), Quaternion.identity);
+            }
+        }
+        // 整流一波
+        bool changed = true;
+        int maxChange = 5;
+        while (maxChange-- > 0 && changed)
+        {
+            changed = false;
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int z = 0; z < size.y; z++)
+                {
+                    int tmp = heightMap[x, z], tc = heightMap[x, z], ts = 1;
+                    foreach (var item in GetNeiboursVector(x, z))
+                    {
+                        tc += heightMap[item.x, item.y];
+                        ts++;
+                    }
+                    int tr = (int)Mathf.Round(tc * 1.0F / ts);
+                    if (tmp != tr)
+                    {
+                        changed = true;
+                        heightMap[x, z] = tr;
+                    }
+                }
+            }
+        }
+        for (int x = 0; x < size.x; x++)
+        {
+            for (int z = 0; z < size.y; z++)
+            {
+                GameObject ground = Instantiate(pGround, GameUtils.PositionToTranform(new Vector3Int(x, heightMap[x, z], z)), Quaternion.identity);
                 ground.transform.SetParent(transform);
                 this.map[x, z] = ground.GetComponent<TerrainUnit>();
-                this.map[x, z].position = new Vector3Int(x, y, z);
+                this.map[x, z].position = new Vector3Int(x, heightMap[x, z], z);
                 this.map[x, z].worldManager = this;
             }
         }
 
 
+
         ///////////// Generate Static Terrains
+        /// 
+        /////// Towers
+        int twOutBorder = 7, twInnerBorder = 15;
+        Vector2Int towerpos1 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twOutBorder, twInnerBorder + size.y / 2);
+        Vector2Int towerpos2 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twInnerBorder + size.x / 2, twOutBorder);
+        UnitType[,] tu1 = StaticTerrain.NextTower();
+        for (int _i = 0; _i < tu1.GetLength(0); _i++)
+        {
+            for (int _j = 0; _j < tu1.GetLength(1); _j++)
+            {
+                GetUnit(_i - tu1.GetLength(0) / 2 + towerpos1.x, _j - tu1.GetLength(1) / 2 + towerpos1.y).SetType(tu1[_i, _j]);
+            }
+        }
+        UnitType[,] tu2 = StaticTerrain.NextTower();
+        for (int _i = 0; _i < tu2.GetLength(0); _i++)
+        {
+            for (int _j = 0; _j < tu2.GetLength(1); _j++)
+            {
+                GetUnit(_i - tu2.GetLength(0) / 2 + towerpos2.x, _j - tu2.GetLength(1) / 2 + towerpos2.y).SetType(tu2[_i, _j]);
+            }
+        }
+        /////// Rocks
         int collapseNum = (int)(RD.NextDouble() * 0 + 1);
         // 1. collapse
         while (collapseNum-- > 0)
         {
 
         }
+        /////// Voids
+        // int sampleOffset = 5;// 裁去边框
+        // PoissonDiscSampler sampler = new PoissonDiscSampler(size.x - 2 * sampleOffset, size.y - 2 * sampleOffset, 5f);// 在少2倍边框区域内随机生成点
+        // foreach (Vector2 sample in sampler.Samples())
+        // {
+        //     var dir = (int)(RD.NextDouble() * 4);
+        //     Vector3Int dirVector;
+        //     switch (dir)
+        //     {
+        //         case 0:
+        //             dirVector = Vector3Int.right; break;
+        //         case 1:
+        //             dirVector = Vector3Int.left; break;
+        //         case 2:
+        //             dirVector = new Vector3Int(0, 0, -1); break;
+        //         case 3:
+        //         default:
+        //             dirVector = new Vector3Int(0, 0, 1); break;
+        //     }
+        //     int i = 0, maxInter = 100;
+        //     bool camPlace = true;
+        //     while (maxInter-- > 0 && GetUnit((int)sample.x + i * dirVector.x + sampleOffset,
+        //                    (int)sample.y + i * dirVector.z + sampleOffset) != null)
+        //     {
+        //         if (GetUnit((int)sample.x + i * dirVector.x + sampleOffset,
+        //                     (int)sample.y + i * dirVector.z + sampleOffset).type != UnitType.Empty)
+        //         {
+        //             camPlace = false;
+        //             break;
+        //         }
+        //         i++;
+        //     }
+        //     if (camPlace)
+        //     {
+        //         i = 1; maxInter = 100;
+        //         while (maxInter-- > 0 && GetUnit((int)sample.x + i * dirVector.x + sampleOffset,
+        //                   (int)sample.y + i * dirVector.z + sampleOffset) != null)
+        //         {
+        //             GetUnit((int)sample.x + i * dirVector.x + sampleOffset,
+        //                         (int)sample.y + i * dirVector.z + sampleOffset).SetType(UnitType.Void);
+
+        //             i++;
+        //         }
+        //     }
+        // }
 
         ///////////// TEMPLATE bfs
         // foreach (var item in SpreadBFS(map[15, 15].position,
@@ -114,27 +213,41 @@ public class WorldManager : MonoBehaviour
         // {
         //     GetUnit(item).SetType(UnitType.Spawn);
         // }
-
-        ///////////// generate Mines
-        //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
-        //  Poisson Disk Distribution
-        PoissonDiscSampler sampler = new PoissonDiscSampler(size.x, size.y, 15f);
-        foreach (Vector2 sample in sampler.Samples())
-        {
-            // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
-            map[(int)sample.x, (int)sample.y].SetType(UnitType.Mine);
-        }
-
-        ///////////// generate spawn point & player
-        map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
-        playerInstance = Instantiate(playerPrefab, new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
-
         /////////////
         ///  BuffEffect be = GameObject.Find("TestBuff").GetComponent<BuffEffect>();
         // //buff test
         // be.AttachMesh(BuffEffectManager.GetLineByVectors(SpreadBFS(map[15, 15].position,
         //     (a, b) => ((a.position - b.position).magnitude < 2)
         // )));
+
+
+        ///////////// generate Mines
+        //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
+        //  Poisson Disk Distribution
+        int sampleOffset = 2;// 裁去边框
+        PoissonDiscSampler sampler = new PoissonDiscSampler(size.x - sampleOffset * 2, size.y - sampleOffset * 2, 15f);
+        foreach (Vector2 sample in sampler.Samples())
+        {
+            // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
+            if (GetUnit((int)sample.x + sampleOffset, (int)sample.y + sampleOffset).type == UnitType.Empty)
+                GetUnit((int)sample.x + sampleOffset, (int)sample.y + sampleOffset).SetType(UnitType.Mine);
+            Vector2Int centerPos = new Vector2Int((int)sample.x + sampleOffset, (int)sample.y + sampleOffset);
+            UnitType[,] mineM = StaticTerrain.NextModule();
+            for (int _i = 0; _i < mineM.GetLength(0); _i++)
+            {
+                for (int _j = 0; _j < mineM.GetLength(1); _j++)
+                {
+                    GetUnit(_i - mineM.GetLength(0) / 2 + centerPos.x, _j - mineM.GetLength(1) / 2 + centerPos.y).SetType(mineM[_i, _j]);
+                }
+            }
+
+        }
+
+        ///////////// generate spawn point & player
+        map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
+        playerInstance = Instantiate(playerPrefab, new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
+
+
 
     }
 
@@ -176,6 +289,20 @@ public class WorldManager : MonoBehaviour
                 Debug.Log((_4direction[i, 0] + x) + " " + (_4direction[i, 1] + y));
             }
             if (t != null) yield return t;
+        }
+    }
+    IEnumerable<Vector2Int> GetNeiboursVector(int x, int y)
+    {
+        x %= size.x;
+        for (int i = 0; i < 4; i++)
+        {
+            if (((_4direction[i, 0] + x) < 0)
+             || ((_4direction[i, 0] + x) >= size.x)
+             || (_4direction[i, 1] + y < 0)
+             || (_4direction[i, 1] + y >= size.y)
+             )
+                continue;
+            yield return new Vector2Int(_4direction[i, 0] + x, _4direction[i, 1] + y);
         }
     }
 

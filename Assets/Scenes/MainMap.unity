@@ -7859,7 +7859,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pGround: {fileID: 1758639344}
   iSeed: 4006
-  size: {x: 32, y: 32}
+  size: {x: 50, y: 50}
   playerPrefab: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1,
     type: 3}
   playerInstance: {fileID: 0}
@@ -8092,7 +8092,13 @@ MonoBehaviour:
     producePeriod: 0
     producePrefab: {fileID: 0}
     resourceNeeded: 000000000000000000000000
-  - type: 203
+  - type: 300
+    isProducer: 0
+    isManual: 0
+    producePeriod: 0
+    producePrefab: {fileID: 0}
+    resourceNeeded: 000000000000000000000000
+  - type: 301
     isProducer: 0
     isManual: 0
     producePeriod: 0
