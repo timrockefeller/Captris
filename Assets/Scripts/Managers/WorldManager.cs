@@ -144,7 +144,7 @@ public class WorldManager : MonoBehaviour
         x %= size.x;
         for (int i = 0; i < 4; i++)
         {
-            if ((_4direction[i, 0] + x) % size.x < 0 || (_4direction[i, 0] + x) % size.x >= size.x
+            if (_4direction[i, 0] + x < 0 || _4direction[i, 0] + x >= size.x
              || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size.y) continue;
             if (TerrainUnit.IsManualType(map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))
                 if (1 >= Mathf.Abs(map[_4direction[i, 0] + x, _4direction[i, 1] + y].position.y - map[x, y].position.y))
@@ -157,13 +157,25 @@ public class WorldManager : MonoBehaviour
         x %= size.x;
         for (int i = 0; i < 4; i++)
         {
-            if (((_4direction[i, 0] + x) % size.x < 0)
-             || ((_4direction[i, 0] + x) % size.x >= size.x)
+            if (((_4direction[i, 0] + x) < 0)
+             || ((_4direction[i, 0] + x) >= size.x)
              || (_4direction[i, 1] + y < 0)
              || (_4direction[i, 1] + y >= size.y)
              )
                 continue;
-            yield return map[_4direction[i, 0] + x, _4direction[i, 1] + y];
+            TerrainUnit t = null;
+            try
+            {
+                t = map[_4direction[i, 0] + x, _4direction[i, 1] + y];
+
+
+            }
+            catch (System.Exception)
+            {
+
+                Debug.Log((_4direction[i, 0] + x) + " " + (_4direction[i, 1] + y));
+            }
+            if (t != null) yield return t;
         }
     }
 
