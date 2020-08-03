@@ -8,8 +8,8 @@ public class BuffEffect : MonoBehaviour
     {
 
     }
-    List<Vector3Int> _lines;
-    public void AttachMesh(List<Vector3Int> lines, float height = 1F)
+    List<Vector3> _lines;
+    public void AttachMesh(List<Vector3> lines, float height = 1F)
     {
 
 
