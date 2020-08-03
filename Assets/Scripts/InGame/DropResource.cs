@@ -20,7 +20,6 @@ public class DropResource : MonoBehaviour
         {
             if (playManager.GainResource(this.type))
                 Destroy(gameObject);
-
         }
     }
 

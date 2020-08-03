@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     public float mistHurtingPeriod = 0.5f;
     public float mistDamage = 10f;
     private float mistHurtingTime = 0;
+    private bool onWall;
+
     void Start()
     {
         rigidbodyComponent = gameObject.GetComponent<Rigidbody>();
@@ -39,7 +41,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) force -= new Vector3(0, 0, -1);
         if (Input.GetKey(KeyCode.D)) force += new Vector3(0, 0, -1);
         if (speed.magnitude > 0) cameraController.SetTarget(transform.position);
-        speed += acc * Vector3.Normalize(force) * Time.deltaTime * (onMist ? mistCost : 1);
+        speed += acc * Vector3.Normalize(force) * Time.deltaTime * (onMist || onWall ? mistCost : 1);
         if (!onGround)
         {
             speedY += -1 * 3 * Time.deltaTime;
@@ -49,12 +51,12 @@ public class PlayerController : MonoBehaviour
         {
             // rigidbodyComponent.velocity -= new Vector3(0, rigidbodyComponent.velocity.y, 0);
             speedY = 0;
-            if (Input.GetButton("Jump"))
+            if (!onWall && Input.GetButton("Jump"))
             {
-                speedY = 4 * (onMist ? mistCost : 1);
+                speedY = 3.3f * (onMist ? mistCost : 1);
             }
         }
-        speed = Vector3.ClampMagnitude(speed, maxSpeed * (onMist ? mistCost : 1));
+        speed = Vector3.ClampMagnitude(speed, maxSpeed * (onMist || onWall ? mistCost : 1));
         transform.position += (speed + new Vector3(0, speedY, 0)) * Time.deltaTime;
         if (force.magnitude <= 0)
             speed = Vector3.ClampMagnitude(speed, Mathf.Clamp(speed.magnitude - drag * Time.deltaTime, 0, speed.magnitude));
@@ -70,7 +72,9 @@ public class PlayerController : MonoBehaviour
                 playerStatsManager.TakeDamage(mistDamage);
                 mistHurtingTime -= mistHurtingPeriod;
             }
-        }else{
+        }
+        else
+        {
             mistHurtingTime = 0;
         }
     }
@@ -83,6 +87,7 @@ public class PlayerController : MonoBehaviour
             this.transform.position += new Vector3(0, 0.1f, 0) * Time.deltaTime;
             this.onGround = true;
             this.onMist = false;
+            onWall = false;
         }
         if (other.collider.tag == "Terrain")
         {
@@ -91,7 +96,10 @@ public class PlayerController : MonoBehaviour
             this.onGround = true;
             this.onMist = true;
         }
-
+        if (other.collider.tag == "Wall")
+        {
+            this.onWall = true;
+        }
     }
     void OnCollisionExit(Collision other)
     {
@@ -99,6 +107,9 @@ public class PlayerController : MonoBehaviour
         {
             this.onGround = false;
         }
-
+        if (other.collider.tag == "Wall")
+        {
+            onWall = false;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -401,9 +402,29 @@ public class PlayManager : MonoBehaviour
             hudManager.UpdateResource(playerResources, playerMaxResources);
             changed = true;
         }
-        
+
         return changed;
     }
+    public void IncreaseMaxResource(int num = 1)
+    {
+        List<ResourceType> keys = new List<ResourceType>();
+        foreach (var item in playerMaxResources.Keys)
+        {
+            keys.Add(item);
+        }
+        foreach (var item in keys)
+        {
+            playerMaxResources[item] = Math.Max(0, playerMaxResources[item] + num);
+            playerResources[item] = Math.Min(playerResources[item], playerMaxResources[item]);
+        }
+        hudManager.UpdateResource(playerResources, playerMaxResources);
+    }
+    public void DecreaseMaxResource(int num = 1)
+    {
+        IncreaseMaxResource(-num);
+
+    }
+
 
     /// <summary>
     /// 进入放置状态

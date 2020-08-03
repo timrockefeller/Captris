@@ -228,16 +228,15 @@ public class WorldManager : MonoBehaviour
         PoissonDiscSampler sampler = new PoissonDiscSampler(size.x - sampleOffset * 2, size.y - sampleOffset * 2, 15f);
         foreach (Vector2 sample in sampler.Samples())
         {
-            // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
-            if (GetUnit((int)sample.x + sampleOffset, (int)sample.y + sampleOffset).type == UnitType.Empty)
-                GetUnit((int)sample.x + sampleOffset, (int)sample.y + sampleOffset).SetType(UnitType.Mine);
+            // // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
             Vector2Int centerPos = new Vector2Int((int)sample.x + sampleOffset, (int)sample.y + sampleOffset);
             UnitType[,] mineM = StaticTerrain.NextModule();
             for (int _i = 0; _i < mineM.GetLength(0); _i++)
             {
                 for (int _j = 0; _j < mineM.GetLength(1); _j++)
                 {
-                    GetUnit(_i - mineM.GetLength(0) / 2 + centerPos.x, _j - mineM.GetLength(1) / 2 + centerPos.y).SetType(mineM[_i, _j]);
+                    if (mineM[_i, _j] != UnitType.Empty)
+                        GetUnit(_i - mineM.GetLength(0) / 2 + centerPos.x, _j - mineM.GetLength(1) / 2 + centerPos.y).SetType(mineM[_i, _j]);
                 }
             }
 
@@ -330,7 +329,7 @@ public class WorldManager : MonoBehaviour
 
     public List<Vector3> GetRoundSameType(int x, int y)
     {
-        
+
         var rst = new List<Vector3>();
         var queue = new Queue<Vector2>();
         bool[,] visited = new bool[size.x, size.y];

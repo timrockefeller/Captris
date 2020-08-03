@@ -166,6 +166,7 @@ public class TerrainUnit : MonoBehaviour
     {
         if (this.type != UnitType.Empty && pieceInstance != null || t == UnitType.Empty)
         {
+            ClearOut();
             Destroy(pieceInstance);
             if (subInstance != null)
                 Destroy(subInstance);
@@ -215,12 +216,15 @@ public class TerrainUnit : MonoBehaviour
                     subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
                     //  Random Generate Factor Range
                     var buffRange = worldManager.SpreadBFS(this.position,
-                    (me, him) => (me.position - him.position).magnitude < 2.5f && Math.Abs(me.position.y - him.position.y) <= 1);
+                    (me, him) => (me.position - him.position).magnitude < 2.3f && Math.Abs(me.position.y - him.position.y) <= 1);
                     foreach (var item in buffRange)
                     {
                         worldManager.GetUnit(item).localBuff = UnitBuffType.INCREASE_FACTORY;
                     }
                     // flush buff mesh
+                    break;
+                case UnitType.Storage:
+                    playManager.IncreaseMaxResource();//  every storage take 1
                     break;
                 default:
                     break;
@@ -228,6 +232,19 @@ public class TerrainUnit : MonoBehaviour
         }
         return true;
 
+    }
+    /// <summary>
+    /// Do Dead Stuff
+    /// </summary>
+    private void ClearOut()
+    {
+        switch (type)
+        {
+            case UnitType.Storage:
+                playManager.DecreaseMaxResource();
+                break;
+            default: break;
+        }
     }
 
     /// <summary>
