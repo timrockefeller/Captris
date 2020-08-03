@@ -330,7 +330,7 @@ public class WorldManager : MonoBehaviour
 
     public List<Vector3> GetRoundSameType(int x, int y)
     {
-        // TODO
+        
         var rst = new List<Vector3>();
         var queue = new Queue<Vector2>();
         bool[,] visited = new bool[size.x, size.y];
@@ -345,7 +345,7 @@ public class WorldManager : MonoBehaviour
             for (int z = 0; z < size.y; z++)
             {
 
-                // TODO Move to new position
+                // Move to new position
                 map[poolCur % size.x, z % size.y].OnLeaveMap();
                 // continurous perlin noise ganeration
                 float xSample = (poolCur + size.x + _seedX) / _relief;

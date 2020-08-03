@@ -10,7 +10,7 @@ public enum PlayState
 {
     SPECTING,
     ELECTED,
-    DELETING // TODO
+    DELETING // TODO Remove Blocks
 }
 
 /// <summary>

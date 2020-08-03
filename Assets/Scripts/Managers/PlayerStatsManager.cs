@@ -8,7 +8,7 @@ public class PlayerStatsManager : MonoBehaviour
     public float recoverDelay = 1F;
     public float recoverSpeed = 20F;
 
-    // TODO HUD Components reference
+    // HUD Components reference
     public GameObject healthBar;
     private  Image healthBarCMP;
 

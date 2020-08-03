@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public float acc;
     public float drag;
 
-    [Tooltip("站在空区域上被减速(或扣血)")]// TODO  decrease HP
+    [Tooltip("站在空区域上被减速(或扣血)")]// decrease HP
     [Range(0, 1)]
     public float mistCost;
     private bool onGround = false;
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         }
         if (other.collider.tag == "Terrain")
         {
-            //TODO die? 碰到空区域
+            //die? 碰到空区域
             this.transform.position += new Vector3(0, 0.1f, 0) * Time.deltaTime;
             this.onGround = true;
             this.onMist = true;

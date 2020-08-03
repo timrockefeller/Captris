@@ -213,7 +213,7 @@ public class TerrainUnit : MonoBehaviour
                     subPrefab = MinePrefab;
                     // static Instance
                     subInstance = Instantiate(MinePrefab, transform.position + new Vector3(-0.5f, 0.5f, -0.5f), Quaternion.identity);
-                    // TODO: Random Generate Factor Range
+                    //  Random Generate Factor Range
                     var buffRange = worldManager.SpreadBFS(this.position,
                     (me, him) => (me.position - him.position).magnitude < 2.5f && Math.Abs(me.position.y - him.position.y) <= 1);
                     foreach (var item in buffRange)
