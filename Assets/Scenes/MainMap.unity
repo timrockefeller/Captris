@@ -8111,7 +8111,8 @@ MonoBehaviour:
     isProducer: 0
     isManual: 1
     producePeriod: 0
-    producePrefab: {fileID: 0}
+    producePrefab: {fileID: 1018035448555046588, guid: d0c1a7ce782bb244dbba01ad01957c09,
+      type: 3}
     resourceNeeded: 030000000300000006000000
   - type: 110
     isProducer: 0

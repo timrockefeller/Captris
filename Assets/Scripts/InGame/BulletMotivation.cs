@@ -27,6 +27,7 @@ public class BulletMotivation : MonoBehaviour
         curTime += Time.fixedDeltaTime;
         if (curTime > lifeTime)
         {
+            //TODO Damage
             Destroy(gameObject);
         }
     }
