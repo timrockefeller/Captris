@@ -55,11 +55,10 @@ public class Defender : MonoBehaviour
             while (!aimList[i].GetComponent<Health>().Alive())
             {
                 i++;
-                if (i > aimList.Count)
+                if (i >= aimList.Count)
                 {
                     validTarget = false;
                     break;
-
                 }
             }
             if (validTarget)

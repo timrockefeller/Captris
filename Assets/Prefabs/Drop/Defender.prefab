@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6540412964649032834}
   - component: {fileID: 3763373934579065141}
   - component: {fileID: 7813747762477004477}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Defender
   m_TagString: Piece
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 7268651590875570600}
   - component: {fileID: 2443173543225943185}
   - component: {fileID: 8792469323760585021}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Icosphere
   m_TagString: Piece
   m_Icon: {fileID: 0}
