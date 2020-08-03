@@ -102,6 +102,16 @@ public class TerrainUnit : MonoBehaviour
                 return Color.white;
         }
     }
+    public static Color GetColorByBuffType(UnitBuffType t)
+    {
+        switch (t)
+        {
+            case UnitBuffType.INCREASE_FACTORY:
+                return GetColorByType(UnitType.Mine);
+            default:
+                return Color.white;
+        }
+    }
     public Vector3Int position;
     private GameObject pieceInstance;
     public GameObject piecePrefab;
@@ -210,8 +220,7 @@ public class TerrainUnit : MonoBehaviour
                     {
                         worldManager.GetUnit(item).localBuff = UnitBuffType.INCREASE_FACTORY;
                     }
-                    GameObject buffInstance = Instantiate(buffPrefab, null);
-                    buffInstance.GetComponent<BuffEffect>().LoadMeshByBlocks(buffRange, GetColorByType(UnitType.Mine));
+                    // flush buff mesh
                     break;
                 default:
                     break;

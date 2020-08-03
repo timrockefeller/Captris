@@ -1,3 +1,4 @@
+using System.Net;
 using System.Linq;
 using System;
 using System.Collections.Generic;
@@ -50,4 +51,44 @@ public class BuffEffectManager : MonoBehaviour
         return rst;
     }
 
+    public GameObject buffPrefab;
+    public Queue<GameObject> buffInstances;
+
+    private WorldManager worldManager;
+    private void Awake()
+    {
+        worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
+        buffInstances = new Queue<GameObject>();
+    }
+    public void RefreshBuff()
+    {
+        while (buffInstances.Count > 0)
+        {
+            Destroy(buffInstances.Dequeue());
+        }
+        if (worldManager)
+        {
+            bool[,] visited = new bool[worldManager.size.x, worldManager.size.y];
+            for (int _x = 0; _x < worldManager.size.x; _x++)
+            {
+                for (int _z = 0; _z < worldManager.size.y; _z++)
+                {
+                    if (!visited[_x, _z] && worldManager.GetUnit(_x, _z).localBuff != UnitBuffType.NONE)
+                    {
+                        visited[_x, _z] = true;
+                        var buffRange = worldManager.SpreadBFS(new Vector3Int(_x, 0, _z),
+                        (me, him) => me.localBuff == him.localBuff,
+                        p =>
+                        {
+                            visited[p.x, p.z] = true;
+                            return true;
+                        });
+                        GameObject buffInstance = Instantiate(buffPrefab, null);
+                        buffInstance.GetComponent<BuffEffect>().LoadMeshByBlocks(buffRange, TerrainUnit.GetColorByBuffType(worldManager.GetUnit(_x, _z).localBuff));
+                        buffInstances.Enqueue(buffInstance);
+                    }
+                }
+            }
+        }
+    }
 }

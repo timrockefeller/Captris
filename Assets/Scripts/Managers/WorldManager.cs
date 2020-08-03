@@ -40,7 +40,7 @@ public class WorldManager : MonoBehaviour
     private float _relief = 14f;
     private int _maxHeight = 5;
     private int poolCur = 0;
-
+    private BuffEffectManager buffEffectManager;
     // Start is called before the first frame update
     void Awake()
     {
@@ -49,7 +49,7 @@ public class WorldManager : MonoBehaviour
         map = new TerrainUnit[this.size.x, this.size.y];
 
         RD.SetSeed(iSeed);
-
+        buffEffectManager = GameObject.Find("BuffEffectManager").GetComponent<BuffEffectManager>();
         this.Generate();
 
         StartCoroutine("LongtimeForward");
@@ -250,7 +250,11 @@ public class WorldManager : MonoBehaviour
 
 
     }
-
+    private void Start()
+    {
+        ///////////// Fresh Buff Area
+        buffEffectManager.RefreshBuff();
+    }
     public bool HasNeibour(int x, int y)
     {
         // x += poolCur;
@@ -361,7 +365,7 @@ public class WorldManager : MonoBehaviour
     /// <param name="condition">条件</param>
     /// <param name="pass">中间件</param>
     /// <returns></returns>
-    public List<Vector3Int> SpreadBFS(Vector3Int v, Func<TerrainUnit, TerrainUnit, bool> condition, List<Vector3Int> pass = null)
+    public List<Vector3Int> SpreadBFS(Vector3Int v, Func<TerrainUnit, TerrainUnit, bool> condition, Func<Vector3Int, bool> callback = null, List<Vector3Int> pass = null)
     {
         if (pass == null) pass = new List<Vector3Int>();
         var waitingQueue = new Queue<Vector3Int>();
@@ -374,6 +378,7 @@ public class WorldManager : MonoBehaviour
             if (condition(GetUnit(v.x, v.z), GetUnit(t.x, t.z)))
             {
                 pass.Add(t);
+                if (callback != null) callback(t);
                 foreach (TerrainUnit i in GetNeibours(t.x, t.z))
                 {
                     if (!visited[i.position.x + 1, i.position.z + 1])

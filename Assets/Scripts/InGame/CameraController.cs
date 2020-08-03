@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
             RaycastHit hitInfo = new RaycastHit();
             if (Physics.Raycast(ray, out hitInfo))
                 //获取碰撞点的位置
-                if (hitInfo.collider.tag == "Terrain" || hitInfo.collider.tag == "Piece")
+                if (hitInfo.collider.tag == "Terrain" || hitInfo.collider.tag == "Piece" ||  hitInfo.collider.tag == "Wall")
                     SetTarget(hitInfo.point);
 
         }

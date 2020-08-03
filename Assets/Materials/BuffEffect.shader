@@ -7,15 +7,16 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" "Queue" = "Transparent" "IgnoreProjector"="True" }
+        Tags { "RenderType"="Opaque" "Queue" = "Transparent" "IgnoreProjector"="True" }
         LOD 100
 
         Pass
         {
             
             Cull Off
-            Tags {"Queue"="AlphaTest" }
+            Tags {"Queue"="Transparent" }
             Blend SrcAlpha OneMinusSrcAlpha
+            ZWrite Off
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -54,7 +55,7 @@
                 // sample the texture
                 fixed4 col = _Color;
                 col.a *= i.uv.y;
-                col.a = pow(col.a,10);
+                col.a = pow(col.a,5);
                 col.a *=0.5;
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
