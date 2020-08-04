@@ -36,8 +36,10 @@ public class MissionManager : MonoBehaviour
     private float _colorSpeed = 4F;
     private float _fillSpeed = 2F;
 
-    static Color COLOR_NORMAL = new Color(255/255F, 255/255F, 255/255F, 97/255F);
-    static Color COLOR_HIDDEN = new Color(255/255F, 255/255F, 255/255F, 0/255F);
+    static Color COLOR_NORMAL = new Color(255 / 255F, 255 / 255F, 255 / 255F, 97 / 255F);
+
+    static Color COLOR_HIGHLIGHT = new Color(255 / 255F, 255 / 255F, 255 / 255F, 170 / 255F);
+    static Color COLOR_HIDDEN = new Color(255 / 255F, 255 / 255F, 255 / 255F, 0 / 255F);
     private void Start()
     {
         missionTextCMP = missionText.GetComponent<Text>();
@@ -74,6 +76,11 @@ public class MissionManager : MonoBehaviour
                     // next mission
                     StartCoroutine(NextMission());
                 }
+                else
+                {
+                    UpdateText();
+                }
+
             }
         }
     }
@@ -82,7 +89,7 @@ public class MissionManager : MonoBehaviour
     {
         if (curMission < missions.GetLength(0))
         {
-            this.missionTextCMP.text = missions[curMission].text + (missions[curMission].num > 1 ? " (" + curNum + "/" + missions[curMission].num + ")" : "");
+            this.missionTextCMP.text = "- " + missions[curMission].text + (missions[curMission].num > 1 ? " (" + curNum + "/" + missions[curMission].num + ")" : "");
         }
         else
         {
@@ -96,7 +103,8 @@ public class MissionManager : MonoBehaviour
         inMission = false;
         curMission++;
         targetFill = 1;
-        yield return new WaitForSeconds(1);
+        targetColor = COLOR_HIGHLIGHT;
+        yield return new WaitForSeconds(1.5f);
         curNum = 0;
         targetColor = COLOR_HIDDEN;
         yield return new WaitForSeconds(1);

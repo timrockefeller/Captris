@@ -7904,8 +7904,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pGround: {fileID: 1758639344}
-  iSeed: 4006
-  size: {x: 50, y: 50}
+  iSeed: 3347
+  size: {x: 32, y: 32}
   playerPrefab: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1,
     type: 3}
   playerInstance: {fileID: 0}
@@ -9792,11 +9792,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   missions:
-  - text: Right click to navigate
+  - text: "\u53F3\u952E\u5355\u51FB\u4EE5\u79FB\u52A8\u89C6\u91CE"
     condition: 1
     num: 1
-  - text: Place Road near spawn point
+  - text: "\u653E\u7F6E\u4E24\u5757 Road \u62D3\u5C55\u8DEF\u5F84"
     condition: 2
+    num: 2
+  - text: "\u653E\u7F6E\u4E00\u5757 Grass \u6765\u751F\u4EA7\u98DF\u7269"
+    condition: 3
     num: 1
   missionText: {fileID: 1817593591}
   missionTick: {fileID: 1822811743}
@@ -10219,8 +10222,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -211.4, y: -76.5}
-  m_SizeDelta: {x: 369.83, y: 99.19}
+  m_AnchoredPosition: {x: -204.9, y: -86.9}
+  m_SizeDelta: {x: 400, y: 99.19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1817593593
 MonoBehaviour:
@@ -10243,7 +10246,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 9b33b4c72189a294abecbbad27a6708f, type: 3}
-    m_FontSize: 14
+    m_FontSize: 17
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 10
@@ -10254,7 +10257,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: '- Mission Board'
 --- !u!222 &1817593594
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10305,7 +10308,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -10334,8 +10337,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 140.7, y: 41.7}
-  m_SizeDelta: {x: 300, y: 2}
+  m_AnchoredPosition: {x: 119.4, y: 39.5}
+  m_SizeDelta: {x: 250, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1825042207
 GameObject:

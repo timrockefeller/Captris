@@ -134,7 +134,7 @@ public class WorldManager : MonoBehaviour
         ///////////// Generate Static Terrains
         /// 
         /////// Towers
-        int twOutBorder = 7, twInnerBorder = 15;
+        int twOutBorder = 5, twInnerBorder = 10;
         Vector2Int towerpos1 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twOutBorder, twInnerBorder + size.y / 2);
         Vector2Int towerpos2 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twInnerBorder + size.x / 2, twOutBorder);
         UnitType[,] tu1 = StaticTerrain.NextTower();
@@ -227,7 +227,7 @@ public class WorldManager : MonoBehaviour
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
         //  Poisson Disk Distribution
         sampleOffset = 2;// 裁去边框
-        sampler = new PoissonDiscSampler(size.x - sampleOffset * 2, size.y - sampleOffset * 2, 15f);
+        sampler = new PoissonDiscSampler(size.x - sampleOffset * 2, size.y - sampleOffset * 2, 14f);
         foreach (Vector2 sample in sampler.Samples())
         {
             // // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
