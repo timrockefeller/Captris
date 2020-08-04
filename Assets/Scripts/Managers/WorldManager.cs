@@ -92,6 +92,38 @@ public class WorldManager : MonoBehaviour
 
             }
         }
+
+        //////////////////
+        /// STACK begin
+        /// 这里提前定义了两座遗迹的位置，需要在生成地形的时候提前平滑他们所在的位置
+        int twOutBorder = 5, twInnerBorder = 10;
+        Vector2Int towerpos1 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twOutBorder, twInnerBorder + size.y / 2);
+        Vector2Int towerpos2 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twInnerBorder + size.x / 2, twOutBorder);
+        /// do lerp
+        int towerpos1height = heightMap[towerpos1.x, towerpos1.y];
+        int towerpos2height = heightMap[towerpos2.x, towerpos2.y];
+
+        const float roundBorderMin = 2.5f;
+        const float roundBorderMax = 7f;
+        for (int x = 0; x < size.x; x++)
+        {
+            for (int z = 0; z < size.y; z++)
+            {
+                Vector2Int _cur = new Vector2Int(x, z);
+                float _magnitude = (_cur - towerpos1).magnitude;
+                if (_magnitude < roundBorderMax)
+                    heightMap[x, z] = (int)Mathf.SmoothStep(towerpos1height, heightMap[x, z], Mathf.Clamp01((_magnitude - roundBorderMin) / (roundBorderMax - roundBorderMin)));
+                else
+                {
+                    _magnitude = (_cur - towerpos2).magnitude;
+                    if (_magnitude < roundBorderMax)
+                        heightMap[x, z] = (int)Mathf.SmoothStep(towerpos2height, heightMap[x, z], Mathf.Clamp01((_magnitude - roundBorderMin) / (roundBorderMax - roundBorderMin)));
+                }
+            }
+        }
+        /// STACK end
+        //////////////////
+
         // 整流一波
         bool changed = true;
         int maxChange = 5;
@@ -134,9 +166,8 @@ public class WorldManager : MonoBehaviour
         ///////////// Generate Static Terrains
         /// 
         /////// Towers
-        int twOutBorder = 5, twInnerBorder = 10;
-        Vector2Int towerpos1 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twOutBorder, twInnerBorder + size.y / 2);
-        Vector2Int towerpos2 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twInnerBorder + size.x / 2, twOutBorder);
+        /** GOTO .Generate():1 */
+
         UnitType[,] tu1 = StaticTerrain.NextTower();
         for (int _i = 0; _i < tu1.GetLength(0); _i++)
         {

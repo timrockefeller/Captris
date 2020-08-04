@@ -587,7 +587,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &221692317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1138,7 +1138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &460102818
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1374,6 +1374,7 @@ MonoBehaviour:
   units:
   - type: 100
     enabled: 1
+    hudButton: {fileID: 1101894130}
     cooldownTotal: 5
     cooldownFillarea: {fileID: 394625691}
     cooldownButton: {fileID: 2038283750}
@@ -1382,6 +1383,7 @@ MonoBehaviour:
     cooldownButtonCMP: {fileID: 0}
   - type: 101
     enabled: 1
+    hudButton: {fileID: 660440845}
     cooldownTotal: 10
     cooldownFillarea: {fileID: 1719320371}
     cooldownButton: {fileID: 219719935}
@@ -1390,6 +1392,7 @@ MonoBehaviour:
     cooldownButtonCMP: {fileID: 0}
   - type: 102
     enabled: 1
+    hudButton: {fileID: 1649228297}
     cooldownTotal: 10
     cooldownFillarea: {fileID: 2031624693}
     cooldownButton: {fileID: 582600561}
@@ -1398,6 +1401,7 @@ MonoBehaviour:
     cooldownButtonCMP: {fileID: 0}
   - type: 103
     enabled: 1
+    hudButton: {fileID: 460102817}
     cooldownTotal: 20
     cooldownFillarea: {fileID: 1500708357}
     cooldownButton: {fileID: 1439145846}
@@ -1406,12 +1410,14 @@ MonoBehaviour:
     cooldownButtonCMP: {fileID: 0}
   - type: 104
     enabled: 1
+    hudButton: {fileID: 221692316}
     cooldownTotal: 20
     cooldownFillarea: {fileID: 1846292191}
     cooldownButton: {fileID: 1825042207}
     cooldownCurrent: 0
     cooldownFillareaCMP: {fileID: 0}
     cooldownButtonCMP: {fileID: 0}
+  blaker: {fileID: 521626119}
   resources:
   - type: 0
     text: {fileID: 1349087909}
@@ -1462,7 +1468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -400, y: 50}
+  m_AnchoredPosition: {x: 191, y: 50}
   m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &526037857
@@ -1947,7 +1953,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 660440846}
-  - component: {fileID: 660440847}
   m_Layer: 5
   m_Name: Type_Grass
   m_TagString: Untagged
@@ -1978,20 +1983,6 @@ RectTransform:
   m_AnchoredPosition: {x: 150, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &660440847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 660440845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 270bb04d0201fec41a2436cc2e281d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableMaskPrefab: {fileID: 5965647638928882774, guid: 297202245abf79846bb2f59ea5998339,
-    type: 3}
 --- !u!1 &681656185
 GameObject:
   m_ObjectHideFlags: 0
@@ -2783,9 +2774,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1101894131}
-  - component: {fileID: 1101894132}
   m_Layer: 5
-  m_Name: Type_Rpad
+  m_Name: Type_Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2814,20 +2804,6 @@ RectTransform:
   m_AnchoredPosition: {x: 50, y: -50}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1101894132
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1101894130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 270bb04d0201fec41a2436cc2e281d2a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableMaskPrefab: {fileID: 5965647638928882774, guid: 297202245abf79846bb2f59ea5998339,
-    type: 3}
 --- !u!1 &1104523272
 GameObject:
   m_ObjectHideFlags: 0
@@ -9437,7 +9413,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1649228298
 RectTransform:
   m_ObjectHideFlags: 0
