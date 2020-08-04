@@ -89,7 +89,7 @@ public class MissionManager : MonoBehaviour
     {
         if (curMission < missions.GetLength(0))
         {
-            this.missionTextCMP.text = "- " + missions[curMission].text + (missions[curMission].num > 1 ? " (" + curNum + "/" + missions[curMission].num + ")" : "");
+            this.missionTextCMP.text = missions[curMission].text + (missions[curMission].num > 1 ? " (" + curNum + "/" + missions[curMission].num + ")" : "");
         }
         else
         {
