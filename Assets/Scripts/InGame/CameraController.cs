@@ -9,9 +9,12 @@ public class CameraController : MonoBehaviour
     public Vector3 target;
     public bool enableMotionControl = false;
     // Start is called before the first frame update
+
+    public PlayManager playManager;
     void Start()
     {
         // target = new Vector3(15, 0.5f, 15);
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
     }
 
     private void Update()
@@ -23,11 +26,14 @@ public class CameraController : MonoBehaviour
             RaycastHit hitInfo = new RaycastHit();
             if (Physics.Raycast(ray, out hitInfo))
                 //获取碰撞点的位置
-                if (hitInfo.collider.tag == "Terrain" || hitInfo.collider.tag == "Piece" ||  hitInfo.collider.tag == "Wall")
+                if (hitInfo.collider.tag == "Terrain" || hitInfo.collider.tag == "Piece" || hitInfo.collider.tag == "Wall")
+                {
                     SetTarget(hitInfo.point);
+                    playManager.SendEvent(PlayEventType.CONTROL_NAVIGATE);
+                }
 
         }
-        
+
         this.transform.position = Vector3.Lerp(this.transform.position, target, Time.deltaTime * followSpeed);
     }
     // Update is called once per frame

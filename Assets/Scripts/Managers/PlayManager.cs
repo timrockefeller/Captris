@@ -66,6 +66,7 @@ public class PlayManager : MonoBehaviour
 
     private WorldManager worldManager;
     private HUDManager hudManager;
+    private MissionManager missionManager;
     private EventDispatcher eventDispatcher;
     private TerrainUnitConfig unitConfig;
     private UICameraController uiCameraController;
@@ -105,6 +106,7 @@ public class PlayManager : MonoBehaviour
     {
         worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
         hudManager = GameObject.Find("HUDManager").GetComponent<HUDManager>();
+        missionManager = GameObject.Find("MissionManager").GetComponent<MissionManager>();
         unitConfig = GameObject.Find("UnitConfig").GetComponent<TerrainUnitConfig>();
         eventDispatcher = new EventDispatcher();
         // init 
@@ -150,8 +152,15 @@ public class PlayManager : MonoBehaviour
             {
                 if (slectingCanPlace)
                 {
-                    StartCoroutine("SpawnPiece");
-
+                    StartCoroutine(SpawnPiece());
+                    // event patch
+                    switch (selectedType)
+                    {
+                        case UnitType.Road:SendEvent(PlayEventType.PLAYER_PLACE_ROAD);break;
+                        case UnitType.Grass:SendEvent(PlayEventType.PLAYER_PLACE_GRASS);break;
+                        case UnitType.Factor:SendEvent(PlayEventType.PLAYER_PLACE_FACTORY);break;
+                        default:break;
+                    }
                     this.playState = PlayState.SPECTING;
                     // hide preview
                     if (previewInstance) Destroy(previewInstance);
@@ -472,16 +481,17 @@ public class PlayManager : MonoBehaviour
     }
 
 
-    void AddEventListener(PlayEventType type, Action callback)
+    public void AddEventListener(PlayEventType type, Action callback)
     {
         eventDispatcher.AddEventListener(type, callback);
     }
-    void RemoveEventListener(PlayEventType type, Action callback)
+    public void RemoveEventListener(PlayEventType type, Action callback)
     {
         eventDispatcher.RemoveEventListener(type, callback);
     }
-    void SendEvent(PlayEventType type)
+    public void SendEvent(PlayEventType type)
     {
+        missionManager.AckEvent(type);
         eventDispatcher.SendEvent(type);
     }
 }

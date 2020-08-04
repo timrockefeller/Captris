@@ -160,9 +160,11 @@ public class WorldManager : MonoBehaviour
         {
 
         }
+        PoissonDiscSampler sampler;
+        int sampleOffset;
         /////// Voids
-        // int sampleOffset = 5;// 裁去边框
-        // PoissonDiscSampler sampler = new PoissonDiscSampler(size.x - 2 * sampleOffset, size.y - 2 * sampleOffset, 5f);// 在少2倍边框区域内随机生成点
+        // sampleOffset = 5;// 裁去边框
+        // sampler = new PoissonDiscSampler(size.x - 2 * sampleOffset, size.y - 2 * sampleOffset, 5f);// 在少2倍边框区域内随机生成点
         // foreach (Vector2 sample in sampler.Samples())
         // {
         //     var dir = (int)(RD.NextDouble() * 4);
@@ -224,8 +226,8 @@ public class WorldManager : MonoBehaviour
         ///////////// generate Mines
         //  http://www.twinklingstar.cn/2013/406/stochastic-distributed-ray-tracing/
         //  Poisson Disk Distribution
-        int sampleOffset = 2;// 裁去边框
-        PoissonDiscSampler sampler = new PoissonDiscSampler(size.x - sampleOffset * 2, size.y - sampleOffset * 2, 15f);
+        sampleOffset = 2;// 裁去边框
+        sampler = new PoissonDiscSampler(size.x - sampleOffset * 2, size.y - sampleOffset * 2, 15f);
         foreach (Vector2 sample in sampler.Samples())
         {
             // // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
