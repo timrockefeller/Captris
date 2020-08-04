@@ -66,6 +66,7 @@ public class PlayManager : MonoBehaviour
 
     private WorldManager worldManager;
     private HUDManager hudManager;
+    private EventDispatcher eventDispatcher;
     private TerrainUnitConfig unitConfig;
     private UICameraController uiCameraController;
     public uint pieceCount { get; private set; }
@@ -105,7 +106,7 @@ public class PlayManager : MonoBehaviour
         worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
         hudManager = GameObject.Find("HUDManager").GetComponent<HUDManager>();
         unitConfig = GameObject.Find("UnitConfig").GetComponent<TerrainUnitConfig>();
-
+        eventDispatcher = new EventDispatcher();
         // init 
         this.pieceDatas = new PieceData[this.piecePrefabs.Length];
         for (var i = 0; i < this.piecePrefabs.Length; i++)
@@ -468,5 +469,19 @@ public class PlayManager : MonoBehaviour
             default: this.selectedType = UnitType.Grass; break;
         }
         ButtonSelected();
+    }
+
+
+    void AddEventListener(PlayEventType type, Action callback)
+    {
+        eventDispatcher.AddEventListener(type, callback);
+    }
+    void RemoveEventListener(PlayEventType type, Action callback)
+    {
+        eventDispatcher.RemoveEventListener(type, callback);
+    }
+    void SendEvent(PlayEventType type)
+    {
+        eventDispatcher.SendEvent(type);
     }
 }
