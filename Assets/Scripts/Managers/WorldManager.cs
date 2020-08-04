@@ -254,7 +254,13 @@ public class WorldManager : MonoBehaviour
         ///////////// Fresh Buff Area
         buffEffectManager.RefreshBuff();
     }
-    public bool HasNeibour(int x, int y)
+
+    /// <summary>
+    /// 查找四周有无符合条件的邻居
+    /// 
+    /// t: 留空则搜索 IsManualType
+    /// </summary>
+    public bool HasNeibour(int x, int y, UnitType t = UnitType.Empty)
     {
         // x += poolCur;
         x %= size.x;
@@ -262,9 +268,20 @@ public class WorldManager : MonoBehaviour
         {
             if (_4direction[i, 0] + x < 0 || _4direction[i, 0] + x >= size.x
              || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size.y) continue;
-            if (TerrainUnit.IsManualType(map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))
-                if (1 >= Mathf.Abs(map[_4direction[i, 0] + x, _4direction[i, 1] + y].position.y - map[x, y].position.y))
-                    return true;
+            if (t == UnitType.Empty)
+            {
+                if (!TerrainUnit.IsManualType(map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))// type
+                    continue;
+
+            }
+            else
+            {
+                if (map[_4direction[i, 0] + x, _4direction[i, 1] + y].type != t)// type
+                    continue;
+            }
+
+            if (1 >= Mathf.Abs(map[_4direction[i, 0] + x, _4direction[i, 1] + y].position.y - map[x, y].position.y))// 0<= dy <= 1
+                return true;
         }
         return false;
     }
