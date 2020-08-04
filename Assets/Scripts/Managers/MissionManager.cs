@@ -111,8 +111,9 @@ public class MissionManager : MonoBehaviour
         targetFill = 0;
         missionTickCMP.fillAmount = 0;
         missionTickCMP.color = COLOR_HIDDEN;
-        inMission = true;
         targetColor = COLOR_NORMAL;
         UpdateText();
+        if (curMission < missions.GetLength(0))
+            inMission = true;
     }
 }
