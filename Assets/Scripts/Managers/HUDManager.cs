@@ -15,6 +15,7 @@ public class HUDManager : MonoBehaviour
     {
         public UnitType type;
         public bool enabled;
+        public GameObject hudButton;
 
         [Header("Cooldown Porperties")]
         public float cooldownTotal;
@@ -32,9 +33,27 @@ public class HUDManager : MonoBehaviour
         [HideInInspector]
         public Button cooldownButtonCMP;
     }
-    [Header("")]
+    [Header("按钮相关")]
     public S_UnitType[] units;
+    [Tooltip("按钮列表本体")]
+    public GameObject blaker;
+    private RectTransform blakerCMP;
+    private int _unlockButtonNum = 2;
+    private int unlockButtonNum
+    {
+        set
+        {
 
+            blakerTarget = new Vector2(blakerOffset - 100f * value, blakerCMP.anchoredPosition.y);
+            _unlockButtonNum = value;
+        }
+        get
+        {
+            return _unlockButtonNum;
+        }
+    }
+    private const float blakerOffset = 400F;
+    private Vector2 blakerTarget;
     /// <summary>
     /// 资源显示
     /// </summary>
@@ -140,10 +159,16 @@ public class HUDManager : MonoBehaviour
         }
         timeBoardCMP = timeBoard.GetComponent<Image>();
         hintBoxCMP = hintBox.GetComponent<Image>();
+        blakerCMP = blaker.GetComponent<RectTransform>();
+        BindUnlockEventListener();
+        unlockButtonNum = 2;
     }
     private void Update()
     {
-        hintBoxCMP.fillAmount = Mathf.Lerp(hintBoxCMP.fillAmount, showHintBox ? 1 : 0, 0.04f);
+        hintBoxCMP.fillAmount = Mathf.Lerp(hintBoxCMP.fillAmount, showHintBox ? 1 : 0, 5f * Time.deltaTime);
+
+        // move offset *Danger!*
+        blakerCMP.anchoredPosition = Vector2.Lerp(blakerCMP.anchoredPosition, blakerTarget, 5f * Time.deltaTime);
     }
     private void FixedUpdate()
     {
@@ -193,7 +218,7 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    public void UpdateResource(Dictionary<ResourceType, int> res,Dictionary<ResourceType, int> maxRes)
+    public void UpdateResource(Dictionary<ResourceType, int> res, Dictionary<ResourceType, int> maxRes)
     {
 
         _res = res;
@@ -205,7 +230,7 @@ public class HUDManager : MonoBehaviour
 
     public void UpdateTimeBoard(float percent)
     {
-        timeBoardCMP.fillAmount = 1-Mathf.Clamp01(percent);
+        timeBoardCMP.fillAmount = 1 - Mathf.Clamp01(percent);
         if (percent >= 0.99f)
         {
             // show hint
@@ -213,9 +238,46 @@ public class HUDManager : MonoBehaviour
             StartCoroutine("HideHintBox");
         }
     }
-    IEnumerator HideHintBox(){
+    IEnumerator HideHintBox()
+    {
         yield return new WaitForSeconds(5.0f);
         showHintBox = false;
         StopCoroutine("HideHintBox");
     }
+
+    private void UnlockType(UnitType t)
+    {
+        for (var i = 0; i < units.Length; i++)
+        {
+            if (units[i].type == t)
+            {
+                units[i].hudButton.SetActive(true);
+                return;
+            }
+        }
+    }
+
+    private void BindUnlockEventListener()
+    {
+        playManager.AddEventListener(PlayEventType.PLAYER_PLACE_GRASS, () =>
+        {
+            // enable factory 2->3
+            if (unlockButtonNum < 3)
+            {
+                UnlockType(UnitType.Factor);
+                unlockButtonNum++;
+            }
+        });
+        playManager.AddEventListener(PlayEventType.PLAYER_PLACE_FACTORY, () =>
+        {
+            // enable defend & storage 3->5
+            if (unlockButtonNum < 5)
+            {
+                UnlockType(UnitType.Defend);
+                UnlockType(UnitType.Storage);
+                unlockButtonNum += 2;
+            }
+        });
+    }
+
 }

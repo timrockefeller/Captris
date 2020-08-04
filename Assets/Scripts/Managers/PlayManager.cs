@@ -101,14 +101,18 @@ public class PlayManager : MonoBehaviour
     GameObject[] enemies;
 
 
+    private void Awake()
+    {
 
+        eventDispatcher = new EventDispatcher();
+    }
     void Start()
     {
+
         worldManager = GameObject.Find("Map").GetComponent<WorldManager>();
         hudManager = GameObject.Find("HUDManager").GetComponent<HUDManager>();
         missionManager = GameObject.Find("MissionManager").GetComponent<MissionManager>();
         unitConfig = GameObject.Find("UnitConfig").GetComponent<TerrainUnitConfig>();
-        eventDispatcher = new EventDispatcher();
         // init 
         this.pieceDatas = new PieceData[this.piecePrefabs.Length];
         for (var i = 0; i < this.piecePrefabs.Length; i++)
@@ -156,10 +160,10 @@ public class PlayManager : MonoBehaviour
                     // event patch
                     switch (selectedType)
                     {
-                        case UnitType.Road:SendEvent(PlayEventType.PLAYER_PLACE_ROAD);break;
-                        case UnitType.Grass:SendEvent(PlayEventType.PLAYER_PLACE_GRASS);break;
-                        case UnitType.Factor:SendEvent(PlayEventType.PLAYER_PLACE_FACTORY);break;
-                        default:break;
+                        case UnitType.Road: SendEvent(PlayEventType.PLAYER_PLACE_ROAD); break;
+                        case UnitType.Grass: SendEvent(PlayEventType.PLAYER_PLACE_GRASS); break;
+                        case UnitType.Factor: SendEvent(PlayEventType.PLAYER_PLACE_FACTORY); break;
+                        default: break;
                     }
                     this.playState = PlayState.SPECTING;
                     // hide preview
