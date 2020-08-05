@@ -11,7 +11,7 @@ public class Enemy_Lazer : MonoBehaviour
     public float maxSpeed;
     public float maxAcc;
     public float maxTorque;
-
+    public float torqueThreshold = 0;
     private float speed;
     private float torque;
 
@@ -72,7 +72,7 @@ public class Enemy_Lazer : MonoBehaviour
             // movement
 
             transform.position += transform.forward * speed * Time.fixedDeltaTime;
-            if (Vector3.Dot(transform.forward, player.transform.position - transform.position) > 0)
+            if (Vector3.Dot(transform.forward, (player.transform.position - transform.position).normalized) > torqueThreshold)
             {
                 //speed up
                 speed += maxAcc * Time.fixedDeltaTime;

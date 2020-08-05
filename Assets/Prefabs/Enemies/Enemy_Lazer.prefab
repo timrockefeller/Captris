@@ -166,7 +166,8 @@ MonoBehaviour:
   maxSpeed: 0.7
   maxAcc: 0.2
   maxTorque: 1
-  attackCD: 20
+  torqueThreshold: 0.2
+  attackCD: 5
   bulletPrefab: {fileID: 1015233459957706024, guid: 10427068998051148afc798eb361ea86,
     type: 3}
 --- !u!135 &1482808366027741847

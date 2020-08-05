@@ -98,7 +98,7 @@ public class PlayManager : MonoBehaviour
     [Header("Enemy")]
     public GameObject enemyPrefab;
     public float enemySpawnDistance = 15;
-    GameObject[] enemies;
+    List<GameObject> enemies;
 
 
     private void Awake()
@@ -132,6 +132,7 @@ public class PlayManager : MonoBehaviour
 
 
         // defines
+        enemies = new List<GameObject>();
         nextBag = new Queue<int>();
         pieceCount = 0;
         selectedType = UnitType.Grass;
@@ -188,7 +189,8 @@ public class PlayManager : MonoBehaviour
 
     }
     private bool progressStart = false;
-    public void StartProgress (){
+    public void StartProgress()
+    {
         progressStart = true;
     }
     private void FixedUpdate()
@@ -206,12 +208,12 @@ public class PlayManager : MonoBehaviour
             hudManager.UpdateTimeBoard(percent);
             if (percent > 1)
             {
-                progressState = ProgressState.NIGHT;
+
                 /// do spawn monster
                 // 数量由天数决定 
                 // TODO 考虑非线性
                 int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * dayCount + 1);
-                enemies = new GameObject[enemyCount];
+                // enemies = new GameObject[enemyCount];
                 while (enemyCount-- > 0)
                 {
                     // random position
@@ -219,20 +221,38 @@ public class PlayManager : MonoBehaviour
                     // 1-1.5倍距离生成
                     float actualSpawnDistance = enemySpawnDistance * (1 + RD.NextFloat() * 0.5f);
                     Vector3 spawnpoint = new Vector3(enemySpawnDistance * Mathf.Sin(thita), 3, enemySpawnDistance * Mathf.Cos(thita));
-                    enemies[enemyCount] = Instantiate(enemyPrefab, worldManager.playerInstance.transform.position + spawnpoint, Quaternion.identity);
+                    enemies.Add(Instantiate(enemyPrefab, worldManager.playerInstance.transform.position + spawnpoint, Quaternion.identity));
                 }
+
+                // state change
+                progressState = ProgressState.NIGHT;
                 curTime = 0;
-                hudManager.UpdateTimeBoard(1);
-                dayCount++;
             }
         }
 
         if (progressState == ProgressState.NIGHT)
         {
 
-            // TODO spawn monsters
+            // update UI
+            if (curTime < nightTime)
+                curTime += Time.fixedDeltaTime;
+            percent /= nightTime;
+            hudManager.UpdateTimeBoard(1 - percent);
+
+            enemies.RemoveAll(g => g == null);
+            if ( /*all monster killed*/ enemies.Count == 0 || percent > 1)
+            {
+
+
+
+                progressState = ProgressState.DAYTIME;
+                curTime = 0;
+                dayCount++;
+            }
 
         }
+
+
         //UI update
 
         // 补充包
