@@ -52,7 +52,7 @@ public class HUDManager : MonoBehaviour
             return _unlockButtonNum;
         }
     }
-    private const float blakerOffset = 400F;
+    private const float blakerOffset = 360F;
     private Vector2 blakerTarget;
     /// <summary>
     /// 资源显示

@@ -8,7 +8,7 @@ public class DropResource : MonoBehaviour
 
     private PlayManager playManager;
 
-    public Vector3 position;
+    public Vector3Int position;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class DropResource : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (playManager.GainResource(this.type))
+            if (playManager.GainResource(this.type, this.position))
                 Destroy(gameObject);
         }
     }

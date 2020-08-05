@@ -205,7 +205,9 @@ public class TerrainUnit : MonoBehaviour
                 this.canProducing = false;
                 this.subPrefab = unitConfig.GetProducePrefab(this.type);// for static prefabs
                 if (subPrefab != null)
+                {
                     this.subInstance = Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                }
             }
             // default Prefab
             switch (t)
@@ -302,6 +304,11 @@ public class TerrainUnit : MonoBehaviour
                 // Instantiate produce prefab
                 subInstance = Instantiate(subPrefab, transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
                 subInstance.transform.SetParent(transform);
+                DropResource dr = subInstance.GetComponent<DropResource>();
+                if (dr != null)
+                {
+                    dr.position = this.position;
+                }
                 localProgress -= localPeriod;
                 canProducing = false;
             }

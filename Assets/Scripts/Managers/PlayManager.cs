@@ -435,18 +435,27 @@ public class PlayManager : MonoBehaviour
     {
         if (!this.playerResources.ContainsKey(type))
             this.playerResources.Add(type, 0);
+
         // check is full
         bool changed = false;
         if (this.playerResources[type] < this.playerMaxResources[type])
         {
             this.playerResources[type]++;
-            // FIXME Warning! Do not use player's position to reset unit.
-            worldManager.GetUnit((int)worldManager.playerInstance.transform.position.x, (int)worldManager.playerInstance.transform.position.z).canProducing = true;
+            // FIXED Warning! Do not use player's position to reset unit.
             hudManager.UpdateResource(playerResources, playerMaxResources);
             changed = true;
         }
-
         return changed;
+    }
+    public bool GainResource(ResourceType type, Vector3Int position)
+    {
+        if (GainResource(type))
+        {
+            Debug.Log(position);
+            worldManager.GetUnit(position.x, position.z).canProducing = true;
+            return true;
+        }
+        return false;
     }
     public void IncreaseMaxResource(int num = 1)
     {
