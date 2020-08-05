@@ -96,12 +96,13 @@ public class WorldManager : MonoBehaviour
         //////////////////
         /// STACK begin
         /// 这里提前定义了两座遗迹的位置，需要在生成地形的时候提前平滑他们所在的位置
-        int twOutBorder = 5, twInnerBorder = 10;
-        Vector2Int towerpos1 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twOutBorder, twInnerBorder + size.y / 2);
-        Vector2Int towerpos2 = RD.NextPosition(size.x / 2 - twOutBorder - twInnerBorder, size.y / 2 - twOutBorder - twInnerBorder) + new Vector2Int(twInnerBorder + size.x / 2, twOutBorder);
+        const int TOWER_OUTTER_BORDER = 5, TOWER_INNER_BORDER = 10;
+        Vector2Int towerpos1 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_OUTTER_BORDER, TOWER_INNER_BORDER + size.y / 2);
+        Vector2Int towerpos2 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_INNER_BORDER + size.x / 2, TOWER_OUTTER_BORDER);
         /// do lerp
-        int towerpos1height = heightMap[towerpos1.x, towerpos1.y];
-        int towerpos2height = heightMap[towerpos2.x, towerpos2.y];
+        const int TOWER_IS_HIGHER = 2;
+        int towerpos1height = TOWER_IS_HIGHER + heightMap[towerpos1.x, towerpos1.y];
+        int towerpos2height = TOWER_IS_HIGHER + heightMap[towerpos2.x, towerpos2.y];
 
         const float roundBorderMin = 5f;
         const float roundBorderMax = 9f;
@@ -126,8 +127,8 @@ public class WorldManager : MonoBehaviour
 
         // 整流一波
         bool changed = true;
-        int maxChange = 5;
-        while (maxChange-- > 0 && changed)
+        int maxChangeCount = 5;
+        while (maxChangeCount-- > 0 && changed)
         {
             changed = false;
             for (int x = 0; x < size.x; x++)
@@ -141,6 +142,7 @@ public class WorldManager : MonoBehaviour
                         ts++;
                     }
                     int tr = (int)Mathf.Round((tc * 1.0F - 0.1f * (5 - ts)) / ts);
+                    // VS: int tr = (int)Mathf.Round((tc * 1.0F / ts - 0.1f * (5 - ts));
                     if (tmp != tr)
                     {
                         changed = true;
