@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         {
             // rigidbodyComponent.velocity -= new Vector3(0, rigidbodyComponent.velocity.y, 0);
             speedY = 0;
-            if (!onWall && Input.GetButton("Jump"))
+            if (!onWall && force!=Vector3.zero)
             {
                 speedY = 3.3f * (onMist ? mistCost : 1);
             }
