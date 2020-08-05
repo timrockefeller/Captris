@@ -140,7 +140,7 @@ public class WorldManager : MonoBehaviour
                         tc += heightMap[item.x, item.y];
                         ts++;
                     }
-                    int tr = (int)Mathf.Round(tc * 1.0F / ts);
+                    int tr = (int)Mathf.Round((tc * 1.0F - 0.1f * (5 - ts)) / ts);
                     if (tmp != tr)
                     {
                         changed = true;
