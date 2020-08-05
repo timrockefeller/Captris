@@ -1118,7 +1118,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextPieceInstance: []
-  nextPieceTargetRotateSpeed: 0.05
   previewPos: {fileID: 1188451298}
   previewPos1: {fileID: 1740958762}
   previewPos2: {fileID: 848734980}
@@ -7940,7 +7939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pGround: {fileID: 1758639344}
-  iSeed: 3347
+  iSeed: 3990
   size: {x: 32, y: 32}
   playerPrefab: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1,
     type: 3}

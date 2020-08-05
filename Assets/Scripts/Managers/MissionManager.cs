@@ -2,6 +2,7 @@ using System.Collections;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 public class MissionManager : MonoBehaviour
 {
 
@@ -14,6 +15,9 @@ public class MissionManager : MonoBehaviour
         public PlayEventType condition;
         [Tooltip("需要达成的次数")]
         public int num;
+
+        [Tooltip("回调函数")]
+        public UnityEvent callback;
     }
     public MissionSingleton[] missions;
 
@@ -71,16 +75,10 @@ public class MissionManager : MonoBehaviour
             if (missions[curMission].condition == t)
             {
                 curNum++;
+                UpdateText();
                 if (curNum >= missions[curMission].num)
-                {
                     // next mission
                     StartCoroutine(NextMission());
-                }
-                else
-                {
-                    UpdateText();
-                }
-
             }
         }
     }
@@ -89,7 +87,16 @@ public class MissionManager : MonoBehaviour
     {
         if (curMission < missions.GetLength(0))
         {
-            this.missionTextCMP.text = missions[curMission].text + (missions[curMission].num > 1 ? " (" + curNum + "/" + missions[curMission].num + ")" : "");
+
+            var texts = missions[curMission].text.Split('|');
+            var finalText = texts[0] + (missions[curMission].num > 1 ? " (" + curNum + "/" + missions[curMission].num + ")" : "");
+            int i = 1;
+            while (i < texts.GetLength(0))
+            {
+                finalText += "\n" + texts[i];
+                i++;
+            }
+            this.missionTextCMP.text = finalText;
         }
         else
         {
@@ -100,6 +107,7 @@ public class MissionManager : MonoBehaviour
     private bool inMission = false;
     IEnumerator NextMission()
     {
+        missions[curMission].callback.Invoke();
         inMission = false;
         curMission++;
         targetFill = 1;

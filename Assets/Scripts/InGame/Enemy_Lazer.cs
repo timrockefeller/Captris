@@ -26,6 +26,7 @@ public class Enemy_Lazer : MonoBehaviour
     public GameObject bulletPrefab;
 
     private Health health;
+    private PlayManager playManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class Enemy_Lazer : MonoBehaviour
         size = RD.NextFloat() * 0.25f + 0.8f;
 
         health = GetComponent<Health>();
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
     }
     /// 
     /// <summary>
@@ -102,8 +104,19 @@ public class Enemy_Lazer : MonoBehaviour
             }
 
         }
-    }
+        else
+        {
+            if (deathMutex)
+            {
+                deathMutex = false;
+                // Do death
 
+                playManager.SendEvent(PlayEventType.PLAYER_KILL);
+                playManager.SendEvent(PlayEventType.PLAYER_KILL_LAZER);
+            }
+        }
+    }
+    private bool deathMutex = true;
     /// <summary>
     /// 投弹设备启动！
     /// </summary>

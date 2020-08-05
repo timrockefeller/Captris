@@ -259,25 +259,29 @@ public class HUDManager : MonoBehaviour
 
     private void BindUnlockEventListener()
     {
-        playManager.AddEventListener(PlayEventType.PLAYER_PLACE_GRASS, () =>
-        {
-            // enable factory 2->3
-            if (unlockButtonNum < 3)
-            {
-                UnlockType(UnitType.Factor);
-                unlockButtonNum++;
-            }
-        });
-        playManager.AddEventListener(PlayEventType.PLAYER_PLACE_FACTORY, () =>
-        {
-            // enable defend & storage 3->5
-            if (unlockButtonNum < 5)
-            {
-                UnlockType(UnitType.Defend);
-                UnlockType(UnitType.Storage);
-                unlockButtonNum += 2;
-            }
-        });
+        // playManager.AddEventListener(PlayEventType.PLAYER_PLACE_GRASS, () =>
+        // {
+        //     
+
+        // });
+        // playManager.AddEventListener(PlayEventType.PLAYER_PLACE_FACTORY, () =>
+        // {
+        //     
+
+        // });
+    }
+    public void Unlock_period1()
+    {
+        // enable factory 2->3
+        UnlockType(UnitType.Factor);
+        unlockButtonNum++;
+    }
+    public void Unlock_period2()
+    {
+        // enable defend & storage 3->5
+        UnlockType(UnitType.Defend);
+        UnlockType(UnitType.Storage);
+        unlockButtonNum += 2;
     }
 
 }

@@ -19,6 +19,7 @@ public class Health : MonoBehaviour
     /// <returns>是否死亡</returns>
     public bool DoAttack(float damage)
     {
+        if (curHealth <= 0) return true;
         curHealth -= damage;
         if (curHealth <= 0)
         {

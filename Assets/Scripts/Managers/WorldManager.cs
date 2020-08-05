@@ -103,8 +103,8 @@ public class WorldManager : MonoBehaviour
         int towerpos1height = heightMap[towerpos1.x, towerpos1.y];
         int towerpos2height = heightMap[towerpos2.x, towerpos2.y];
 
-        const float roundBorderMin = 2.5f;
-        const float roundBorderMax = 7f;
+        const float roundBorderMin = 5f;
+        const float roundBorderMax = 9f;
         for (int x = 0; x < size.x; x++)
         {
             for (int z = 0; z < size.y; z++)
@@ -293,7 +293,8 @@ public class WorldManager : MonoBehaviour
     /// 
     /// t: 留空则搜索 IsManualType
     /// </summary>
-    public bool HasNeibour(int x, int y, UnitType t = UnitType.Empty)
+    public bool HasNeibour(int x, int y, Func<UnitType, bool> t = null
+    )
     {
         // x += poolCur;
         x %= size.x;
@@ -301,7 +302,7 @@ public class WorldManager : MonoBehaviour
         {
             if (_4direction[i, 0] + x < 0 || _4direction[i, 0] + x >= size.x
              || _4direction[i, 1] + y < 0 || _4direction[i, 1] + y >= size.y) continue;
-            if (t == UnitType.Empty)
+            if (t == null)
             {
                 if (!TerrainUnit.IsManualType(map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))// type
                     continue;
@@ -309,7 +310,7 @@ public class WorldManager : MonoBehaviour
             }
             else
             {
-                if (map[_4direction[i, 0] + x, _4direction[i, 1] + y].type != t)// type
+                if (!t(map[_4direction[i, 0] + x, _4direction[i, 1] + y].type))// type
                     continue;
             }
 

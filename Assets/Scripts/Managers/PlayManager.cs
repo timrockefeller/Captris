@@ -158,13 +158,17 @@ public class PlayManager : MonoBehaviour
                 {
                     StartCoroutine(SpawnPiece());
                     // event patch
+                    SendEvent(PlayEventType.PLAYER_PLACE);
                     switch (selectedType)
                     {
                         case UnitType.Road: SendEvent(PlayEventType.PLAYER_PLACE_ROAD); break;
                         case UnitType.Grass: SendEvent(PlayEventType.PLAYER_PLACE_GRASS); break;
                         case UnitType.Factor: SendEvent(PlayEventType.PLAYER_PLACE_FACTORY); break;
+                        case UnitType.Defend: SendEvent(PlayEventType.PLAYER_PLACE_DEFEND); break;
+                        case UnitType.Storage: SendEvent(PlayEventType.PLAYER_PLACE_STORAGE); break;
                         default: break;
                     }
+
                     this.playState = PlayState.SPECTING;
                     // hide preview
                     if (previewInstance) Destroy(previewInstance);
@@ -183,13 +187,16 @@ public class PlayManager : MonoBehaviour
         }
 
     }
-
+    private bool progressStart = false;
+    public void StartProgress (){
+        progressStart = true;
+    }
     private void FixedUpdate()
     {
         // 更新进度
 
         float percent = curTime;
-        if (pieceCount > 0 && progressState == ProgressState.DAYTIME)
+        if (progressStart && pieceCount > 0 && progressState == ProgressState.DAYTIME)
         {
 
             if (curTime < dayTime)
@@ -368,7 +375,9 @@ public class PlayManager : MonoBehaviour
                 foreach (Vector3Int occ in this.selectedData.GetOccupy())
                 {
                     TerrainUnit targetTerrain = worldManager.GetUnit(selectingPosition.x + occ.x, selectingPosition.z + occ.z);
-                    if (targetTerrain != null && worldManager.HasNeibour(selectingPosition.x + occ.x, selectingPosition.z + occ.z))
+                    if (targetTerrain != null && worldManager.HasNeibour(selectingPosition.x + occ.x, selectingPosition.z + occ.z,
+                     t => t == UnitType.Road || t == UnitType.Spawn
+                     ))
                     {
                         hasNeibour = true;
                         break;

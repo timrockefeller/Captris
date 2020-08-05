@@ -7,7 +7,7 @@ public class UICameraController : MonoBehaviour
     public GameObject[] nextPieceInstance;
 
 
-    public float nextPieceTargetRotateSpeed = 2.4f;
+    public const float nextPieceTargetRotateSpeed = 30f;
 
     [Header("Referrences")]
     public GameObject previewPos;
@@ -56,7 +56,7 @@ public class UICameraController : MonoBehaviour
         return true;
     }
 
-    void LateUpdate()
+    void Update()
     {
 
         if (nextPieceInstance[0] != null)
