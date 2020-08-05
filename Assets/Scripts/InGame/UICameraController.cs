@@ -7,7 +7,7 @@ public class UICameraController : MonoBehaviour
     public GameObject[] nextPieceInstance;
 
 
-    public float nextPieceTargetRotateSpeed = 0.02f;
+    public float nextPieceTargetRotateSpeed = 2.4f;
 
     [Header("Referrences")]
     public GameObject previewPos;
@@ -60,7 +60,7 @@ public class UICameraController : MonoBehaviour
     {
 
         if (nextPieceInstance[0] != null)
-            nextPieceInstance[0].transform.rotation = Quaternion.Slerp(nextPieceInstance[0].transform.rotation, nextPieceTargetRotation, nextPieceTargetRotateSpeed);
+            nextPieceInstance[0].transform.rotation = Quaternion.Slerp(nextPieceInstance[0].transform.rotation, nextPieceTargetRotation, nextPieceTargetRotateSpeed * Time.deltaTime);
         previewPos.transform.position = cam.ScreenToWorldPoint(new Vector3(100, 200, cam.nearClipPlane)) + transform.forward;
         previewPos1.transform.position = cam.ScreenToWorldPoint(new Vector3(180, 180, cam.nearClipPlane)) + transform.forward;
         previewPos2.transform.position = cam.ScreenToWorldPoint(new Vector3(210, 180, cam.nearClipPlane)) + transform.forward;
