@@ -15,6 +15,8 @@ public class TiltShiftEditor : Editor
     SerializedProperty m_DistortionScale;
     SerializedProperty m_Shader;
     SerializedProperty m_Saturation;
+    SerializedProperty m_BloodOutColor;
+    SerializedProperty m_BloodOutNum;
     void OnEnable()
     {
         m_Preview = serializedObject.FindProperty("Preview");
@@ -28,6 +30,9 @@ public class TiltShiftEditor : Editor
         m_DistortionScale = serializedObject.FindProperty("DistortionScale");
         m_Shader = serializedObject.FindProperty("Shader");
         m_Saturation = serializedObject.FindProperty("Saturation");
+        m_BloodOutColor = serializedObject.FindProperty("bloodOutColor");
+        m_BloodOutNum = serializedObject.FindProperty("bloodOutNum");
+
     }
 
     public override void OnInspectorGUI()
@@ -42,6 +47,10 @@ public class TiltShiftEditor : Editor
         EditorGUILayout.PropertyField(m_Radius);
         EditorGUILayout.PropertyField(m_UseDistortion);
         EditorGUILayout.PropertyField(m_Saturation);
+
+        EditorGUILayout.PropertyField(m_BloodOutColor);
+        EditorGUILayout.PropertyField(m_BloodOutNum);
+
         EditorGUILayout.PropertyField(m_Shader);
         if (m_UseDistortion.boolValue)
         {

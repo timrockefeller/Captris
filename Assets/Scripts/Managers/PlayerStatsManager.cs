@@ -8,15 +8,19 @@ public class PlayerStatsManager : MonoBehaviour
     public float recoverDelay = 1F;
     public float recoverSpeed = 20F;
 
-    // HUD Components reference
+    [Header("HUD Components reference")]
     public GameObject healthBar;
-    private  Image healthBarCMP;
+    private Image healthBarCMP;
+    public GameObject mainCamera;
+    private TiltShift mainCameraCMP;
 
     public float curHP { get; private set; }
     private float recoverWaiting = 0;
     private bool hurting = false;
-    private void Start() {
+    private void Start()
+    {
         healthBarCMP = healthBar.GetComponent<Image>();
+        mainCameraCMP = mainCamera.GetComponent<TiltShift>();
         curHP = maxHP;
     }
     private void Update()
@@ -25,7 +29,8 @@ public class PlayerStatsManager : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        healthBarCMP.fillAmount = curHP/ maxHP;
+        healthBarCMP.fillAmount = curHP / maxHP;
+        mainCameraCMP.bloodOutNum = Mathf.Pow(Mathf.Clamp01(1 - curHP / maxHP), 2);
         if (curHP < maxHP && !hurting)
         {
             curHP += recoverSpeed * Time.fixedDeltaTime;
@@ -46,7 +51,7 @@ public class PlayerStatsManager : MonoBehaviour
         if (curHP <= 0)
         {
             // TODO GameOver
-            
+
         }
         hurting = true;
         recoverWaiting = 0;

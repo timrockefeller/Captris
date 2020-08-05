@@ -29,9 +29,14 @@ public class TiltShift : MonoBehaviour
 
     [Range(0.01f, 2f)]
     public float DistortionScale = 1f;
-    
+
     [Range(0.01f, 2f)]
     public float Saturation = 1f;
+
+    public Color bloodOutColor;
+
+    [Range(0f, 1f)]
+    public float bloodOutNum;
     public Shader Shader;
 
     protected Material m_Material;
@@ -86,6 +91,8 @@ public class TiltShift : MonoBehaviour
         Material.SetVector("_Distortion", new Vector2(CubicDistortion, DistortionScale));
         Material.SetVector("_Params", new Vector4(Samples, Radius, 1f / source.width, 1f / source.height));
         Material.SetFloat("_Saturation", Saturation);
+        Material.SetColor("_BloodOutColor", bloodOutColor);
+        Material.SetFloat("_BloodOutNum", bloodOutNum);
         Graphics.Blit(source, destination, Material, Preview ? 0 : 1);
     }
 }

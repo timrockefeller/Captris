@@ -20,6 +20,8 @@ Shader "Hidden/TiltShift"
 		half4 _Distortion;
 		half4 _Params;
         half _Saturation;
+		half4 _BloodOutColor;
+		half _BloodOutNum;
 
 		#define Offset _Gradient.x
 		#define Area _Gradient.y
@@ -71,7 +73,8 @@ Shader "Hidden/TiltShift"
 			half4 col =  accumulator / divisor;
             half gray = 0.2125 * col.r + 0.7154 * col.g + 0.0721 * col.b;
             col.xyz = lerp(  half3(gray,gray,gray)   ,  col.xyz   , lerp(1.0, _Saturation, r_gradient));
-            return col;
+            col.xyz = lerp(col.xyz, _BloodOutColor.xyz, _BloodOutNum* saturate(r_gradient+0.1));
+			return col;
 		}
 
 	ENDCG
