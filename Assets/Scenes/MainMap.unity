@@ -1374,7 +1374,7 @@ MonoBehaviour:
   - type: 100
     enabled: 1
     hudButton: {fileID: 1101894130}
-    cooldownTotal: 5
+    cooldownTotal: 2
     cooldownFillarea: {fileID: 394625691}
     cooldownButton: {fileID: 2038283750}
     cooldownCurrent: 0
@@ -9845,12 +9845,77 @@ MonoBehaviour:
   - text: "\u53F3\u952E\u5355\u51FB\u4EE5\u79FB\u52A8\u89C6\u91CE"
     condition: 1
     num: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
   - text: "\u653E\u7F6E\u4E24\u5757 Road \u62D3\u5C55\u8DEF\u5F84"
-    condition: 2
-    num: 2
-  - text: "\u653E\u7F6E\u4E00\u5757 Grass \u6765\u751F\u4EA7\u98DF\u7269"
     condition: 3
+    num: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: "\u653E\u7F6E\u4E00\u5757 Grass \u6765\u751F\u4EA7\u98DF\u7269|(\u8FD9\u4E9B\u5EFA\u7B51\u53EA\u80FD\u5728\u9053\u8DEF\u65C1\u8FB9\u653E\u7F6E)"
+    condition: 4
     num: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 517319780}
+          m_MethodName: Unlock_period1
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - text: "\u653E\u7F6E\u4E00\u5757 Factory \u6765\u751F\u4EA7\u91D1\u5C5E|(\u5728\u77FF\u77F3\u5468\u8FB9\u83B7\u5F97\u901F\u5EA6\u52A0\u6210)"
+    condition: 5
+    num: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 517319780}
+          m_MethodName: Unlock_period2
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1790250590}
+          m_MethodName: StartProgress
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - text: "\u653E\u7F6E\u4E00\u5757 Defend \u6765\u62B5\u5FA1\u654C\u4EBA"
+    condition: 6
+    num: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 517319780}
+          m_MethodName: Unlock_period2
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   missionText: {fileID: 1817593591}
   missionTick: {fileID: 1822811743}
 --- !u!1 &1740958762
