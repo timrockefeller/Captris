@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Runtime.CompilerServices;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,7 @@ public enum UnitBuffType
 {
     NONE = 0,
     INCREASE_FACTORY = 100,
-
+    INCREASE_GRASS = 101
 }
 
 public class TerrainUnit : MonoBehaviour
@@ -108,6 +109,8 @@ public class TerrainUnit : MonoBehaviour
         {
             case UnitBuffType.INCREASE_FACTORY:
                 return GetColorByType(UnitType.Mine);
+            case UnitBuffType.INCREASE_GRASS:
+                return GetColorByType(UnitType.Grass);
             default:
                 return Color.white;
         }
@@ -278,8 +281,8 @@ public class TerrainUnit : MonoBehaviour
 
     public void SetBuff(UnitBuffType buffType)
     {
-
-        this.localBuff = buffType;
+        if (localBuff == UnitBuffType.NONE)
+            this.localBuff = buffType;
 
     }
 
@@ -339,7 +342,7 @@ public class TerrainUnit : MonoBehaviour
                     break;
                 case UnitType.Factor:
                     if (localBuff == UnitBuffType.INCREASE_FACTORY)
-                        localProgress += 4 * Time.fixedDeltaTime;
+                        localProgress += 2 * Time.fixedDeltaTime;
                     break;
                 default: break;
             }

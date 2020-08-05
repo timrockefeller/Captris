@@ -10,4 +10,16 @@ public class Explosion : MonoBehaviour
         this.transform.localScale = Vector3.Lerp(this.transform.localScale, Vector3.zero, attenuation * Time.fixedDeltaTime);
         if (this.transform.localScale.magnitude < 0.02f) Destroy(gameObject);
     }
+    private bool damageMutex = true;
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            if (damageMutex)
+            {
+                GameObject.Find("PlayerStatsManager").GetComponent<PlayerStatsManager>().TakeDamage(80);
+                damageMutex = false;
+            }
+        }
+    }
 }

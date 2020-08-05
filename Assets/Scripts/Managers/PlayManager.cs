@@ -191,6 +191,7 @@ public class PlayManager : MonoBehaviour
     private bool progressStart = false;
     public void StartProgress()
     {
+        SendEvent(PlayEventType.GAME_ENTER_DAY);
         progressStart = true;
     }
     private void FixedUpdate()
@@ -213,6 +214,7 @@ public class PlayManager : MonoBehaviour
                 // 数量由天数决定 
                 // TODO 考虑非线性
                 int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * dayCount + 1);
+                Debug.Log("Spawn Enemy: " + enemyCount);
                 // enemies = new GameObject[enemyCount];
                 while (enemyCount-- > 0)
                 {
@@ -225,6 +227,8 @@ public class PlayManager : MonoBehaviour
                 }
 
                 // state change
+                SendEvent(PlayEventType.GAME_ENTER_SWITCH);
+                SendEvent(PlayEventType.GAME_ENTER_NIGHT);
                 progressState = ProgressState.NIGHT;
                 curTime = 0;
             }
@@ -245,6 +249,8 @@ public class PlayManager : MonoBehaviour
 
 
 
+                SendEvent(PlayEventType.GAME_ENTER_SWITCH);
+                SendEvent(PlayEventType.GAME_ENTER_DAY);
                 progressState = ProgressState.DAYTIME;
                 curTime = 0;
                 dayCount++;
@@ -451,7 +457,7 @@ public class PlayManager : MonoBehaviour
     {
         if (GainResource(type))
         {
-            Debug.Log(position);
+            Debug.Log("Gain resource at: " + position);
             worldManager.GetUnit(position.x, position.z).canProducing = true;
             return true;
         }

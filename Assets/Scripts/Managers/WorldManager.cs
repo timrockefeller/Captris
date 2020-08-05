@@ -166,26 +166,7 @@ public class WorldManager : MonoBehaviour
 
 
         ///////////// Generate Static Terrains
-        /// 
-        /////// Towers
-        /** GOTO .Generate():1 */
 
-        UnitType[,] tu1 = StaticTerrain.NextTower();
-        for (int _i = 0; _i < tu1.GetLength(0); _i++)
-        {
-            for (int _j = 0; _j < tu1.GetLength(1); _j++)
-            {
-                GetUnit(_i - tu1.GetLength(0) / 2 + towerpos1.x, _j - tu1.GetLength(1) / 2 + towerpos1.y).SetType(tu1[_i, _j]);
-            }
-        }
-        UnitType[,] tu2 = StaticTerrain.NextTower();
-        for (int _i = 0; _i < tu2.GetLength(0); _i++)
-        {
-            for (int _j = 0; _j < tu2.GetLength(1); _j++)
-            {
-                GetUnit(_i - tu2.GetLength(0) / 2 + towerpos2.x, _j - tu2.GetLength(1) / 2 + towerpos2.y).SetType(tu2[_i, _j]);
-            }
-        }
         /////// Rocks
         int collapseNum = (int)(RD.NextDouble() * 0 + 1);
         // 1. collapse
@@ -273,6 +254,35 @@ public class WorldManager : MonoBehaviour
                     if (mineM[_i, _j] != UnitType.Empty)
                         GetUnit(_i - mineM.GetLength(0) / 2 + centerPos.x, _j - mineM.GetLength(1) / 2 + centerPos.y).SetType(mineM[_i, _j]);
                 }
+            }
+
+        }
+        /////// Towers
+        /** GOTO .Generate():1 */
+
+        UnitType[,] tu1 = StaticTerrain.NextTower();
+        for (int _i = 0; _i < tu1.GetLength(0); _i++)
+        {
+            for (int _j = 0; _j < tu1.GetLength(1); _j++)
+            {
+                GetUnit(_i - tu1.GetLength(0) / 2 + towerpos1.x, _j - tu1.GetLength(1) / 2 + towerpos1.y).SetType(tu1[_i, _j]);
+            }
+        }
+        UnitType[,] tu2 = StaticTerrain.NextTower();
+        for (int _i = 0; _i < tu2.GetLength(0); _i++)
+        {
+            for (int _j = 0; _j < tu2.GetLength(1); _j++)
+            {
+                GetUnit(_i - tu2.GetLength(0) / 2 + towerpos2.x, _j - tu2.GetLength(1) / 2 + towerpos2.y).SetType(tu2[_i, _j]);
+            }
+        }
+        /////// Grasses
+        sampler = new PoissonDiscSampler(size.x, size.y, 10f);
+        foreach (Vector2 sample in sampler.Samples())
+        {
+            foreach (var item in SpreadBFS(new Vector3Int((int)sample.x, 0, (int)sample.y), (me, him) => (me.position - him.position).magnitude < 2f))
+            {
+                GetUnit(item).SetBuff(UnitBuffType.INCREASE_GRASS);
             }
 
         }
@@ -422,7 +432,7 @@ public class WorldManager : MonoBehaviour
         if (pass == null) pass = new List<Vector3Int>();
         var waitingQueue = new Queue<Vector3Int>();
         var visited = new bool[size.x + 2, size.y + 2];
-        waitingQueue.Enqueue(v);
+        waitingQueue.Enqueue(GetUnit(v).position);
         while (waitingQueue.Count > 0)
         {
             Vector3Int t = waitingQueue.Dequeue();

@@ -7,8 +7,8 @@ public static class StaticTerrain
     static UnitType M = UnitType.Mine;
     public static UnitType[][,] towers = {
         new UnitType [,]{
-            {R,R,R,R,R},
-            {R,V,V,V,R},
+            {R,R,O,R,R},
+            {R,V,O,V,R},
             {R,V,T,V,R},
             {R,V,O,V,R},
             {R,R,O,R,R},

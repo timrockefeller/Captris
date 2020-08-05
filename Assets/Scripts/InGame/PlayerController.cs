@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rigidbodyComponent;
     private CameraController cameraController;
     private PlayerStatsManager playerStatsManager;
+    private PlayManager playManager;
 
     [Header("Mist Damage")]
     public float mistHurtingPeriod = 0.5f;
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
         cameraController = GameObject.Find("CamPos").GetComponent<CameraController>();
         cameraController.SetTarget(transform.position);
         playerStatsManager = GameObject.Find("PlayerStatsManager").GetComponent<PlayerStatsManager>();
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
     }
     void FixedUpdate()
     {
@@ -40,6 +42,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) force -= new Vector3(1, 0, 0);
         if (Input.GetKey(KeyCode.A)) force -= new Vector3(0, 0, -1);
         if (Input.GetKey(KeyCode.D)) force += new Vector3(0, 0, -1);
+
         if (speed.magnitude > 0) cameraController.SetTarget(transform.position);
         speed += acc * Vector3.Normalize(force) * Time.deltaTime * (onMist || onWall ? mistCost : 1);
         if (!onGround)
@@ -51,7 +54,7 @@ public class PlayerController : MonoBehaviour
         {
             // rigidbodyComponent.velocity -= new Vector3(0, rigidbodyComponent.velocity.y, 0);
             speedY = 0;
-            if (!onWall && force!=Vector3.zero)
+            if (!onWall && force != Vector3.zero)
             {
                 speedY = 3.3f * (onMist ? mistCost : 1);
             }
@@ -60,7 +63,8 @@ public class PlayerController : MonoBehaviour
         transform.position += (speed + new Vector3(0, speedY, 0)) * Time.deltaTime;
         if (force.magnitude <= 0)
             speed = Vector3.ClampMagnitude(speed, Mathf.Clamp(speed.magnitude - drag * Time.deltaTime, 0, speed.magnitude));
-
+        else
+            playManager.SendEvent(PlayEventType.PLAYER_MOVE);
 
         // damage
         if (onMist)
