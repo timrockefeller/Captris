@@ -254,8 +254,12 @@ public class TerrainUnit : MonoBehaviour
     /// </summary>
     bool InitStaticType(UnitType _type)
     {
+        // already generated => skip
+        if ((int)type >= 200 && (int)type < 400) return false;
         if ((int)_type >= 300 && (int)_type < 400)
         {
+            // in static case, dont replace type in order keep beautified
+            if (this.type != UnitType.Empty) return false;
             this.type = _type;
 
             switch (_type)

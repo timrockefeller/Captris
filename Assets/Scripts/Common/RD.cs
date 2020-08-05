@@ -16,6 +16,15 @@ public static class RD
     {
         return (float)_RD.NextDouble();
     }
+    /// <summary>
+    /// return a integer from 0 to max-1
+    /// </summary>
+    /// <param name="max"></param>
+    /// <returns></returns>
+    public static int NextInt(int max)
+    {
+        return (int)(_RD.NextDouble() * max);
+    }
     public static void SetSeed(int _seed)
     {
         if (_RD != null) return;
