@@ -40,7 +40,7 @@
 
             float random (float2 st, float n) {
                 st = floor(st * n);
-                return frac(sin(dot(st.xy, float2(12.9898,78.233)))*43758.5453123);
+                return frac(sin(dot(st.xy, float2(12.9898,78.233))) * 43758.5453123);
             }
 
             sampler2D _MainTex;
@@ -51,7 +51,7 @@
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                UNITY_TRANSFER_FOG(o,o.vertex);
+                UNITY_TRANSFER_FOG(o, o.vertex);
                 return o;
             }
 
@@ -59,12 +59,12 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-                float c = random(i.uv.xx+_Time.x,20);
+                float c = random(i.uv.xx + _Time.x, 20) * 0.5 + 0.5;
                 col.a = c;
-                col.a*= pow(i.uv.y*c,3);
+                col.a*= pow(i.uv.y * c,3);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                // return fixed4(i.uv,0,1);
+                // return fixed4(i.uv.x,i.uv.y,0,0.5); 
                 return col;
             }
             ENDCG

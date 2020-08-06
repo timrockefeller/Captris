@@ -54,4 +54,12 @@ public class CameraController : MonoBehaviour
         target = t;
         target.y = 0.5f;
     }
+
+    // TODO 
+    public void DoVibrate(Vector3 source)
+    {
+        float magnitude = (source - target).magnitude;
+        // magnitude * ;
+        Debug.Log("[INFO] CameraController.DoVibrate() called at " + source + "!");
+    }
 }

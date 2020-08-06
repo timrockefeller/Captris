@@ -66,7 +66,7 @@ public class Enemy_Lazer : MonoBehaviour
             if (player == null)
             {
                 player = GameObject.FindGameObjectsWithTag("Player")[0];
-                if (player == null) { return; }
+                return;
             }
 
             // movement
