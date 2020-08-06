@@ -21,5 +21,10 @@ public class Explosion : MonoBehaviour
                 damageMutex = false;
             }
         }
+        if (other.tag == "Terrain")
+        {
+            other.GetComponent<TerrainUnit>().SetEmpty();
+        }
+    Debug.Log(other.tag);
     }
 }

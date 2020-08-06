@@ -252,6 +252,14 @@ public class TerrainUnit : MonoBehaviour
         }
     }
 
+    public void SetEmpty()
+    {
+        if (IsManualType(type))
+        {
+            SetType(UnitType.Empty);
+        }
+    }
+
     /// <summary>
     /// Special Terrain
     /// </summary>

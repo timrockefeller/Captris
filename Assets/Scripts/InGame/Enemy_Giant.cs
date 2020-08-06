@@ -11,7 +11,7 @@ public class Enemy_Giant : MonoBehaviour
 {
     private const float RETIRE_INIT = 0.5f;
     public GameObject player;
-
+    public GameObject explotionPrefab;
     [Header("Motivate")]
     [Range(0.1f, 3f)]
     public float jumpCD = 2;
@@ -23,6 +23,7 @@ public class Enemy_Giant : MonoBehaviour
     public float torque = 2;
     public int breathCount;
 
+    public int curBreathCount;
     public bool onGround;
 
     Rigidbody rigidbodyCMP;
@@ -36,7 +37,6 @@ public class Enemy_Giant : MonoBehaviour
     // Bouince
 
     private float retireTime = RETIRE_INIT;
-    private int curBreathCount;
     private float _scaleCtrlPosY;
     private float scaleCtrlPosY
     {
@@ -91,24 +91,27 @@ public class Enemy_Giant : MonoBehaviour
             {
                 retireTime = RETIRE_INIT;
                 // Do jump
-
+                while (curBreathCount < 0)
+                {
+                    curBreathCount += breathCount;
+                }
 
                 if (!enemy_Giant_Face.facingWall)
                 {
                     if (curBreathCount <= 0)
                     {
                         DoBigJump();
-                        curBreathCount = breathCount;
+
                     }
                     else
                     {
                         DoJump();
-                        curBreathCount--;
                     }
                 }
                 else
                     DoBackJump();
 
+                curBreathCount--;
                 curJumpCD = 0;
                 onGround = false;
 
@@ -151,6 +154,17 @@ public class Enemy_Giant : MonoBehaviour
         speed = transform.forward * jumpSpeed + Vector3.up * jumpHeight;
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.tag == "Terrain")
+        {
+            if (curBreathCount < 0)
+            {
+                StartCoroutine(DoExplode());
+                curBreathCount = breathCount;
+            }
+        }
+    }
     private void OnCollisionStay(Collision other)
     {
         if (other.collider.tag == "Player")
@@ -162,6 +176,20 @@ public class Enemy_Giant : MonoBehaviour
         {
             if (retireTime <= 0)
                 onGround = true;
+
+        }
+
+    }
+    private IEnumerator DoExplode()
+    {
+
+        int totalExplotions = 5;
+        while (totalExplotions-- > 0)
+        {
+            Vector2 varing = RD.NextPositionf(1, 1);
+            Vector3 pos = transform.position + new Vector3(varing.x - 0.5f, -transform.localScale.y / 2 + 0.2f, varing.y - 0.5f);
+            Instantiate(explotionPrefab, pos, Quaternion.identity);
+            yield return new WaitForSeconds(0.1f);
         }
     }
     private void OnCollisionExit(Collision other)
@@ -171,4 +199,5 @@ public class Enemy_Giant : MonoBehaviour
             onGround = false;
         }
     }
+
 }

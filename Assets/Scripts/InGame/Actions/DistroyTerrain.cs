@@ -13,8 +13,8 @@ public class DistroyTerrain : MonoBehaviour
     {
         if (other.tag == "Terrain")
         {
-            if (!triggered)
-                other.GetComponent<TerrainUnit>().SetType(UnitType.Empty);
+            // if (!triggered)
+            //     other.GetComponent<TerrainUnit>().SetEmpty();
 
             GameObject ins = Instantiate(explosionPrefab,transform.position,Quaternion.identity);
             // ins.transform.SetParent(null);

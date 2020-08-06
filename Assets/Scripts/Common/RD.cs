@@ -35,4 +35,8 @@ public static class RD
     {
         return new Vector2Int((int)(NextDouble() * x), (int)(NextDouble() * y));
     }
+    public static Vector2 NextPositionf(float x, float y)
+    {
+        return new Vector2((float)(NextDouble() * x), (float)(NextDouble() * y));
+    }
 }
