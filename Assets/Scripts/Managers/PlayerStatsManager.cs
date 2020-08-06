@@ -43,10 +43,12 @@ public class PlayerStatsManager : MonoBehaviour
     public bool deathflag = false;
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKey(KeyCode.I))
         {
             curHP = 0;
         }
+#endif
         if (!IsAlive())
         {
             deathflag = true;
