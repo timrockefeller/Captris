@@ -38,6 +38,11 @@
                 float4 vertex : SV_POSITION;
             };
 
+            float random (float2 st, float n) {
+                st = floor(st * n);
+                return frac(sin(dot(st.xy, float2(12.9898,78.233)))*43758.5453123);
+            }
+
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Color;
@@ -54,9 +59,9 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-                col.a *= i.uv.y;
-                col.a = pow(col.a,5);
-                col.a *=0.5;
+                float c = random(i.uv.xx+_Time.x,20);
+                col.a = c;
+                col.a*= pow(i.uv.y*c,3);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 // return fixed4(i.uv,0,1);
