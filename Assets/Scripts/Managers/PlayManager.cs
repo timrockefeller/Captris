@@ -231,6 +231,7 @@ public class PlayManager : MonoBehaviour
                 SendEvent(PlayEventType.GAME_ENTER_NIGHT);
                 progressState = ProgressState.NIGHT;
                 curTime = 0;
+                hudManager.UpdateTimeBoard(0);
             }
         }
 
@@ -241,7 +242,6 @@ public class PlayManager : MonoBehaviour
             if (curTime < nightTime)
                 curTime += Time.fixedDeltaTime;
             percent /= nightTime;
-            hudManager.UpdateTimeBoard(1 - percent);
 
             enemies.RemoveAll(g => g == null);
             if ( /*all monster killed*/ enemies.Count == 0 || percent > 1)

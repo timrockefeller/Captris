@@ -57,8 +57,6 @@ public class PlayerStatsManager : MonoBehaviour
             Time.timeScale = Mathf.Lerp(Time.timeScale, 0.01f, 2 * Time.deltaTime);
             StartCoroutine(GameOver());
         }
-
-        Debug.Log(globalMaskCMP);
         globalMaskCMP.color = Color.Lerp(globalMaskCMP.color, new Color(0, 0, 0, globalMaskAlpha), 20f * Time.deltaTime);
     }
     IEnumerator GameOver()
@@ -72,7 +70,9 @@ public class PlayerStatsManager : MonoBehaviour
     private void FixedUpdate()
     {
         healthBarCMP.fillAmount = curHP / maxHP;
-        mainCameraCMP.bloodOutNum = Mathf.Pow(Mathf.Clamp01(1 - curHP / maxHP), 2);
+        if (!deathflag)
+            mainCameraCMP.bloodOutNum = Mathf.Pow(Mathf.Clamp01(1 - curHP / maxHP), 2) * 0.8f;
+        else mainCameraCMP.bloodOutNum = 1;
         if (!deathflag && curHP < maxHP && !hurting)
         {
             curHP += recoverSpeed * Time.fixedDeltaTime;
