@@ -37,7 +37,19 @@ public class Enemy_Giant : MonoBehaviour
 
     private float retireTime = RETIRE_INIT;
     private int curBreathCount;
-
+    private float _scaleCtrlPosY;
+    private float scaleCtrlPosY
+    {
+        get
+        {
+            return _scaleCtrlPosY;
+        }
+        set
+        {
+            _scaleCtrlPosY = Mathf.Clamp(value, transform.position.y - 0.9f, transform.position.y + 0.9f);
+        }
+    }
+    private float scaleCtrlPosXY = 1;
     private void Start()
     {
         player = null;
@@ -46,12 +58,18 @@ public class Enemy_Giant : MonoBehaviour
         enemy_Giant_Face = transform.Find("Face").GetComponent<Enemy_Giant_Face>();
         mainCameraCMP = GameObject.Find("MainCamera").GetComponent<CameraController>();
         curBreathCount = breathCount;
+        this.scaleCtrlPosY = transform.position.y;
     }
 
 
     private void Update()
     {
+        scaleCtrlPosXY = Mathf.Lerp(scaleCtrlPosXY, onGround ? Mathf.Clamp01((scaleCtrlPosY - transform.position.y) / 2) : 0, Time.deltaTime * 10);
         transform.position += speed * Time.deltaTime;
+        transform.localScale = new Vector3(1 + scaleCtrlPosXY,
+         (-scaleCtrlPosY + transform.position.y) / 2F + 1,
+         1 + scaleCtrlPosXY);
+        scaleCtrlPosY = Mathf.Lerp(scaleCtrlPosY, transform.position.y, Time.deltaTime * 2);
     }
     private void FixedUpdate()
     {

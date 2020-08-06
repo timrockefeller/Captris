@@ -59,9 +59,9 @@
             {
                 // sample the texture
                 fixed4 col = _Color;
-                float c = random(i.uv.xx + _Time.x, 20) * 0.5 + 0.5;
+                float c = random(i.uv.xx + _Time.x, 20) * 0.4 + 0.6;
                 col.a = c;
-                col.a*= pow(i.uv.y * c,3);
+                col.a*= pow(i.uv.y * c,5);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 // return fixed4(i.uv.x,i.uv.y,0,0.5); 
