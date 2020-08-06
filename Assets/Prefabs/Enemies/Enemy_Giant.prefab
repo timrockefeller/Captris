@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 8485928831282116942}
   - component: {fileID: 8485928831282116941}
   - component: {fileID: 8485928831282116938}
+  - component: {fileID: 6856303383302406824}
   m_Layer: 0
   m_Name: Enemy_Giant
   m_TagString: Enemy
@@ -271,5 +272,20 @@ MonoBehaviour:
   jumpHeight: 5.16
   torque: 1
   breathCount: 2
+  curBreathCount: 0
   onGround: 0
   speed: {x: 0, y: 0, z: 0}
+--- !u!114 &6856303383302406824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8485928831282116940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f86ef4ce5f905bf45892da900cd16161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  curHealth: 0

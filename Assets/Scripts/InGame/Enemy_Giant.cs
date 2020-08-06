@@ -7,6 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Periodicitily Jumping & 
 /// </summary>
+[RequireComponent(typeof(Health))]
 public class Enemy_Giant : MonoBehaviour
 {
     private const float RETIRE_INIT = 0.5f;
@@ -50,6 +51,9 @@ public class Enemy_Giant : MonoBehaviour
         }
     }
     private float scaleCtrlPosXY = 1;
+
+    private Health health;
+    private PlayManager playManager;
     private void Start()
     {
         player = null;
@@ -57,8 +61,12 @@ public class Enemy_Giant : MonoBehaviour
         rigidbodyCMP = GetComponent<Rigidbody>();
         enemy_Giant_Face = transform.Find("Face").GetComponent<Enemy_Giant_Face>();
         mainCameraCMP = GameObject.Find("MainCamera").GetComponent<CameraController>();
+        
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
         curBreathCount = breathCount;
         this.scaleCtrlPosY = transform.position.y;
+
+        health = GetComponent<Health>();
     }
 
 

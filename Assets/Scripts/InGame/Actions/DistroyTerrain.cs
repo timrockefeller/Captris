@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DistroyTerrain : MonoBehaviour
 {
-    private bool triggered = false;
+    // private bool triggered = false;
 
     [Header("Explotions")]
     public GameObject explosionPrefab;
@@ -18,7 +18,7 @@ public class DistroyTerrain : MonoBehaviour
 
             GameObject ins = Instantiate(explosionPrefab,transform.position,Quaternion.identity);
             // ins.transform.SetParent(null);
-            triggered = true;
+            // triggered = true;
         }
     }
 
