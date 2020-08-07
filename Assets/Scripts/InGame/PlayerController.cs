@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -28,10 +29,27 @@ public class PlayerController : MonoBehaviour
     {
         rigidbodyComponent = gameObject.GetComponent<Rigidbody>();
         cameraController = GameObject.Find("CamPos").GetComponent<CameraController>();
-        cameraController.SetTarget(transform.position);
         playerStatsManager = GameObject.Find("PlayerStatsManager").GetComponent<PlayerStatsManager>();
         playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+
+
+
+        cameraController.SetTarget(transform.position);//  offset to tips
+        // StartCoroutine(CamMoveToTips());
     }
+
+    // IEnumerator CamMoveToTips()
+    // {
+    //     yield return new WaitForSeconds(1);
+    //     Ray ray = Camera.main.ScreenPointToRay(new Vector2(200, 100));
+    //     RaycastHit hitInfo = new RaycastHit();
+    //     if (Physics.Raycast(ray, out hitInfo))
+    //         if (hitInfo.collider.tag == "Terrain" || hitInfo.collider.tag == "Piece" || hitInfo.collider.tag == "Wall")
+    //         {
+    //             cameraController.SetTarget(hitInfo.point);
+    //             playManager.SendEvent(PlayEventType.CONTROL_NAVIGATE);
+    //         }
+    // }
     void FixedUpdate()
     {
         // controller

@@ -2,43 +2,105 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 /// <summary>
 /// Periodicitily Jumping & 
 /// </summary>
 [RequireComponent(typeof(Health))]
 public class Enemy_Giant : MonoBehaviour
 {
-    private const float RETIRE_INIT = 0.5f;
-    public GameObject player;
+    /// 引用组件与对象
+    [Header("References Objects")]
+    /// <summary>
+    /// 爆炸特效，大跳后触发生成
+    /// </summary>
     public GameObject explotionPrefab;
+    /// <summary>
+    /// 场上玩家的引用
+    /// </summary>
+    private GameObject player;
+    /// <summary>
+    /// 全局对象
+    /// </summary>
+    CameraController mainCameraCMP;
+    /// <summary>
+    /// 子对象，判定脸贴墙用
+    /// </summary>
+    Enemy_Giant_Face enemy_Giant_Face;
+    /// <summary>
+    /// 附加组件：血量
+    /// </summary>
+    private Health health;
+    /// <summary>
+    /// 全局对象
+    /// </summary>
+    private PlayManager playManager;
+    /// <summary>
+    /// 全局对象
+    /// </summary>
+    private PlayerStatsManager playerStatsManager;
+
     [Header("Motivate")]
+    [Tooltip("跳跃冷却")]
     [Range(0.1f, 3f)]
     public float jumpCD = 2;
-    public float curJumpCD = 0;
+    /// <summary>
+    /// 当前经过的秒数
+    /// </summary>
+    [ReadOnly]
+    [SerializeField]
+    private float curJumpCD = 0;
+    [Tooltip("跳跃水平速度base")]
     [Range(0.1f, 30f)]
     public float jumpSpeed = 2;
+    [Tooltip("跳跃高度base")]
     [Range(0.1f, 30f)]
     public float jumpHeight = 2;
+    [Tooltip("转向力矩")]
     public float torque = 2;
+
+    [Tooltip("大跳冷却时间")]
     public int breathCount;
+    /// <summary>
+    /// 目前大跳剩余的冷却时间
+    /// </summary>
+    [ReadOnly]
+    [SerializeField]
+    private int curBreathCount;
 
-    public int curBreathCount;
-    public bool onGround;
-
-    Rigidbody rigidbodyCMP;
-    CameraController mainCameraCMP;
-    Enemy_Giant_Face enemy_Giant_Face;
-
+    /// <summary>
+    /// 是否在地面上
+    /// </summary>
+    [ReadOnly]
+    [SerializeField]
+    private bool onGround;
+    /// <summary>
+    /// 上一帧的onGround值，以判定落地
+    /// </summary>
     private bool _h_onGround = false;
 
-    public Vector3 speed;
+    /// <summary>
+    /// 当前受控速度
+    /// </summary>   
+    [ReadOnly]
+    [SerializeField]
+    private Vector3 speed;
 
     // Bouince
-
+    /// <summary>
+    /// 判定OnGround时防止Collider调用问题
+    /// </summary>
     private float retireTime = RETIRE_INIT;
-    private float _scaleCtrlPosY;
+
+    private const float RETIRE_INIT = 0.5f;
+
+    /// <summary>
+    /// 跳起时动效参数
+    /// 
+    /// 本质是一个附加点受其惯性影响
+    /// </summary>
     private float scaleCtrlPosY
     {
         get
@@ -47,28 +109,35 @@ public class Enemy_Giant : MonoBehaviour
         }
         set
         {
+            ///限制在±1
             _scaleCtrlPosY = Mathf.Clamp(value, transform.position.y - 1f, transform.position.y + 1f);
         }
     }
+    private float _scaleCtrlPosY;
     private float scaleCtrlPosXY = 1;
 
-    private Health health;
-    private PlayManager playManager;
+    /// <summary>
+    /// 死亡动画参数
+    /// </summary>
+    private Vector3 deathTargetScale = new Vector3(1.5f, 0.01f, 1.5f);
+    private bool _deathAnimMutex = true;
+
     private void Start()
     {
+        // 本地初始化项
         player = null;
-
-        rigidbodyCMP = GetComponent<Rigidbody>();
-        enemy_Giant_Face = transform.Find("Face").GetComponent<Enemy_Giant_Face>();
-        mainCameraCMP = GameObject.Find("MainCamera").GetComponent<CameraController>();
-
-        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
         curBreathCount = breathCount;
         this.scaleCtrlPosY = transform.position.y;
 
+        // 子组件
+        enemy_Giant_Face = transform.Find("Face").GetComponent<Enemy_Giant_Face>();
         health = GetComponent<Health>();
+
+        // 全局组件
+        mainCameraCMP = GameObject.Find("MainCamera").GetComponent<CameraController>();
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+        playerStatsManager = GameObject.Find("PlayerStatsManager").GetComponent<PlayerStatsManager>();
     }
-    private Vector3 deathTargetScale = new Vector3(1.5f, 0.01f, 1.5f);
 
     private void Update()
     {
@@ -86,7 +155,6 @@ public class Enemy_Giant : MonoBehaviour
         }
     }
 
-    private bool _deathAnimMutex = true;
     private void FixedUpdate()
     {
         if (!health.IsAlive())
@@ -101,7 +169,6 @@ public class Enemy_Giant : MonoBehaviour
             player = GameObject.FindGameObjectsWithTag("Player")[0];
             return;
         }
-        if (!_h_onGround && onGround && mainCameraCMP) mainCameraCMP.DoVibrate(transform.position);
 
         if (onGround)
         {
@@ -203,7 +270,8 @@ public class Enemy_Giant : MonoBehaviour
     {
         if (other.collider.tag == "Player")
         {
-            // TODO cast damage to player
+            // cast damage to player
+
         }
 
         if (other.collider.tag == "Terrain" || other.collider.tag == "Piece")
@@ -216,7 +284,12 @@ public class Enemy_Giant : MonoBehaviour
     }
     private IEnumerator DoExplode()
     {
+        // 震动一波摄像头
+        mainCameraCMP.DoVibrate(transform.position);
+        // 伤敌80，自损15
         health.DoAttack(15);
+        
+        // 爆炸部分
         int totalExplotions = 5;
         while (totalExplotions-- > 0)
         {

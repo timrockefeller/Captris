@@ -3,6 +3,9 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+/// <summary>
+/// 任务系统
+/// </summary>
 public class MissionManager : MonoBehaviour
 {
 
@@ -15,14 +18,18 @@ public class MissionManager : MonoBehaviour
         public PlayEventType condition;
         [Tooltip("需要达成的次数")]
         public int num;
-
         [Tooltip("回调函数")]
         public UnityEvent callback;
     }
     public MissionSingleton[] missions;
 
-
+    /// <summary>
+    /// 当前任务指针
+    /// </summary>
     private int curMission;
+    /// <summary>
+    /// 当前任务达成次数
+    /// </summary>
     private int curNum;
 
     [Header("UI Reference")]

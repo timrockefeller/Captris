@@ -4,26 +4,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 防御塔类型
+/// </summary>
 public enum DefenderType
 {
     Default
 }
 
-
-
-
+/// <summary>
+/// 防御塔
+/// </summary>
 [RequireComponent(typeof(Collision))]
 public class Defender : MonoBehaviour
 {
-    [Tooltip("伤害值")]
-    public float attackAmount = 10F;
-    [Tooltip("CD")]
-    public float attackCoolDown = 5F;
-    private float curCoolDown;
-    private List<GameObject> aimList;
-
-    public DefenderType type = DefenderType.Default;
+    [Header("References Objects")]
     public GameObject bulletPrefab;
+    
+    [Header("Attack Properties")]
+    [Tooltip("攻击伤害值")]
+    public float attackAmount = 10F;
+    [Tooltip("攻击CD")]
+    public float attackCoolDown = 5F;
+    /// <summary>
+    /// 当前冷却
+    /// </summary>
+    private float curCoolDown;
+    /// <summary>
+    /// 视野内敌人列表
+    /// </summary>
+    private List<GameObject> aimList;
+    
+    public DefenderType type = DefenderType.Default;
     private void Start()
     {
         aimList = new List<GameObject>();
