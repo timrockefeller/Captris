@@ -23,6 +23,8 @@ public enum PlayEventType
 
     PLAYER_DEFEAT = 121,
 
+    HEALTH_BEATTACKED = 131,
+
     GAME_ENTER_SWITCH = 200,
     GAME_ENTER_DAY = 201,
     GAME_ENTER_NIGHT = 202

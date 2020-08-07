@@ -35,6 +35,11 @@ public class Enemy_Lazer : MonoBehaviour
 
         health = GetComponent<Health>();
         playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+        /// 受到攻击时冷却归零。（极致削弱）
+        playManager.AddEventListener(PlayEventType.HEALTH_BEATTACKED,()=>{
+            currentCD = 0;
+            // TODO Shining Effect
+        });
     }
     /// 
     /// <summary>
@@ -133,7 +138,7 @@ public class Enemy_Lazer : MonoBehaviour
         bullet.transform.SetParent(null);
     }
 
-
+    
 
 
     public void SetSize(float size)

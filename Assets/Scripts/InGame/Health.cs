@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 public class Health : MonoBehaviour
 {
+    private PlayManager playManager;
     public float maxHealth = 100;
     public bool IsAlive()
     {
@@ -10,6 +11,7 @@ public class Health : MonoBehaviour
     public float curHealth;
     private void Start()
     {
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
         curHealth = maxHealth;
     }
     /// <summary>
@@ -27,6 +29,8 @@ public class Health : MonoBehaviour
             return false;
         }
         curHealth = Mathf.Clamp(curHealth, 0, maxHealth);
+        playManager.SendEvent(PlayEventType.HEALTH_BEATTACKED);
+
         return true;
     }
     IEnumerator DelayDestroy()
