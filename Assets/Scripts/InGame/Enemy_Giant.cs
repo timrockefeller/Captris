@@ -105,8 +105,11 @@ public class Enemy_Giant : MonoBehaviour
 
         if (onGround)
         {
-            if (curBreathCount <= 0)
+            if (curBreathCount <= 0 && curJumpCD > jumpCD / 2.0f)
+            {
                 DoRotate();
+                scaleCtrlPosY = transform.position.y + 0.5f;
+            }
 
             speed = Vector3.zero;
             curJumpCD += Time.deltaTime;
@@ -183,11 +186,11 @@ public class Enemy_Giant : MonoBehaviour
         // scaleCtrlPosY = transform.position.y + 1;
         speed = Vector3.zero;
         yield return new WaitForSeconds(2);
-        deathTargetScale = new Vector3(0f,0f,0f);
+        deathTargetScale = new Vector3(0f, 0f, 0f);
     }
     private void OnCollisionEnter(Collision other)
     {
-        if (other.collider.tag == "Terrain")
+        if (other.collider.tag == "Terrain" || other.collider.tag == "Piece")
         {
             if (curBreathCount < 0)
             {
@@ -213,7 +216,7 @@ public class Enemy_Giant : MonoBehaviour
     }
     private IEnumerator DoExplode()
     {
-
+        health.DoAttack(15);
         int totalExplotions = 5;
         while (totalExplotions-- > 0)
         {

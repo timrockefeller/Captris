@@ -91,7 +91,7 @@ public class Enemy_Lazer : MonoBehaviour
             // attack
             if (currentCD < attackCD)
             {
-                if (DistanceToPlayer() < 5)
+                if (DistanceToPlayer() < 4)
                     currentCD += Time.fixedDeltaTime;
                 else
                     currentCD += Time.fixedDeltaTime * 0.3f;
@@ -100,6 +100,7 @@ public class Enemy_Lazer : MonoBehaviour
             else
             {
                 DoAttack();
+                health.DoAttack(5);
                 currentCD -= attackCD;
             }
 
