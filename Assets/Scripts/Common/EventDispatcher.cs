@@ -17,6 +17,7 @@ public enum PlayEventType
 
     PLAYER_KILL = 110,
     PLAYER_KILL_LAZER = 111,
+    PLAYER_KILL_GIANT = 112,
 
     PLAYER_MOVE = 120,
 

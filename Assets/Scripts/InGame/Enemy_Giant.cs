@@ -134,7 +134,7 @@ public class Enemy_Giant : MonoBehaviour
         health = GetComponent<Health>();
 
         // 全局组件
-        mainCameraCMP = GameObject.Find("MainCamera").GetComponent<CameraController>();
+        mainCameraCMP = GameObject.Find("CamPos").GetComponent<CameraController>();
         playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
         playerStatsManager = GameObject.Find("PlayerStatsManager").GetComponent<PlayerStatsManager>();
     }
@@ -216,6 +216,7 @@ public class Enemy_Giant : MonoBehaviour
         {
 
             speed += Vector3.down * 9.8f * Time.fixedDeltaTime;
+            speed.y = Mathf.Clamp(speed.y, -5, Mathf.Infinity);
             DoRotate();
 
         }
@@ -250,10 +251,19 @@ public class Enemy_Giant : MonoBehaviour
     }
     private IEnumerator DiedAnim()
     {
+
+
+        playManager.SendEvent(PlayEventType.PLAYER_KILL);
+        playManager.SendEvent(PlayEventType.PLAYER_KILL_GIANT);
         // scaleCtrlPosY = transform.position.y + 1;
         speed = Vector3.zero;
         yield return new WaitForSeconds(2);
         deathTargetScale = new Vector3(0f, 0f, 0f);
+        int goldNum = 10;
+        while (goldNum-- > 0)
+        {
+            playManager.GainResource(ResourceType.GOLD);
+        }
     }
     private void OnCollisionEnter(Collision other)
     {
@@ -288,7 +298,7 @@ public class Enemy_Giant : MonoBehaviour
         mainCameraCMP.DoVibrate(transform.position);
         // 伤敌80，自损15
         health.DoAttack(15);
-        
+
         // 爆炸部分
         int totalExplotions = 5;
         while (totalExplotions-- > 0)

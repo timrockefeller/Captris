@@ -74,6 +74,9 @@ public class PlayManager : MonoBehaviour
 
 
     private Vector3Int selectingPosition;
+    /// <summary>
+    /// 当前选择的方块是否能放置
+    /// </summary>
     private bool slectingCanPlace = false;
 
     ////////////////////////
@@ -151,28 +154,35 @@ public class PlayManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q)) ButtonRotateClockwise();
+        if (Input.GetKeyDown(KeyCode.E)) ButtonRotateCounterClockwise();
+
         if (playState == PlayState.ELECTED)
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (slectingCanPlace)
+                // 防止误触
+                if (Input.mousePosition.y > 100)
                 {
-                    StartCoroutine(SpawnPiece());
-                    // event patch
-                    SendEvent(PlayEventType.PLAYER_PLACE);
-                    switch (selectedType)
+                    if (slectingCanPlace)
                     {
-                        case UnitType.Road: SendEvent(PlayEventType.PLAYER_PLACE_ROAD); break;
-                        case UnitType.Grass: SendEvent(PlayEventType.PLAYER_PLACE_GRASS); break;
-                        case UnitType.Factor: SendEvent(PlayEventType.PLAYER_PLACE_FACTORY); break;
-                        case UnitType.Defend: SendEvent(PlayEventType.PLAYER_PLACE_DEFEND); break;
-                        case UnitType.Storage: SendEvent(PlayEventType.PLAYER_PLACE_STORAGE); break;
-                        default: break;
-                    }
+                        StartCoroutine(SpawnPiece());
+                        // event patch
+                        SendEvent(PlayEventType.PLAYER_PLACE);
+                        switch (selectedType)
+                        {
+                            case UnitType.Road: SendEvent(PlayEventType.PLAYER_PLACE_ROAD); break;
+                            case UnitType.Grass: SendEvent(PlayEventType.PLAYER_PLACE_GRASS); break;
+                            case UnitType.Factor: SendEvent(PlayEventType.PLAYER_PLACE_FACTORY); break;
+                            case UnitType.Defend: SendEvent(PlayEventType.PLAYER_PLACE_DEFEND); break;
+                            case UnitType.Storage: SendEvent(PlayEventType.PLAYER_PLACE_STORAGE); break;
+                            default: break;
+                        }
 
-                    this.playState = PlayState.SPECTING;
-                    // hide preview
-                    if (previewInstance) Destroy(previewInstance);
+                        this.playState = PlayState.SPECTING;
+                        // hide preview
+                        if (previewInstance) Destroy(previewInstance);
+                    }
                 }
             }
             if (Input.GetMouseButtonDown(1))

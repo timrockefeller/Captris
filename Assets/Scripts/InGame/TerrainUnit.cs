@@ -347,6 +347,8 @@ public class TerrainUnit : MonoBehaviour
                 case UnitType.Grass:
                     // 越高速度越快
                     localProgress += Time.fixedDeltaTime * this.position.y / worldManager.GetMaxHight();
+                    if (localBuff == UnitBuffType.INCREASE_GRASS)
+                        localProgress += Time.fixedDeltaTime;
                     break;
                 case UnitType.Factor:
                     if (localBuff == UnitBuffType.INCREASE_FACTORY)

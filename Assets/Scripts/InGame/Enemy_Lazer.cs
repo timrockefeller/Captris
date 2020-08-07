@@ -114,6 +114,11 @@ public class Enemy_Lazer : MonoBehaviour
 
                 playManager.SendEvent(PlayEventType.PLAYER_KILL);
                 playManager.SendEvent(PlayEventType.PLAYER_KILL_LAZER);
+                int goldNum = 10;
+                while (goldNum-- > 0)
+                {
+                    playManager.GainResource(ResourceType.GOLD);
+                }
             }
         }
     }
