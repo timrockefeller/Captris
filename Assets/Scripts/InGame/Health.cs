@@ -3,7 +3,7 @@ using System.Collections;
 public class Health : MonoBehaviour
 {
     public float maxHealth = 100;
-    public bool Alive()
+    public bool IsAlive()
     {
         return curHealth > 0;
     }
@@ -31,6 +31,7 @@ public class Health : MonoBehaviour
     }
     IEnumerator DelayDestroy()
     {
+        Debug.Log("Enemy Died");
         yield return new WaitForSeconds(5F);
         Destroy(gameObject);
     }

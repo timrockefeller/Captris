@@ -52,7 +52,7 @@ public class Defender : MonoBehaviour
         {
             aimList.OrderBy((g) => (g.transform.position - transform.position).magnitude);
             int i = 0; bool validTarget = true;
-            while (!aimList[i].GetComponent<Health>().Alive())
+            while (!aimList[i].GetComponent<Health>().IsAlive())
             {
                 i++;
                 if (i >= aimList.Count)

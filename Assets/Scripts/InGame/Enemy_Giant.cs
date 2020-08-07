@@ -47,7 +47,7 @@ public class Enemy_Giant : MonoBehaviour
         }
         set
         {
-            _scaleCtrlPosY = Mathf.Clamp(value, transform.position.y - 0.9f, transform.position.y + 0.9f);
+            _scaleCtrlPosY = Mathf.Clamp(value, transform.position.y - 1f, transform.position.y + 1f);
         }
     }
     private float scaleCtrlPosXY = 1;
@@ -61,26 +61,41 @@ public class Enemy_Giant : MonoBehaviour
         rigidbodyCMP = GetComponent<Rigidbody>();
         enemy_Giant_Face = transform.Find("Face").GetComponent<Enemy_Giant_Face>();
         mainCameraCMP = GameObject.Find("MainCamera").GetComponent<CameraController>();
-        
+
         playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
         curBreathCount = breathCount;
         this.scaleCtrlPosY = transform.position.y;
 
         health = GetComponent<Health>();
     }
-
+    private Vector3 deathTargetScale = new Vector3(1.5f, 0.01f, 1.5f);
 
     private void Update()
     {
-        scaleCtrlPosXY = Mathf.Lerp(scaleCtrlPosXY, onGround ? Mathf.Clamp01((scaleCtrlPosY - transform.position.y) / 2) : 0, Time.deltaTime * 10);
-        transform.position += speed * Time.deltaTime;
-        transform.localScale = new Vector3(1 + scaleCtrlPosXY,
-         (-scaleCtrlPosY + transform.position.y) / 2F + 1,
-         1 + scaleCtrlPosXY);
-        scaleCtrlPosY = Mathf.Lerp(scaleCtrlPosY, transform.position.y, Time.deltaTime * 2);
+        if (health.IsAlive())
+        {
+            scaleCtrlPosXY = Mathf.Lerp(scaleCtrlPosXY, onGround ? Mathf.Clamp01((scaleCtrlPosY - transform.position.y) / 2) : 0, Time.deltaTime * 10);
+            transform.position += speed * Time.deltaTime;
+            transform.localScale = new Vector3(1 + scaleCtrlPosXY,
+             (-scaleCtrlPosY + transform.position.y) / 2F + 1,
+             1 + scaleCtrlPosXY);
+        }
+        else
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, deathTargetScale, 10 * Time.deltaTime);
+        }
     }
+
+    private bool _deathAnimMutex = true;
     private void FixedUpdate()
     {
+        if (!health.IsAlive())
+        {
+            if (_deathAnimMutex)
+                StartCoroutine(DiedAnim());
+            _deathAnimMutex = false;
+            return;
+        }
         if (player == null)
         {
             player = GameObject.FindGameObjectsWithTag("Player")[0];
@@ -138,6 +153,8 @@ public class Enemy_Giant : MonoBehaviour
         retireTime = Mathf.Max(0, retireTime - Time.fixedDeltaTime);
 
         _h_onGround = onGround;
+
+        scaleCtrlPosY = Mathf.Lerp(scaleCtrlPosY, transform.position.y, Time.deltaTime * 2);
     }
     private void DoRotate()
     {
@@ -161,7 +178,13 @@ public class Enemy_Giant : MonoBehaviour
     {
         speed = transform.forward * jumpSpeed + Vector3.up * jumpHeight;
     }
-
+    private IEnumerator DiedAnim()
+    {
+        // scaleCtrlPosY = transform.position.y + 1;
+        speed = Vector3.zero;
+        yield return new WaitForSeconds(2);
+        deathTargetScale = new Vector3(0f,0f,0f);
+    }
     private void OnCollisionEnter(Collision other)
     {
         if (other.collider.tag == "Terrain")

@@ -64,8 +64,11 @@ public class PlayerController : MonoBehaviour
         if (force.magnitude <= 0)
             speed = Vector3.ClampMagnitude(speed, Mathf.Clamp(speed.magnitude - drag * Time.deltaTime, 0, speed.magnitude));
         else
+        {
             playManager.SendEvent(PlayEventType.PLAYER_MOVE);
 
+            transform.rotation = Quaternion.LookRotation(force, Vector3.up);
+        }
         // damage
         if (onMist)
         {
@@ -80,6 +83,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             mistHurtingTime = 0;
+        }
+        if (!playerStatsManager.IsAlive())
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.down, Vector3.forward), Time.fixedUnscaledDeltaTime * 10);
         }
     }
 

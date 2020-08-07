@@ -271,7 +271,7 @@ MonoBehaviour:
   jumpSpeed: 1.48
   jumpHeight: 5.16
   torque: 1
-  breathCount: 2
+  breathCount: 5
   curBreathCount: 0
   onGround: 0
   speed: {x: 0, y: 0, z: 0}

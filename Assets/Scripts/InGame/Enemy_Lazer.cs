@@ -60,7 +60,7 @@ public class Enemy_Lazer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (health.Alive())
+        if (health.IsAlive())
         {
 
             if (player == null)
