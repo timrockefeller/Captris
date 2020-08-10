@@ -16,9 +16,9 @@ public static class StaticTerrain
         },
         new UnitType [,]{
             {V,V,V,V,V},
-            {O,O,O,O,O},
-            {O,O,T,O,O},
-            {O,O,O,O,O},
+            {O,O,D,O,O},
+            {O,D,T,D,O},
+            {O,O,D,O,O},
             {V,V,V,V,V},
         },
         new UnitType [,]{

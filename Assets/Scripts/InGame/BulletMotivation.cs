@@ -15,20 +15,30 @@ public class BulletMotivation : MonoBehaviour
     void Start()
     {
         curTime = 0;
+        rigidbodyCMP = GetComponent<Rigidbody>();
     }
-    
+    private Rigidbody rigidbodyCMP;
+    public GameObject target = null;
     void FixedUpdate()
     {
-
-        transform.position += transform.forward * speed * Time.fixedDeltaTime;
-        Quaternion TargetRotation = Quaternion.LookRotation(Vector3.down, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation, Time.fixedDeltaTime * gravity);
-
-        curTime += Time.fixedDeltaTime;
-        if (curTime > lifeTime)
+        if (target == null)
         {
-            //TODO Damage
-            Destroy(gameObject);
+            transform.position += transform.forward * speed * Time.fixedDeltaTime;
+            Quaternion TargetRotation = Quaternion.LookRotation(Vector3.down, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation, Time.fixedDeltaTime * gravity);
+
+            curTime += Time.fixedDeltaTime;
+            if (curTime > lifeTime)
+            {
+                //TODO Damage
+                Destroy(gameObject);
+            }
+            rigidbodyCMP.useGravity = true;
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, target.transform.position, Time.fixedDeltaTime * speed / 2);
+            rigidbodyCMP.useGravity = false;
         }
     }
 }

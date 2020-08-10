@@ -22,7 +22,7 @@ public enum PlayEventType
     PLAYER_MOVE = 120,
 
     PLAYER_DEFEAT = 121,
-
+    PLAYER_REACHED = 122,
     HEALTH_BEATTACKED = 131,
 
     PIECE_DAMAGE = 151,

@@ -69,7 +69,10 @@ public class TerrainUnit : MonoBehaviour
     {
         return t == UnitType.Grass || t == UnitType.Factor;
     }
-
+    public static bool IsStaticType(UnitType t)
+    {
+        return ((int)t >= 300 && (int)t < 400);
+    }
     public static Color GetColorByType(UnitType t)
     {
         switch (t)
