@@ -29,6 +29,7 @@
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal:NORMAL;
             };
 
             struct v2f
@@ -36,6 +37,7 @@
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
+                float3 normal:NORMAL;
             };
 
             float random (float2 st, float n) {
@@ -52,6 +54,7 @@
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 UNITY_TRANSFER_FOG(o, o.vertex);
+                o.normal = v.normal;
                 return o;
             }
 
@@ -63,6 +66,7 @@
                 col.a = c;
                 col.a*= pow(i.uv.y * c,5);
                 // apply fog
+                col.a*= step(abs(i.normal.y),0.1);
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 // return fixed4(i.uv.x,i.uv.y,0,0.5); 
                 return col;
