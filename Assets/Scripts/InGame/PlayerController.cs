@@ -108,7 +108,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    private void OnCollisionEnter(Collision other) {
+        if(other.collider.tag == "Destroyer"){
+            playerStatsManager.TakeDamage(playerStatsManager.maxHP);
+        }
+    }
     void OnCollisionStay(Collision other)
     {
         if (other.collider.tag == "Piece")
@@ -140,5 +144,6 @@ public class PlayerController : MonoBehaviour
         {
             onWall = false;
         }
+        
     }
 }

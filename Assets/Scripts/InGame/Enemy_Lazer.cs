@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy_Lazer : MonoBehaviour
 {
 
-    public GameObject player;
+    private GameObject player;
 
     [Header("Motivate")]
     public float maxSpeed;

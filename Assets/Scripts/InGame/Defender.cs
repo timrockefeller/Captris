@@ -36,14 +36,21 @@ public class Defender : MonoBehaviour
     private List<GameObject> aimList;
     
     public DefenderType type = DefenderType.Default;
+    private void Awake(){
+        transform.localScale = Vector3.zero;
+    }
     private void Start()
     {
         aimList = new List<GameObject>();
         curCoolDown = 0;
     }
-
+    private bool fullsize = false;
+    private void Update() {
+    }
     private void FixedUpdate()
     {
+        
+        if(!fullsize)transform.localScale = Vector3.Lerp(transform.localScale,Vector3.one,Time.deltaTime*4);
         if (curCoolDown < attackCoolDown)
         {
             curCoolDown += Time.fixedDeltaTime;

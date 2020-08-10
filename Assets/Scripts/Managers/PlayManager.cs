@@ -223,7 +223,7 @@ public class PlayManager : MonoBehaviour
                 /// do spawn monster
                 // 数量由天数决定 
                 // TODO 考虑非线性
-                int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * dayCount + 1);
+                int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * Mathf.Sqrt(dayCount) + 1);
                 Debug.Log("Spawn Enemy: " + enemyCount);
                 // enemies = new GameObject[enemyCount];
                 while (enemyCount-- > 0)

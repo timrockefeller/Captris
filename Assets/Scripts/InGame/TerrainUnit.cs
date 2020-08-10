@@ -263,20 +263,22 @@ public class TerrainUnit : MonoBehaviour
     /// <summary>
     /// Special Terrain
     /// </summary>
+    /// <return>是否要截断setType</return>
     bool InitStaticType(UnitType _type)
     {
         // already generated => skip
-        if ((int)type >= 200 && (int)type < 400) return false;
+        if ((int)type >= 200 && (int)type < 400) return false;//continue
         if ((int)_type >= 300 && (int)_type < 400)
         {
             // in static case, dont replace type in order keep beautified
-            if (this.type != UnitType.Empty) return false;
+            if (this.type != UnitType.Empty) return false;//continue
             this.type = _type;
 
             switch (_type)
             {
                 case UnitType.Void:
                     this.GetComponent<MeshFilter>().mesh = null;
+                    this.GetComponent<Collider>().enabled = false;
                     break;
                 case UnitType.Rock:
                     return false;

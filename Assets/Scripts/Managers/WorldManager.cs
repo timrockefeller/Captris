@@ -246,6 +246,7 @@ public class WorldManager : MonoBehaviour
         {
             // // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
             Vector2Int centerPos = new Vector2Int((int)sample.x + sampleOffset, (int)sample.y + sampleOffset);
+            if ((centerPos - towerpos1).magnitude < 4 || (centerPos - towerpos2).magnitude < 4) continue;
             UnitType[,] mineM = StaticTerrain.NextModule();
             for (int _i = 0; _i < mineM.GetLength(0); _i++)
             {

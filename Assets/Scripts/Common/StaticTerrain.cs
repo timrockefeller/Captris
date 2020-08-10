@@ -5,6 +5,7 @@ public static class StaticTerrain
     static UnitType T = UnitType.Tower;
     static UnitType V = UnitType.Void;
     static UnitType M = UnitType.Mine;
+    static UnitType D = UnitType.Defend;
     public static UnitType[][,] towers = {
         new UnitType [,]{
             {R,R,O,R,R},
@@ -14,12 +15,20 @@ public static class StaticTerrain
             {R,R,O,R,R},
         },
         new UnitType [,]{
+            {V,V,V,V,V},
+            {O,O,O,O,O},
+            {O,O,T,O,O},
+            {O,O,O,O,O},
+            {V,V,V,V,V},
+        },
+        new UnitType [,]{
             {O,R,O,R,O},
             {R,R,O,R,R},
             {O,O,T,O,O},
             {R,R,O,R,R},
             {O,R,O,R,O},
         },
+        
         // new UnitType [,]{
         //     {G,G,G,G,G},
         //     {G,R,O,R,G},
