@@ -30,7 +30,7 @@ public class Enemy_Tower_Eye : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Towereye triggered a " + other.tag);
+        // Debug.Log("Towereye triggered a " + other.tag);
         if (other.tag == "Player")
         {
             playerComming = true;

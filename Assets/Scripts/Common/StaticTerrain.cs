@@ -9,17 +9,24 @@ public static class StaticTerrain
     public static UnitType[][,] towers = {
         new UnitType [,]{
             {R,R,O,R,R},
-            {R,V,O,V,R},
-            {R,V,T,V,R},
-            {R,V,O,V,R},
+            {R,O,O,O,R},
+            {R,O,T,O,R},
+            {R,O,O,O,R},
             {R,R,O,R,R},
         },
         new UnitType [,]{
             {V,V,V,V,V},
-            {O,O,D,O,O},
+            {R,O,D,O,R},
             {O,D,T,D,O},
-            {O,O,D,O,O},
+            {R,O,D,O,R},
             {V,V,V,V,V},
+        },
+        new UnitType [,]{
+            {R,R,R,R,R},
+            {O,O,O,O,R},
+            {O,O,T,O,O},
+            {R,O,O,O,O},
+            {R,R,R,R,R},
         },
         new UnitType [,]{
             {O,R,O,R,O},

@@ -95,6 +95,9 @@ public class PlayManager : MonoBehaviour
     private float curTime;
     public int dayCount = 0;
 
+    // 击溃的塔时的天数
+    public int[] towerDestroyed = new int[] { 9999, 9999 };
+
     public float goldRefillTime = 10f;
     private float curGoldRefillTime = 0;
 
@@ -222,8 +225,9 @@ public class PlayManager : MonoBehaviour
 
                 /// do spawn monster
                 // 数量由天数决定 
-                // TODO 考虑非线性
-                int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * Mathf.Sqrt(dayCount) + 1);
+                // 考虑非线性
+                // Lazer
+                int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * Mathf.Pow(dayCount, 0.7f) + 1);
                 Debug.Log("Spawn Enemy: " + enemyCount);
                 // enemies = new GameObject[enemyCount];
                 while (enemyCount-- > 0)
@@ -234,6 +238,14 @@ public class PlayManager : MonoBehaviour
                     float actualSpawnDistance = enemySpawnDistance * (1 + RD.NextFloat() * 0.5f);
                     Vector3 spawnpoint = new Vector3(enemySpawnDistance * Mathf.Sin(thita), 3, enemySpawnDistance * Mathf.Cos(thita));
                     enemies.Add(Instantiate(enemyPrefab, worldManager.playerInstance.transform.position + spawnpoint, Quaternion.identity));
+                }
+                // Giant
+                enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * Mathf.Max(0, Mathf.Pow(dayCount - towerDestroyed[0], 0.6f)));
+                while (enemyCount-- > 0)
+                {
+                    
+                    // enemies.Add()
+
                 }
 
                 // state change

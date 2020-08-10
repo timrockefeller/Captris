@@ -30,7 +30,7 @@ public class BulletMotivation : MonoBehaviour
             curTime += Time.fixedDeltaTime;
             if (curTime > lifeTime)
             {
-                //TODO Damage
+                // Damage
                 Destroy(gameObject);
             }
             rigidbodyCMP.useGravity = true;
