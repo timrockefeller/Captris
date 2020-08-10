@@ -13,6 +13,7 @@ public class FollowAndDamage : MonoBehaviour
     private float targetDelay = 0.5f;
     private float _tDelay;
     private float _passDelay;
+    private PlayManager playManager;
     private void FixedUpdate()
     {
         if (target != null)
@@ -36,6 +37,7 @@ public class FollowAndDamage : MonoBehaviour
     }
     private void Start()
     {
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
         Vector3 face = new Vector3(RD.NextFloat() - 0.5f, RD.NextFloat(), RD.NextFloat() - 0.5f).normalized;
         this.transform.rotation = Quaternion.FromToRotation(Vector3.zero, face);
         _passDelay = 0;
@@ -50,6 +52,20 @@ public class FollowAndDamage : MonoBehaviour
                 this.GetComponent<MeshFilter>().mesh = null;
                 target = null;
                 StartCoroutine("DelayDestroy");
+
+                EnemyType type = other.GetComponent<EnemyTypeConf>().type;
+        switch (type)
+        {
+            case EnemyType.Enemy_Giant:
+                playManager.SendEvent(PlayEventType.PIECE_DAMAGE_GIANT);break;
+            case EnemyType.Enemy_Lazer:
+                playManager.SendEvent(PlayEventType.PIECE_DAMAGE_LAZER);break;
+            case EnemyType.Enemy_Tower:
+                playManager.SendEvent(PlayEventType.PIECE_DAMAGE_TOWER);break;
+            default:break;
+        }
+                playManager.SendEvent(PlayEventType.PIECE_DAMAGE);
+                // case
             }
         }
     }

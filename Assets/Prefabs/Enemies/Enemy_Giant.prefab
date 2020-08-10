@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 8485928831282116941}
   - component: {fileID: 8485928831282116938}
   - component: {fileID: 6856303383302406824}
+  - component: {fileID: 8584396376402548843}
   m_Layer: 0
   m_Name: Enemy_Giant
   m_TagString: Enemy
@@ -263,7 +264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3652c5b33a4745e468e12b953a3b0747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   explotionPrefab: {fileID: 6864168023683811513, guid: bd3e77b8e68bfe8419aaed3deb2d0409,
     type: 3}
   jumpCD: 3
@@ -289,3 +289,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   curHealth: 0
+--- !u!114 &8584396376402548843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8485928831282116940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fdc3d47e3519448a07109726ec4589, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2
