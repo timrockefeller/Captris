@@ -1518,6 +1518,7 @@ GameObject:
   - component: {fileID: 537945043}
   - component: {fileID: 537945042}
   - component: {fileID: 537945041}
+  - component: {fileID: 537945045}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -1617,6 +1618,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &537945045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537945040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4983d67c4f074f4ba755e9d03594561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &543132543
 GameObject:
   m_ObjectHideFlags: 0
@@ -8016,8 +8029,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pGround: {fileID: 1758639344}
-  iSeed: 4138
-  size: {x: 38, y: 38}
+  iSeed: 4337
+  size: {x: 34, y: 34}
   playerPrefab: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1,
     type: 3}
   playerInstance: {fileID: 0}
@@ -10011,6 +10024,12 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   - text: "\u62B5\u8FBE\u4EFB\u4E00\u9057\u8FF9(\u7EA2\u8272\u4E09\u89D2\u5F62)"
+    condition: 122
+    num: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - text: "\u5728\u5468\u8FB9\u653E\u7F6E Defend \u4EE5\u6467\u6BC1\u4E00\u5EA7\u9057\u8FF9"
     condition: 122
     num: 1
     callback:
