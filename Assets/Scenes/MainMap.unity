@@ -10400,6 +10400,7 @@ MonoBehaviour:
   dayTime: 60
   nightTime: 60
   dayCount: 0
+  towerDestroyed: 0f2700000f270000
   goldRefillTime: 10
   enemyPrefab: {fileID: 2979463236156745087, guid: 4e493f03275e92547aa15bc5733a4735,
     type: 3}
@@ -11639,7 +11640,7 @@ GameObject:
   - component: {fileID: 2135129950}
   - component: {fileID: 2135129949}
   - component: {fileID: 2135129948}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Destroyer
   m_TagString: Destroyer
   m_Icon: {fileID: 0}
