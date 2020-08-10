@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 6593218744009892942}
   - component: {fileID: 5870546174260794767}
   - component: {fileID: 9187876021219734885}
+  - component: {fileID: 4267913374025874818}
   m_Layer: 2
-  m_Name: Cylinder
+  m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,12 +27,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574031949487591723}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0.63, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 0, y: -0.78400004, z: 0}
   m_LocalScale: {x: 5, y: 0.45, z: 5}
   m_Children: []
-  m_Father: {fileID: 6540412964649032834}
-  m_RootOrder: 4
+  m_Father: {fileID: 6501759884782738390}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!33 &6593218744009892942
 MeshFilter:
@@ -88,12 +89,26 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574031949487591723}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5000001
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &4267913374025874818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 574031949487591723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8403e07d98506134fa8557ed374dd380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aimList: []
+  playerComming: 0
 --- !u!1 &1018035448555046588
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,7 +142,6 @@ Transform:
   - {fileID: 3827484414497992962}
   - {fileID: 4967266650294674652}
   - {fileID: 6501759884782738390}
-  - {fileID: 758326035305315633}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4958,50 +4972,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 14
---- !u!1 &4540067425689413231
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4943037375304940006}
-  - component: {fileID: 1582806776441192546}
-  m_Layer: 2
-  m_Name: Eye
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4943037375304940006
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4540067425689413231}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6501759884782738390}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1582806776441192546
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4540067425689413231}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2.5
-  m_Center: {x: 0, y: -1.21, z: 0}
 --- !u!1 &8106360126910800586
 GameObject:
   m_ObjectHideFlags: 0
@@ -5034,7 +5004,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 1.414, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4943037375304940006}
+  - {fileID: 758326035305315633}
   m_Father: {fileID: 6540412964649032834}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5063,7 +5033,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86ef4ce5f905bf45892da900cd16161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  healthBarUIPrefab: {fileID: 7078198001913199987, guid: 3f3176511ae834448a9656a8b5fb0ded,
+    type: 3}
+  maxHealth: 500
   curHealth: 0
 --- !u!135 &1450077789714416434
 SphereCollider:
@@ -5076,8 +5048,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4606192
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.30044687
+  m_Center: {x: 0, y: 0.07835853, z: 0}
 --- !u!54 &4994576850508133397
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5106,6 +5078,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69a35a3d4cf27fc4f9f204d052e6870c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 1015233459957706024, guid: 10427068998051148afc798eb361ea86,
+    type: 3}
+  attackCD: 10
 --- !u!1 &8544916841829261336
 GameObject:
   m_ObjectHideFlags: 0

@@ -163,7 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb72d55af0dbeb14db21634a0ef10687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2093231844899403486, guid: da57aa4a3de5d454a80ed80e50f473b1, type: 3}
   maxSpeed: 0.7
   maxAcc: 0.2
   maxTorque: 1
@@ -212,6 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86ef4ce5f905bf45892da900cd16161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBarUIPrefab: {fileID: 7078198001913199987, guid: 3f3176511ae834448a9656a8b5fb0ded,
+    type: 3}
   maxHealth: 100
   curHealth: 0
 --- !u!114 &396544305130018379

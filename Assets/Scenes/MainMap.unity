@@ -10010,8 +10010,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls: []
-  - text: "\u5728\u4E00\u5EA7\u5854\u65C1\u5EFA\u9020 Defend"
-    condition: 0
+  - text: "\u62B5\u8FBE\u4EFB\u4E00\u9057\u8FF9(\u7EA2\u8272\u4E09\u89D2\u5F62)"
+    condition: 122
     num: 1
     callback:
       m_PersistentCalls:

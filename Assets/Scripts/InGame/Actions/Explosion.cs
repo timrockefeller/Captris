@@ -25,6 +25,6 @@ public class Explosion : MonoBehaviour
         {
             other.GetComponent<TerrainUnit>().SetEmpty();
         }
-    Debug.Log(other.tag);
+        Debug.Log("Explotion triggered a " + other.tag);
     }
 }

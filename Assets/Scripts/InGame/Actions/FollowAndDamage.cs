@@ -52,20 +52,21 @@ public class FollowAndDamage : MonoBehaviour
                 this.GetComponent<MeshFilter>().mesh = null;
                 target = null;
                 StartCoroutine("DelayDestroy");
-
-                EnemyType type = other.GetComponent<EnemyTypeConf>().type;
-        switch (type)
-        {
-            case EnemyType.Enemy_Giant:
-                playManager.SendEvent(PlayEventType.PIECE_DAMAGE_GIANT);break;
-            case EnemyType.Enemy_Lazer:
-                playManager.SendEvent(PlayEventType.PIECE_DAMAGE_LAZER);break;
-            case EnemyType.Enemy_Tower:
-                playManager.SendEvent(PlayEventType.PIECE_DAMAGE_TOWER);break;
-            default:break;
-        }
-                playManager.SendEvent(PlayEventType.PIECE_DAMAGE);
-                // case
+                if (targetTag == "Enemy")
+                {
+                    EnemyType type = other.GetComponent<EnemyTypeConf>().type;
+                    switch (type)
+                    {
+                        case EnemyType.Enemy_Giant:
+                            playManager.SendEvent(PlayEventType.PIECE_DAMAGE_GIANT); break;
+                        case EnemyType.Enemy_Lazer:
+                            playManager.SendEvent(PlayEventType.PIECE_DAMAGE_LAZER); break;
+                        case EnemyType.Enemy_Tower:
+                            playManager.SendEvent(PlayEventType.PIECE_DAMAGE_TOWER); break;
+                        default: break;
+                    }
+                    playManager.SendEvent(PlayEventType.PIECE_DAMAGE);
+                }
             }
         }
     }
