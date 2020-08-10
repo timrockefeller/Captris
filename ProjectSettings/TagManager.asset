@@ -8,6 +8,7 @@ TagManager:
   - Piece
   - Wall
   - Enemy
+  - Destroyer
   layers:
   - Default
   - TransparentFX
