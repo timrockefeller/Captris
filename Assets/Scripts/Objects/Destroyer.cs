@@ -5,7 +5,9 @@ using UnityEngine;
 public class Destroyer : MonoBehaviour
 {
     // Start is called before the first frame update
-    private void OnTriggerEnter(Collider other) {
-        Destroy(other);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != "Player")
+            Destroy(other);
     }
 }

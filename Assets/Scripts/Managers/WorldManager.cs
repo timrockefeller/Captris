@@ -297,11 +297,13 @@ public class WorldManager : MonoBehaviour
 
         ///////////// generate spawn point & player
         map[size.x / 2, size.y / 2].SetType(UnitType.Spawn);
-        playerInstance = Instantiate(playerPrefab, new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f), Quaternion.identity);
+        playerSpawnPoint = new Vector3(size.x / 2 + 0.5f, 15, (size.y / 2) + 0.5f);
+        playerInstance = Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
 
 
 
     }
+    public Vector3 playerSpawnPoint;
     private void Start()
     {
         ///////////// Fresh Buff Area

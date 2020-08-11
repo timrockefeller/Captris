@@ -95,7 +95,8 @@ public class PlayerController : MonoBehaviour
             if (mistHurtingTime > mistHurtingPeriod)
             {
                 //do damage 
-                playerStatsManager.TakeDamage(mistDamage);
+                if (playerStatsManager.curHP > mistDamage)
+                    playerStatsManager.TakeDamage(mistDamage);
                 mistHurtingTime -= mistHurtingPeriod;
             }
         }
@@ -107,6 +108,11 @@ public class PlayerController : MonoBehaviour
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.down, Vector3.forward), Time.fixedUnscaledDeltaTime * 10);
         }
+        else
+        {
+
+            transform.rotation = Quaternion.identity;
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -114,6 +120,7 @@ public class PlayerController : MonoBehaviour
         if (other.collider.tag == "Destroyer")
         {
             playerStatsManager.TakeDamage(playerStatsManager.maxHP + 1);
+            gameObject.SetActive(false);
         }
     }
     void OnCollisionStay(Collision other)

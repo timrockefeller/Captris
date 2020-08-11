@@ -13,6 +13,8 @@ public class PlayerStatsManager : MonoBehaviour
     [Header("HUD Components reference")]
     public GameObject healthBar;
 
+    public GameObject pauseBar;
+
     private Image healthBarCMP;
     private Image playerBindedHealthBarCMPfill;
     private Image playerBindedHealthBarCMPback;
@@ -51,7 +53,7 @@ public class PlayerStatsManager : MonoBehaviour
     }
     public bool _deathflag = false;
     private float playerBindedHealthBarTargetAlpha;
-
+    private bool deathCoroutine = false;
     public bool deathflag
     {
         get { return _deathflag; }
@@ -77,18 +79,44 @@ public class PlayerStatsManager : MonoBehaviour
         {
             mainCameraRc.orthographicSize = Mathf.Lerp(mainCameraRc.orthographicSize, 10, 4 * Time.deltaTime);
             Time.timeScale = Mathf.Lerp(Time.timeScale, 0.01f, 2 * Time.deltaTime);
+            if(!deathCoroutine){
             StartCoroutine(GameOver());
+            deathCoroutine = true;
+            }
         }
-        globalMaskCMP.color = Color.Lerp(globalMaskCMP.color, new Color(0, 0, 0, globalMaskAlpha), 20f * Time.deltaTime);
+        globalMaskCMP.color = Color.Lerp(globalMaskCMP.color, new Color(0, 0, 0, globalMaskAlpha), 20f * Time.unscaledDeltaTime);
     }
     IEnumerator GameOver()
     {
-
+        globalMaskCMP.color = new Color(0,0,0,0);
+        globalMask.SetActive(true);
         yield return new WaitForSecondsRealtime(2);
         // to another scene
         globalMaskAlpha = 1;
         yield return new WaitForSecondsRealtime(1);
+        pauseBar.SetActive(true);
+    }
+    private void ResetS(){
+        curHP = maxHP;
+        globalMaskAlpha = 0;
+        Time.timeScale = 1;
+        player = null;
+        deathflag = false;
+        deathCoroutine = false;
+        mainCameraRc.orthographicSize = 5;
+        globalMaskCMP.color = new Color(0,0,0,0);
+        globalMask.SetActive(false);
+    }
+    public void Button_Back()
+    {
         SceneManager.LoadScene("Title");
+    }
+    public void Button_Continue()
+    {
+        pauseBar.SetActive(false);
+        player.SetActive(true);
+        player.transform.position = GameObject.Find("Map").GetComponent<WorldManager>().playerSpawnPoint;
+        ResetS();
     }
     private void FixedUpdate()
     {
@@ -131,7 +159,7 @@ public class PlayerStatsManager : MonoBehaviour
                 hurting = false;
             }
         }
-        if (curHP <maxHP)
+        if (curHP < maxHP)
             playerBindedHealthBarTargetAlpha = 5;
 
 
