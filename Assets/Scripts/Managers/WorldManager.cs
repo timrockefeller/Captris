@@ -68,7 +68,14 @@ public class WorldManager : MonoBehaviour
             poolPosInstane.GetComponent<Mover>().MoveTo(new Vector3(poolCur, 0, 0));
         }
     }
-
+    /// <summary>
+    /// 塔1
+    /// </summary>
+    public Vector2Int towerpos1;
+    /// <summary>
+    /// 塔2
+    /// </summary>
+    public Vector2Int towerpos2;
     public void Generate()
     {
         poolCur = 0;
@@ -97,8 +104,8 @@ public class WorldManager : MonoBehaviour
         /// STACK begin
         /// 这里提前定义了两座遗迹的位置，需要在生成地形的时候提前平滑他们所在的位置
         const int TOWER_OUTTER_BORDER = 5, TOWER_INNER_BORDER = 10;
-        Vector2Int towerpos1 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_OUTTER_BORDER, TOWER_INNER_BORDER + size.y / 2);
-        Vector2Int towerpos2 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_INNER_BORDER + size.x / 2, TOWER_OUTTER_BORDER);
+        towerpos1 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_OUTTER_BORDER, TOWER_INNER_BORDER + size.y / 2);
+        towerpos2 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_INNER_BORDER + size.x / 2, TOWER_OUTTER_BORDER);
         /// do lerp
         const int TOWER_IS_HIGHER = 2;
         int towerpos1height = TOWER_IS_HIGHER + heightMap[towerpos1.x, towerpos1.y];
@@ -390,7 +397,10 @@ public class WorldManager : MonoBehaviour
     {
         return GetUnit(v.x, v.z);
     }
-
+    public TerrainUnit GetUnit(Vector2Int v)
+    {
+        return GetUnit(v.x, v.y);
+    }
     public List<Vector3> GetRoundSameType(int x, int y)
     {
 
