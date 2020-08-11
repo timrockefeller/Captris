@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Enemy
   - Destroyer
+  - Collector
   layers:
   - Default
   - TransparentFX
