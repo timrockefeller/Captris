@@ -435,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57b399e14d8ac5c439502d803021a1b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 4
+  cameraSpeed: 2.25
   followSpeed: 4
   target: {x: 0, y: 0, z: 0}
   enableMotionControl: 0
@@ -11621,7 +11621,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 53.8, y: 48.2}
+  m_AnchoredPosition: {x: 53.80005, y: 48.200012}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1987552476

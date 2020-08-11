@@ -3,9 +3,9 @@ public static class StaticTerrain
     static UnitType R = UnitType.Rock;
     static UnitType _ = UnitType.Empty;
     static UnitType T = UnitType.Tower;
-    static UnitType V = UnitType.Void;
+    // static UnitType V = UnitType.Void;
     static UnitType M = UnitType.Mine;
-    static UnitType D = UnitType.Defend;
+    // static UnitType D = UnitType.Defend;
     public static UnitType[][,] towers = {
         new UnitType [,]{
             {R,R,_,R,R},
