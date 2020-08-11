@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7813747762477004477}
   m_Layer: 2
   m_Name: Defender
-  m_TagString: Piece
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,11 +58,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd1159a9acb564408bf568cad17d700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 1015233459957706024, guid: fc72d6e0f58ea504f994e414edf14756,
+    type: 3}
   attackAmount: 10
   attackCoolDown: 7.4
   type: 0
-  bulletPrefab: {fileID: 1015233459957706024, guid: fc72d6e0f58ea504f994e414edf14756,
-    type: 3}
 --- !u!1 &4258772156330512894
 GameObject:
   m_ObjectHideFlags: 0
