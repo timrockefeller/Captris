@@ -6,6 +6,8 @@ public static class StaticTerrain
     // static UnitType V = UnitType.Void;
     static UnitType M = UnitType.Mine;
     // static UnitType D = UnitType.Defend;
+    static UnitType G = UnitType.Grass;
+    static UnitType A = UnitType.Absorb;
     public static UnitType[][,] towers = {
         new UnitType [,]{
             {R,R,_,R,R},
@@ -45,36 +47,44 @@ public static class StaticTerrain
         // },
     };
     public static UnitType[][,] modules = {
-        new UnitType [,]{
-            {_,R,_,_,_},
-            {R,M,_,_,_},
-            {R,_,_,R,_},
-            {_,_,_,_,_},
-            {_,_,_,_,_},
-        }, new UnitType [,]{
-            {_,_,_,_,_},
-            {_,_,R,R,_},
-            {_,_,M,R,_},
-            {_,_,_,_,_},
-            {_,_,_,_,_},
-        }, new UnitType [,]{
-            {_,R,_,_,_},
-            {R,M,_,_,_},
-            {R,_,_,R,_},
-            {_,_,_,_,_},
-            {_,_,_,_,_},
-        }, new UnitType [,]{
-            {_,R,_,_,_},
-            {R,M,M,_,_},
-            {_,_,_,R,_},
-            {_,_,_,_,_},
-            {_,_,_,_,_},
-        }, new UnitType [,]{
-            {_,_,_,_,R},
-            {_,_,_,M,_},
-            {_,_,_,M,R},
-            {_,_,_,R,_},
-            {_,_,_,_,_},}
+     new UnitType [,]{
+            {A,R,_,_,_},
+            {R,M,A,G,_},
+            {R,G,G,R,_},
+            {_,_,G,G,_},
+            {_,_,G,G,G},
+     }
+        // new UnitType [,]{
+        //     {_,R,_,_,_},
+        //     {R,M,_,_,_},
+        //     {R,_,_,R,_},
+        //     {_,_,_,_,_},
+        //     {_,_,_,_,_},
+        // }, new UnitType [,]{
+        //     {_,_,_,_,_},
+        //     {_,_,R,R,_},
+        //     {_,_,M,R,_},
+        //     {_,_,_,_,_},
+        //     {_,_,_,_,_},
+        // }, new UnitType [,]{
+        //     {_,R,_,_,_},
+        //     {R,M,_,_,_},
+        //     {R,_,_,R,_},
+        //     {_,_,_,_,_},
+        //     {_,_,_,_,_},
+        // }, new UnitType [,]{
+        //     {_,R,_,_,_},
+        //     {R,M,M,_,_},
+        //     {_,_,_,R,_},
+        //     {_,_,_,_,_},
+        //     {_,_,_,_,_},
+        // }, new UnitType [,]{
+        //     {_,_,_,_,R},
+        //     {_,_,_,M,_},
+        //     {_,_,_,M,R},
+        //     {_,_,_,R,_},
+        //     {_,_,_,_,_},}
+
         // }, new UnitType [,]{
         //     {O,O,O,O,O},
         //     {O,O,R,O,O},

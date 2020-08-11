@@ -351,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3397820303571690462}
   - component: {fileID: 2991988152611018971}
+  - component: {fileID: 8517203740891041983}
   m_Layer: 2
   m_Name: Collector
   m_TagString: Collector
@@ -385,6 +386,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.03
   m_Center: {x: 0, y: 0.93, z: 0}
+--- !u!114 &8517203740891041983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1667096972800947755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a138ea92bc7f5264385d68dbff5cb7a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2093231844899403486
 GameObject:
   m_ObjectHideFlags: 0

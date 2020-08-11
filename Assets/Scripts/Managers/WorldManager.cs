@@ -399,6 +399,10 @@ public class WorldManager : MonoBehaviour
     {
         return GetUnit(v.x, v.z);
     }
+    public TerrainUnit GetUnit(Vector3 v)
+    {
+        return GetUnit((int)v.x, (int)v.z);
+    }
     public TerrainUnit GetUnit(Vector2Int v)
     {
         return GetUnit(v.x, v.y);

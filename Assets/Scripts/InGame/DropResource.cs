@@ -10,19 +10,27 @@ public class DropResource : MonoBehaviour
 
     public Vector3Int position;
 
+    public Vector3 oldPositionInTransform;
     private void Awake()
     {
         this.playManager = GameObject.Find("PlayManager").gameObject.GetComponent<PlayManager>();
         isMoving = false;
     }
-
+    private void Start()
+    {
+        oldPositionInTransform = transform.position;
+    }
     private Vector3 moveTarget;
     private bool isMoving;
     private void Update()
     {
         if (isMoving /*|| can gain*/ && playManager.CanGainResource(type))
         {
-            transform.position = transform.position + ( moveTarget - transform.position) / (moveTarget - transform.position).magnitude * Time.deltaTime;
+            transform.position = transform.position + (moveTarget - transform.position) / (moveTarget - transform.position).magnitude * Time.deltaTime;
+        }
+        else
+        {
+            transform.position = Vector3.Lerp(transform.position, oldPositionInTransform, 3 * Time.deltaTime);
         }
     }
     private void OnTriggerStay(Collider other)
