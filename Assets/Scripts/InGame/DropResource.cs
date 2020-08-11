@@ -13,6 +13,25 @@ public class DropResource : MonoBehaviour
     private void Awake()
     {
         this.playManager = GameObject.Find("PlayManager").gameObject.GetComponent<PlayManager>();
+        isMoving = false;
+    }
+
+    private Vector3 moveTarget;
+    private bool isMoving;
+    private void Update()
+    {
+        if (isMoving /*|| can gain*/ && playManager.CanGainResource(type))
+        {
+            transform.position = transform.position + ( moveTarget - transform.position) / (moveTarget - transform.position).magnitude * Time.deltaTime;
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Collector")
+        {
+            moveTarget = other.transform.position;
+            isMoving = true;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -22,6 +41,12 @@ public class DropResource : MonoBehaviour
                 Destroy(gameObject);
         }
     }
-
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Collector")
+        {
+            isMoving = false;
+        }
+    }
 
 }

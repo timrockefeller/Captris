@@ -623,7 +623,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &221692317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1173,7 +1173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &460102818
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3314,7 +3314,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1126705221
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8573,6 +8573,12 @@ MonoBehaviour:
     producePrefab: {fileID: 1018035448555046588, guid: d0c1a7ce782bb244dbba01ad01957c09,
       type: 3}
     resourceNeeded: 030000000300000006000000
+  - type: 106
+    isProducer: 0
+    isManual: 1
+    producePeriod: 0
+    producePrefab: {fileID: 0}
+    resourceNeeded: 030000000200000003000000
   - type: 110
     isProducer: 0
     isManual: 1
@@ -9954,7 +9960,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1649228298
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10482,7 +10488,18 @@ MonoBehaviour:
     num: 1
     callback:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 517319780}
+          m_MethodName: Unlock_period3
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - text: "\u51FB\u8D25\u9057\u8FF9\u5B88\u62A4\u8005|(\u7ADF\u7136\u662F\u4E00\u53EA\u53F2\u83B1\u59C6\uFF01)"
     condition: 112
     num: 1

@@ -485,6 +485,10 @@ public class PlayManager : MonoBehaviour
         }
     }
 
+
+    public bool CanGainResource(ResourceType type){
+        return this.playerResources[type] < this.playerMaxResources[type];
+    }
     /// <summary>
     /// 获得资源（立即）
     /// </summary>

@@ -15,11 +15,11 @@ public static class StaticTerrain
             {R,R,_,R,R},
         },
         new UnitType [,]{
-            {V,V,V,V,V},
+            {R,R,_,R,R},
             {R,_,_,_,R},
             {_,_,T,_,_},
             {R,_,_,_,R},
-            {V,V,V,V,V},
+            {R,R,_,R,R},
         },
         new UnitType [,]{
             {R,R,R,R,R},

@@ -43,7 +43,8 @@ public class Enemy_Tower : MonoBehaviour
             }
 
 
-            currentCD += Time.fixedDeltaTime;
+            if (HaveTarget())
+                currentCD += Time.fixedDeltaTime;
             if (currentCD > attackCD)
             {
                 // do attack
@@ -82,6 +83,34 @@ public class Enemy_Tower : MonoBehaviour
         GameObject giant = Instantiate(giantPrefab, new Vector3(transform.position.x, 5, transform.position.z), Quaternion.identity);
         yield return new WaitForSeconds(6);
         Destroy(transform.parent.gameObject);
+    }
+
+    private bool previteHaveTarget = false;
+    private int previteHaveTargetCount = 0;
+    /// <summary>
+    /// cd count if has target in field
+    /// </summary>
+    /// <returns></returns>
+    bool HaveTarget()
+    {
+        previteHaveTargetCount++;
+        if (previteHaveTargetCount > 5)
+        {
+            foreach (var item in eye.aimList)
+            {
+                if (TerrainUnit.IsManualType(item.GetComponent<TerrainUnit>().type))
+                {
+                    previteHaveTarget = true;
+                    previteHaveTargetCount = 0;
+                    return true;
+                }
+            }
+            
+                    previteHaveTargetCount = 0;
+            previteHaveTarget = false;
+            return false;
+        }
+        return previteHaveTarget;
     }
     bool DoAttack()
     {

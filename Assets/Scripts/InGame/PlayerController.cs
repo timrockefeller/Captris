@@ -56,10 +56,10 @@ public class PlayerController : MonoBehaviour
         Vector3 force = new Vector3(0, 0, 0);
         // force += new Vector3(1, 0, -1) * Input.GetAxis("Horizontal");
         // force += new Vector3(1, 0, 1) * Input.GetAxis("Vertical");
-        if (Input.GetKey(KeyCode.W)) force += new Vector3(1, 0, 0);
-        if (Input.GetKey(KeyCode.S)) force -= new Vector3(1, 0, 0);
-        if (Input.GetKey(KeyCode.A)) force -= new Vector3(0, 0, -1);
-        if (Input.GetKey(KeyCode.D)) force += new Vector3(0, 0, -1);
+        if (Input.GetKey(KeyCode.W)) force += new Vector3(1, 0, 1);
+        if (Input.GetKey(KeyCode.S)) force -= new Vector3(1, 0, 1);
+        if (Input.GetKey(KeyCode.A)) force -= new Vector3(1, 0, -1);
+        if (Input.GetKey(KeyCode.D)) force += new Vector3(1, 0, -1);
 
         if (speed.magnitude > 0) cameraController.SetTarget(transform.position);
         speed += acc * Vector3.Normalize(force) * Time.deltaTime * (onMist || onWall ? mistCost : 1);
@@ -74,7 +74,8 @@ public class PlayerController : MonoBehaviour
             speedY = 0;
             if (!onWall && Input.GetButton("Jump"))
             {
-                speedY = 3.3f * (onMist ? mistCost : 1);
+                // speedY = 3.3f * (onMist ? mistCost : 1);
+                speedY = 3.3f;
             }
         }
         speed = Vector3.ClampMagnitude(speed, maxSpeed * (onMist || onWall ? mistCost : 1));
@@ -108,9 +109,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other) {
-        if(other.collider.tag == "Destroyer"){
-            playerStatsManager.TakeDamage(playerStatsManager.maxHP);
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.tag == "Destroyer")
+        {
+            playerStatsManager.TakeDamage(playerStatsManager.maxHP + 1);
         }
     }
     void OnCollisionStay(Collision other)
@@ -144,6 +147,6 @@ public class PlayerController : MonoBehaviour
         {
             onWall = false;
         }
-        
+
     }
 }

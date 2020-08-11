@@ -12,7 +12,11 @@ public class PlayerStatsManager : MonoBehaviour
 
     [Header("HUD Components reference")]
     public GameObject healthBar;
+
     private Image healthBarCMP;
+    private Image playerBindedHealthBarCMPfill;
+    private Image playerBindedHealthBarCMPback;
+
     public GameObject mainCamera;
     private TiltShift mainCameraCMP;
 
@@ -26,6 +30,7 @@ public class PlayerStatsManager : MonoBehaviour
     private bool hurting = false;
     private Camera mainCameraRc;
     private PlayManager playManager;
+    private GameObject player;
     private void Start()
     {
         playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
@@ -37,13 +42,16 @@ public class PlayerStatsManager : MonoBehaviour
         curHP = maxHP;
         globalMaskAlpha = 0;
         Time.timeScale = 1;
+        player = null;
     }
 
     public bool IsAlive()
     {
         return curHP > 0;
     }
-    public bool _deathflag;
+    public bool _deathflag = false;
+    private float playerBindedHealthBarTargetAlpha;
+
     public bool deathflag
     {
         get { return _deathflag; }
@@ -77,13 +85,35 @@ public class PlayerStatsManager : MonoBehaviour
     {
 
         yield return new WaitForSecondsRealtime(2);
-        // TODO to another scene
+        // to another scene
         globalMaskAlpha = 1;
         yield return new WaitForSecondsRealtime(1);
         SceneManager.LoadScene("Title");
     }
     private void FixedUpdate()
     {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectsWithTag("Player")[0];
+            if (player != null)
+            {
+                playerBindedHealthBarCMPback = player.transform.Find("HealthUI").Find("back").GetComponent<Image>();
+                playerBindedHealthBarCMPfill = player.transform.Find("HealthUI").Find("fill").GetComponent<Image>();
+            }
+            return;
+        }
+
+
+        if (playerBindedHealthBarCMPback != null && playerBindedHealthBarCMPfill != null)
+        {
+            // update HPbar UI
+            playerBindedHealthBarCMPfill.fillAmount = Mathf.Lerp(playerBindedHealthBarCMPfill.fillAmount, curHP / maxHP, 2 * Time.deltaTime);
+            playerBindedHealthBarCMPfill.color = new Color(1F, 1F, 1F, Mathf.Clamp01(playerBindedHealthBarTargetAlpha));
+            playerBindedHealthBarCMPback.color = new Color(1F, 0.2F, 0.2F, Mathf.Clamp01(playerBindedHealthBarTargetAlpha) / 2F);
+        }
+
+        playerBindedHealthBarTargetAlpha -= Time.deltaTime * 2;
+
         healthBarCMP.fillAmount = curHP / maxHP;
         if (!deathflag)
             mainCameraCMP.bloodOutNum = Mathf.Pow(Mathf.Clamp01(1 - curHP / maxHP), 2) * 0.8f;
@@ -101,6 +131,10 @@ public class PlayerStatsManager : MonoBehaviour
                 hurting = false;
             }
         }
+        if (curHP <maxHP)
+            playerBindedHealthBarTargetAlpha = 5;
+
+
     }
     public void TakeDamage(float hurt)
     {
