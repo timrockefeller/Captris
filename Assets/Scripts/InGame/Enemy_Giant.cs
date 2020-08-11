@@ -20,6 +20,8 @@ public class Enemy_Giant : MonoBehaviour
     /// <summary>
     /// 场上玩家的引用
     /// </summary>
+    [ReadOnly]
+    [SerializeField]
     private GameObject player;
     /// <summary>
     /// 全局对象
@@ -267,7 +269,7 @@ public class Enemy_Giant : MonoBehaviour
     }
     private void OnCollisionEnter(Collision other)
     {
-        if (other.collider.tag == "Terrain" || other.collider.tag == "Piece")
+        if (other.collider.tag == "Terrain" || other.collider.tag == "Piece" || other.collider.tag == "Enemy")
         {
             if (curBreathCount < 0)
             {
@@ -284,7 +286,7 @@ public class Enemy_Giant : MonoBehaviour
 
         }
 
-        if (other.collider.tag == "Terrain" || other.collider.tag == "Piece")
+        if (other.collider.tag == "Terrain" || other.collider.tag == "Piece" || other.collider.tag == "Enemy")
         {
             if (retireTime <= 0)
                 onGround = true;
@@ -311,7 +313,7 @@ public class Enemy_Giant : MonoBehaviour
     }
     private void OnCollisionExit(Collision other)
     {
-        if (other.collider.tag == "Terrain" || other.collider.tag == "Piece")
+        if (other.collider.tag == "Terrain" || other.collider.tag == "Piece" || other.collider.tag == "Enemy")
         {
             onGround = false;
         }

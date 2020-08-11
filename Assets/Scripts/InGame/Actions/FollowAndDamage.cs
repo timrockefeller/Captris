@@ -48,7 +48,10 @@ public class FollowAndDamage : MonoBehaviour
         {
             if (other.tag == targetTag)
             {
-                other.GetComponent<Health>().DoAttack(damage);
+                if (other.GetComponent<Enemy_Tower>() != null)
+                    other.GetComponent<Health>().DoAttack(damage, false);
+                else
+                    other.GetComponent<Health>().DoAttack(damage);
                 this.GetComponent<MeshFilter>().mesh = null;
                 target = null;
                 StartCoroutine("DelayDestroy");

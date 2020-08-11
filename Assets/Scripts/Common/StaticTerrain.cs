@@ -1,39 +1,39 @@
 public static class StaticTerrain
 {
     static UnitType R = UnitType.Rock;
-    static UnitType O = UnitType.Empty;
+    static UnitType _ = UnitType.Empty;
     static UnitType T = UnitType.Tower;
     static UnitType V = UnitType.Void;
     static UnitType M = UnitType.Mine;
     static UnitType D = UnitType.Defend;
     public static UnitType[][,] towers = {
         new UnitType [,]{
-            {R,R,O,R,R},
-            {R,O,O,O,R},
-            {R,O,T,O,R},
-            {R,O,O,O,R},
-            {R,R,O,R,R},
+            {R,R,_,R,R},
+            {R,_,_,_,R},
+            {R,_,T,_,R},
+            {R,_,_,_,R},
+            {R,R,_,R,R},
         },
         new UnitType [,]{
             {V,V,V,V,V},
-            {R,O,D,O,R},
-            {O,D,T,D,O},
-            {R,O,D,O,R},
+            {R,_,_,_,R},
+            {_,_,T,_,_},
+            {R,_,_,_,R},
             {V,V,V,V,V},
         },
         new UnitType [,]{
             {R,R,R,R,R},
-            {O,O,O,O,R},
-            {O,O,T,O,O},
-            {R,O,O,O,O},
+            {_,_,_,_,R},
+            {_,_,T,_,_},
+            {R,_,_,_,_},
             {R,R,R,R,R},
         },
         new UnitType [,]{
-            {O,R,O,R,O},
-            {R,R,O,R,R},
-            {O,O,T,O,O},
-            {R,R,O,R,R},
-            {O,R,O,R,O},
+            {_,R,_,R,_},
+            {R,R,_,R,R},
+            {_,_,T,_,_},
+            {R,R,_,R,R},
+            {_,R,_,R,_},
         },
         
         // new UnitType [,]{
@@ -46,35 +46,35 @@ public static class StaticTerrain
     };
     public static UnitType[][,] modules = {
         new UnitType [,]{
-            {O,R,O,O,O},
-            {R,M,O,O,O},
-            {R,O,O,R,O},
-            {O,O,O,O,O},
-            {O,O,O,O,O},
+            {_,R,_,_,_},
+            {R,M,_,_,_},
+            {R,_,_,R,_},
+            {_,_,_,_,_},
+            {_,_,_,_,_},
         }, new UnitType [,]{
-            {O,O,O,O,O},
-            {O,O,R,R,O},
-            {O,O,M,R,O},
-            {O,O,O,O,O},
-            {O,O,O,O,O},
+            {_,_,_,_,_},
+            {_,_,R,R,_},
+            {_,_,M,R,_},
+            {_,_,_,_,_},
+            {_,_,_,_,_},
         }, new UnitType [,]{
-            {O,R,O,O,O},
-            {R,M,O,O,O},
-            {R,O,O,R,O},
-            {O,O,O,O,O},
-            {O,O,O,O,O},
+            {_,R,_,_,_},
+            {R,M,_,_,_},
+            {R,_,_,R,_},
+            {_,_,_,_,_},
+            {_,_,_,_,_},
         }, new UnitType [,]{
-            {O,R,O,O,O},
-            {R,M,M,O,O},
-            {O,O,O,R,O},
-            {O,O,O,O,O},
-            {O,O,O,O,O},
+            {_,R,_,_,_},
+            {R,M,M,_,_},
+            {_,_,_,R,_},
+            {_,_,_,_,_},
+            {_,_,_,_,_},
         }, new UnitType [,]{
-            {O,O,O,O,R},
-            {O,O,O,M,O},
-            {O,O,O,M,R},
-            {O,O,O,R,O},
-            {O,O,O,O,O},}
+            {_,_,_,_,R},
+            {_,_,_,M,_},
+            {_,_,_,M,R},
+            {_,_,_,R,_},
+            {_,_,_,_,_},}
         // }, new UnitType [,]{
         //     {O,O,O,O,O},
         //     {O,O,R,O,O},

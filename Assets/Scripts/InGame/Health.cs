@@ -45,15 +45,16 @@ public class Health : MonoBehaviour
     /// 造成伤害
     /// </summary>
     /// <param name="damage">负数为加血</param>
-    /// <returns>是否死亡</returns>
-    public bool DoAttack(float damage)
+    /// <returns>是否有改变死亡状态</returns>
+    public bool DoAttack(float damage, bool needDestroy = true)
     {
         targetAlpha = 5;
         if (curHealth <= 0) return true;
         curHealth -= damage;
         if (curHealth <= 0)
         {
-            StartCoroutine("DelayDestroy");
+            if (needDestroy)
+                StartCoroutine(DelayDestroy());
             return false;
         }
         curHealth = Mathf.Clamp(curHealth, 0, maxHealth);

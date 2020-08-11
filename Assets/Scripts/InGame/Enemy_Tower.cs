@@ -8,14 +8,20 @@ public class Enemy_Tower : MonoBehaviour
     private GameObject player;
     [Header("Attack Porperties")]
     public GameObject bulletPrefab;
+    public GameObject explotionPrefab;
+    public GameObject giantPrefab;
     public float attackCD;
     private float currentCD;
 
     private Enemy_Tower_Eye eye;
+    private Health health;
+    private PlayManager playManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+        health = GetComponent<Health>();
         eye = transform.Find("Eye").GetComponent<Enemy_Tower_Eye>();
     }
 
@@ -24,21 +30,58 @@ public class Enemy_Tower : MonoBehaviour
     {
 
     }
+    bool deathFlag = false;
+    float deathTimePassed = 0;
     private void FixedUpdate()
     {
-        if (player == null)
+        if (health.IsAlive())
         {
-            player = GameObject.FindGameObjectsWithTag("Player")[0];
-            return;
-        }
+            if (player == null)
+            {
+                player = GameObject.FindGameObjectsWithTag("Player")[0];
+                return;
+            }
 
 
-        currentCD += Time.fixedDeltaTime;
-        if (currentCD > attackCD)
-        {
-            // do attack
-            if (DoAttack()) currentCD = 0;
+            currentCD += Time.fixedDeltaTime;
+            if (currentCD > attackCD)
+            {
+                // do attack
+                if (DoAttack()) currentCD = 0;
+            }
         }
+        else
+        {
+            if (!deathFlag)
+            {
+                playManager.SendEvent(PlayEventType.PLAYER_KILL);
+                playManager.SendEvent(PlayEventType.PLAYER_KILL_TOWER);
+                StartCoroutine(DiedAnim());
+                deathTimePassed = -0.2f;
+                deathFlag = true;
+            }
+            deathTimePassed += Time.fixedDeltaTime * 0.4f;
+            // transform.parent.rotation = Quaternion.Lerp(dethRotation, Quaternion.LookRotation(Vector3.down, Vector3.forward), (deathTimePassed / 2).Sigmoid());
+            transform.parent.position = transform.parent.position + Vector3.down * Mathf.Min(Mathf.Max(0, deathTimePassed), 20f) * Time.fixedDeltaTime;
+        }
+    }
+    IEnumerator DiedAnim()
+    {
+        GameObject.Find("CamPos").GetComponent<CameraController>().DoVibrate(transform.position);
+        // do dieing ~~
+        int num = 10;
+        while (num-- > 0)
+        {
+            GameObject instance = Instantiate(explotionPrefab, this.transform);
+            Vector3 deltaPos = RD.NextPositionf(1, 1, 1) - Vector3.one * 0.5f;
+            instance.transform.position = instance.transform.position + deltaPos;
+            yield return new WaitForSeconds(0.2f);
+        }
+        yield return new WaitForSeconds(1);
+        // spawn Giant
+        GameObject giant = Instantiate(giantPrefab, new Vector3(transform.position.x, 5, transform.position.z), Quaternion.identity);
+        yield return new WaitForSeconds(6);
+        Destroy(transform.parent.gameObject);
     }
     bool DoAttack()
     {
