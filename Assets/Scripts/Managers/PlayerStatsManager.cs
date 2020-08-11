@@ -25,8 +25,11 @@ public class PlayerStatsManager : MonoBehaviour
     private float recoverWaiting = 0;
     private bool hurting = false;
     private Camera mainCameraRc;
+    private PlayManager playManager;
     private void Start()
     {
+        playManager = GameObject.Find("PlayManager").GetComponent<PlayManager>();
+
         healthBarCMP = healthBar.GetComponent<Image>();
         mainCameraCMP = mainCamera.GetComponent<TiltShift>();
         mainCameraRc = mainCamera.GetComponent<Camera>();
@@ -40,7 +43,16 @@ public class PlayerStatsManager : MonoBehaviour
     {
         return curHP > 0;
     }
-    public bool deathflag = false;
+    public bool _deathflag;
+    public bool deathflag
+    {
+        get { return _deathflag; }
+        set
+        {
+            if (!_deathflag && value) playManager.SendEvent(PlayEventType.PLAYER_DEFEAT);
+            _deathflag = value;
+        }
+    }
     private void Update()
     {
 #if UNITY_EDITOR
@@ -63,6 +75,7 @@ public class PlayerStatsManager : MonoBehaviour
     }
     IEnumerator GameOver()
     {
+
         yield return new WaitForSecondsRealtime(2);
         // TODO to another scene
         globalMaskAlpha = 1;

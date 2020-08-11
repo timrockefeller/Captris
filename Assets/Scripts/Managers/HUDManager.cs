@@ -283,5 +283,10 @@ public class HUDManager : MonoBehaviour
         UnlockType(UnitType.Storage);
         unlockButtonNum += 2;
     }
-
+public void Unlock_period3()
+    {
+        // enable defend & storage 3->5
+        UnlockType(UnitType.Absorb);
+        unlockButtonNum += 1;
+    }
 }

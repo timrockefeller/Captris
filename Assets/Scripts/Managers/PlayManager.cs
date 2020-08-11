@@ -95,8 +95,13 @@ public class PlayManager : MonoBehaviour
     private float curTime;
     public int dayCount = 0;
 
+    [SerializeField]
+    private bool progressStart = false;
+
     // 击溃的塔时的天数
-    public int[] towerDestroyed = new int[] { 9999, 9999 };
+    [ReadOnly]
+    [SerializeField]
+    private int[] towerDestroyed = new int[] { 9999, 9999 };
 
     public float goldRefillTime = 10f;
     private float curGoldRefillTime = 0;
@@ -104,6 +109,7 @@ public class PlayManager : MonoBehaviour
     [Header("Enemy")]
     public GameObject enemyPrefab;
     public float enemySpawnDistance = 15;
+    public GameObject enemyGiantPrefab;
     List<GameObject> enemies;
 
 
@@ -151,8 +157,24 @@ public class PlayManager : MonoBehaviour
         uiCameraController = uicam.GetComponent<UICameraController>();
 
         hudManager.UpdateResource(playerResources, playerMaxResources);
+
+        BindListeners();
     }
 
+    void BindListeners()
+    {
+        AddEventListener(PlayEventType.PLAYER_KILL_TOWER, () =>
+        {
+            if (towerDestroyed[0] == 9999)
+            {
+                towerDestroyed[0] = dayCount;
+            }
+            else if (towerDestroyed[1] == 9999)
+            {
+                towerDestroyed[1] = dayCount;
+            }
+        });
+    }
 
 
     void Update()
@@ -201,7 +223,6 @@ public class PlayManager : MonoBehaviour
         }
 
     }
-    private bool progressStart = false;
     public void StartProgress()
     {
         SendEvent(PlayEventType.GAME_ENTER_DAY);
@@ -228,7 +249,7 @@ public class PlayManager : MonoBehaviour
                 // 考虑非线性
                 // Lazer
                 int enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * Mathf.Pow(dayCount, 0.7f) + 1);
-                Debug.Log("Spawn Enemy: " + enemyCount);
+                Debug.Log("Spawn Lazer: " + enemyCount);
                 // enemies = new GameObject[enemyCount];
                 while (enemyCount-- > 0)
                 {
@@ -241,11 +262,19 @@ public class PlayManager : MonoBehaviour
                 }
                 // Giant
                 enemyCount = (int)((RD.NextDouble() * 0.5 + 0.5) * Mathf.Max(0, Mathf.Pow(dayCount - towerDestroyed[0], 0.6f)));
+                Debug.Log("Spawn Giant: " + enemyCount);
                 while (enemyCount-- > 0)
                 {
-                    
-                    // enemies.Add()
-
+                    bool enemyposN = RD.NextInt(2) == 1;
+                    // enemies.Add(enemyposN?)
+                    enemies.Add(Instantiate(enemyGiantPrefab,
+                        GameUtils.PositionToTranform(
+                            enemyposN ?
+                            worldManager.GetUnit(worldManager.towerpos1).position :
+                            worldManager.GetUnit(worldManager.towerpos2).position
+                        ) + Vector3.up * 3,
+                        Quaternion.identity)
+                    );
                 }
 
                 // state change
@@ -545,6 +574,7 @@ public class PlayManager : MonoBehaviour
             case "Factor": this.selectedType = UnitType.Factor; break;
             case "Defend": this.selectedType = UnitType.Defend; break;
             case "Storage": this.selectedType = UnitType.Storage; break;
+            case "Absorb": this.selectedType = UnitType.Absorb; break;
             default: this.selectedType = UnitType.Grass; break;
         }
         ButtonSelected();
