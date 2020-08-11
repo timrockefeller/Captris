@@ -84,7 +84,7 @@ public class PlayerStatsManager : MonoBehaviour
             deathCoroutine = true;
             }
         }
-        globalMaskCMP.color = Color.Lerp(globalMaskCMP.color, new Color(0, 0, 0, globalMaskAlpha), 20f * Time.unscaledDeltaTime);
+        globalMaskCMP.color = Color.Lerp(globalMaskCMP.color, new Color(0, 0, 0, globalMaskAlpha), 10f * Time.unscaledDeltaTime);
     }
     IEnumerator GameOver()
     {
