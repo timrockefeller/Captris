@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6864168023683811515}
   - component: {fileID: 6864168023683811512}
   m_Layer: 0
-  m_Name: Explosion
+  m_Name: SlowExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12a0751691926b847a7b4c5d3e0d4437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attenuation: 5
-  attackTerrain: 1
-  attackPlayer: 1
+  staying: 0.57
+  attenuation: 1
+  attackTerrain: 0
+  attackPlayer: 0

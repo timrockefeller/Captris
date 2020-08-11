@@ -55,11 +55,24 @@ public class CameraController : MonoBehaviour
         target.y = 0.5f;
     }
 
-    // TODO 
+    // 摄像机大震动
     public void DoVibrate(Vector3 source)
     {
-        float magnitude = (source - target).magnitude;
+        float magnitude = (source - target).magnitude + 1;
+        float factor = Mathf.Pow(1F / magnitude, 0.5f);
         // magnitude * ;
+
+        StartCoroutine(Vibrate(factor));
         Debug.Log("[INFO] CameraController.DoVibrate() called at " + source + "!");
+    }
+
+    IEnumerator Vibrate(float factor)
+    {
+        int i = (int)(factor * 10);
+        while (i-- > 0)
+        {
+            transform.position = factor / 2 * (RD.NextPositionf(1, 1, 1) - new Vector3(0.5f, 0.5f, 0.5f)) + transform.position;
+            yield return new WaitForSeconds(0.01f);
+        }
     }
 }

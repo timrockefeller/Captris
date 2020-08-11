@@ -5080,6 +5080,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 1015233459957706024, guid: 10427068998051148afc798eb361ea86,
     type: 3}
+  explotionPrefab: {fileID: 6864168023683811513, guid: 5e0fc6c96b5434b4eabf1c3fc9f6a461,
+    type: 3}
+  giantPrefab: {fileID: 8485928831282116940, guid: 197d07b57cfa48049bb0fc0252f6f12c,
+    type: 3}
   attackCD: 10
 --- !u!1 &8544916841829261336
 GameObject:

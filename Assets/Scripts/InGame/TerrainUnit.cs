@@ -90,7 +90,8 @@ public class TerrainUnit : MonoBehaviour
                 return new Color(44 / 255.0f, 118 / 255.0f, 179 / 255.0f);
             case UnitType.Storage://195, 77, 134
                 return new Color(195 / 255.0f, 77 / 255.0f, 134 / 255.0f);
-
+            case UnitType.Absorb://63, 180, 171
+                return new Color(63 / 255.0f, 180 / 255.0f, 171 / 255.0f);
             case UnitType.Spawn://101, 103, 101
                 return new Color(101 / 255.0f, 103 / 255.0f, 101 / 255.0f);
 
