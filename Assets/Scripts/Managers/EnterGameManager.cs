@@ -11,12 +11,12 @@ public class EnterGameManager : MonoBehaviour
 
     public void Enter()
     {
-        RD.SetSeed(int.Parse(inputField.GetComponent<Text>().text));
+        RD.SetSeedS(int.Parse(inputField.GetComponent<Text>().text));
         SceneManager.LoadScene("MainMap");
     }
 
     public void EnterRandom(){
-        RD.SetSeed(new System.Random().Next());
+        RD.SetSeedS(new System.Random().Next());
         SceneManager.LoadScene("MainMap");
     }
 }

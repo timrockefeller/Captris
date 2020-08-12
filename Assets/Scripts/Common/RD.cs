@@ -31,6 +31,11 @@ public static class RD
         seed = _seed;
         _RD = new System.Random(_seed);
     }
+    public static void SetSeedS(int _seed)
+    {
+        seed = _seed;
+        _RD = new System.Random(_seed);
+    }
     public static Vector2Int NextPosition(int x, int y)
     {
         return new Vector2Int((int)(NextDouble() * x), (int)(NextDouble() * y));
