@@ -6,8 +6,8 @@ public static class StaticTerrain
     // static UnitType V = UnitType.Void;
     static UnitType M = UnitType.Mine;
     // static UnitType D = UnitType.Defend;
-    static UnitType G = UnitType.Grass;
-    static UnitType A = UnitType.Absorb;
+    // static UnitType G = UnitType.Grass;
+    // static UnitType A = UnitType.Absorb;
     public static UnitType[][,] towers = {
         new UnitType [,]{
             {R,R,_,R,R},

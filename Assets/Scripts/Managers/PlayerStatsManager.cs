@@ -169,7 +169,7 @@ public class PlayerStatsManager : MonoBehaviour
         curHP -= hurt;
         if (curHP <= 0)
         {
-            // TODO GameOver
+            // GameOver : Called from Coroutine
 
         }
         hurting = true;
