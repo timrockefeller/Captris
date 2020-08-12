@@ -97,6 +97,10 @@ public class PlayerController : MonoBehaviour
                 //do damage 
                 if (playerStatsManager.curHP > mistDamage)
                     playerStatsManager.TakeDamage(mistDamage);
+                else
+                {
+                    playerStatsManager.TakeDamage(mistDamage / 10);
+                }
                 mistHurtingTime -= mistHurtingPeriod;
             }
         }

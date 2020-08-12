@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -107,7 +106,7 @@ public class WorldManager : MonoBehaviour
         towerpos1 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_OUTTER_BORDER, TOWER_INNER_BORDER + size.y / 2);
         towerpos2 = RD.NextPosition(size.x / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER, size.y / 2 - TOWER_OUTTER_BORDER - TOWER_INNER_BORDER) + new Vector2Int(TOWER_INNER_BORDER + size.x / 2, TOWER_OUTTER_BORDER);
         /// do lerp
-        const int TOWER_IS_HIGHER = 2;
+        const int TOWER_IS_HIGHER = 1;
         int towerpos1height = TOWER_IS_HIGHER + heightMap[towerpos1.x, towerpos1.y];
         int towerpos2height = TOWER_IS_HIGHER + heightMap[towerpos2.x, towerpos2.y];
 
@@ -253,7 +252,7 @@ public class WorldManager : MonoBehaviour
         {
             // // Instantiate(pGround, new Vector3(sample.x,10,sample.y),Quaternion.identity);
             Vector2Int centerPos = new Vector2Int((int)sample.x + sampleOffset, (int)sample.y + sampleOffset);
-            if ((centerPos - towerpos1).magnitude < 4 || (centerPos - towerpos2).magnitude < 4) continue;
+            if ((centerPos - towerpos1).magnitude < 4 || (centerPos - towerpos2).magnitude < 4|| (centerPos - new Vector2Int(size.x / 2, size.y / 2)).magnitude < 4) continue;
             UnitType[,] mineM = StaticTerrain.NextModule();
             for (int _i = 0; _i < mineM.GetLength(0); _i++)
             {
