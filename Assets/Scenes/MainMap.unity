@@ -9021,7 +9021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1285611837
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11515,7 +11515,7 @@ MonoBehaviour:
   dayCount: 0
   progressStart: 0
   towerDestroyed: 0f2700000f270000
-  goldRefillTime: 10
+  goldRefillTime: 5
   enemyPrefab: {fileID: 2979463236156745087, guid: 4e493f03275e92547aa15bc5733a4735,
     type: 3}
   enemySpawnDistance: 10

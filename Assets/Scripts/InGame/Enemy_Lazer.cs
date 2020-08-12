@@ -38,7 +38,7 @@ public class Enemy_Lazer : MonoBehaviour
         /// 受到攻击时冷却减少。（极致削弱）
         playManager.AddEventListener(PlayEventType.HEALTH_BEATTACKED, () =>
         {
-            currentCD /= 1.5f;
+            currentCD /= 3f;
             // DEPRECATED Shining Effect
         });
     }
