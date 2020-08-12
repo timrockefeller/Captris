@@ -111,8 +111,8 @@ public class WorldManager : MonoBehaviour
         int towerpos1height = TOWER_IS_HIGHER + heightMap[towerpos1.x, towerpos1.y];
         int towerpos2height = TOWER_IS_HIGHER + heightMap[towerpos2.x, towerpos2.y];
 
-        const float roundBorderMin = 5f;
-        const float roundBorderMax = 9f;
+        const float roundBorderMin = 7f;
+        const float roundBorderMax = 11f;
         for (int x = 0; x < size.x; x++)
         {
             for (int z = 0; z < size.y; z++)

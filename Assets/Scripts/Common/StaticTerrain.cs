@@ -10,18 +10,22 @@ public static class StaticTerrain
     // static UnitType A = UnitType.Absorb;
     public static UnitType[][,] towers = {
         new UnitType [,]{
-            {R,R,_,R,R},
-            {R,_,_,_,R},
-            {R,_,T,_,R},
-            {R,_,_,_,R},
-            {R,R,_,R,R},
+            {R,R,_,_,_,R,R},
+            {R,_,_,_,_,_,R},
+            {R,_,_,_,_,_,R},
+            {R,_,_,T,_,_,R},
+            {R,_,_,_,_,_,R},
+            {R,_,_,_,_,_,R},
+            {R,R,_,_,_,R,R},
         },
         new UnitType [,]{
-            {R,R,_,R,R},
-            {R,_,_,_,R},
-            {_,_,T,_,_},
-            {R,_,_,_,R},
-            {R,R,_,R,R},
+            {R,R,_,_,_,R,R},
+            {R,_,_,_,_,_,R},
+            {R,_,_,_,_,_,R},
+            {_,_,_,T,_,_,_},
+            {R,_,_,_,_,_,R},
+            {R,_,_,_,_,_,R},
+            {R,R,_,_,_,R,R},
         },
         new UnitType [,]{
             {R,R,R,R,R},
@@ -31,11 +35,13 @@ public static class StaticTerrain
             {R,R,R,R,R},
         },
         new UnitType [,]{
-            {_,R,_,R,_},
-            {R,R,_,R,R},
-            {_,_,T,_,_},
-            {R,R,_,R,R},
-            {_,R,_,R,_},
+            {_,R,_,_,_,R,_},
+            {R,R,_,_,_,R,R},
+            {_,_,_,_,_,_,_},
+            {_,_,_,T,_,_,_},
+            {_,_,_,_,_,_,_},
+            {R,R,_,_,_,R,R},
+            {_,R,_,_,_,R,_},
         },
         
         // new UnitType [,]{
