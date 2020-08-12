@@ -104,7 +104,7 @@ public class TerrainUnit : MonoBehaviour
             case UnitType.Mine:// KIKYO 986D9C
                 return new Color(0x98 / 255.0f, 0x6D / 255.0f, 0x9c / 255.0f);
             default:
-                return Color.white;
+                return new Color(67 / 255.0f, 67 / 255.0f, 67 / 255.0f);
         }
     }
     public static Color GetColorByBuffType(UnitBuffType t)
